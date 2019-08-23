@@ -51,7 +51,6 @@
                 <em>价格：</em>¥
                 <span>100</span>
               </div>
-              <!--                    <div class="old_price">原价：<span>¥0</span></div>-->
             </div>
 
             <div class="classtopitem btn clearfix">

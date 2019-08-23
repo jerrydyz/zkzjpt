@@ -1,38 +1,40 @@
 <template>
+<div>
+  
   <div class="index">
     <div class="swiper-news-login">
       <swiper :options="swiperOption" ref="mySwiper" class="myswiper" v-if="swiperdata.length>0">
         <!-- slides -->
-        <swiper-slide v-for="(item,index) in swiperdata" :key="index" class="slider"><img :src="item.img_url"></swiper-slide>
+        <swiper-slide v-for="(item,index) in swiperdata" :key="index" class="slider">
+          <img :src="item.img_url">
+          <div class="slide-title">{{item.title}}</div>
+        </swiper-slide>
         <!-- Optional controls -->
         <div class="swiper-pagination"  slot="pagination"></div>
         <!-- <div class="swiper-button-prev" slot="button-prev"></div>
         <div class="swiper-button-next" slot="button-next"></div>
         <div class="swiper-scrollbar"   slot="scrollbar"></div> -->
       </swiper>
-      <div class="news-box">
-        <div class="news-title-box">
-          <div class="news-title-top">
-              <div class="news-title">{{newsjson.title}}</div>
-              <router-link to="/news" class="more-news">更多>></router-link>
+      <div class="news-laws">
+          <div class="news-title-box">
+              <div :class="{cur:newslawsState==0}" @click="newslawsState=0">新闻资讯</div>
+              <div :class="{cur:newslawsState==1}" @click="newslawsState=1">政策法规</div>
           </div>
-          <div class="news-title-bottom">
-              <div class="redsqure"></div>
-              <div class="english-title">{{newsjson.englishTitle}}</div>
-              <div class="ellipsis"></div>
+          <div class="news-box" v-show="newslawsState==0">
+            <loading v-show="newsjson.state==0"></loading>
+            <div class="news-content-box" v-for="item in newsjson.list" :key="item.id" v-show="newsjson.state==1">
+              <div class="item">
+                <router-link :to="'/newsDetails/' + item.id" >
+                  <div class="item-title">{{item.title}}</div>
+                </router-link>
+                <div class="item-time">【{{item.time.split(" ")[0]}}】</div>
+              </div>
+            </div>
           </div>
-        </div>
-        <loading v-show="newsjson.state==0"></loading>
-        <div class="news-content-box" v-for="item in newsjson.list" :key="item.id" v-show="newsjson.state==1">
-          <div class="item">
-            <router-link :to="'/newsDetails/' + item.id" >
-              <div class="item-title">{{item.title}}</div>
-            </router-link>
-            <div class="item-time">{{item.time.split(" ")[0]}}</div>
-          </div>
-        </div>
+          <indexlaws :msg="lawsjson" v-show="newslawsState==1"></indexlaws>
       </div>
-      <div class="login-box" v-show="type">
+      
+      <!-- <div class="login-box" v-show="type">
           <div class="login-title-box">
               <div class="login-title"></div>
           </div>
@@ -55,15 +57,36 @@
           <div class="title"> </div>
           <div class="btn-personal"><router-link to="/my">个人中心</router-link></div>
           <div class="btn-login"><span @click="logout">退出登陆</span></div>
-      </div>
+      </div> -->
     </div>
+
+    <div class="box wrap clearfix">
+        <div class="left fl">
+            <h3><span class="spn">专业课学习平台</span><img src="/static/images/index/xiangyun.png"></h3>
+            <div class="list">
+                <ul>
+                    <li v-for="item in kecheng_type" :key="item.id" @click="tocourse(item.id)">
+                      <span><img :src="item.img_url"></span><span>{{item.name}}</span>
+                    </li>
+                </ul>
+            </div>
+        </div>
+        <div class="right fr">
+            <div class="top">
+                <a href="https://www.hnzjgl.gov.cn/"><img src="/static/images/index/logo-2.png" alt=""></a>
+            </div>
+            <div class="bottom">
+                <a href=""><img src="/static//images/index/hnzj-logo.jpg" alt=""></a>
+            </div>
+        </div>
+    </div>
+
     <router-link to="" class="procedure-box"></router-link>
     <div class="index-news">
-        <indexnews :msg="lawsjson"></indexnews>
-        <indexnews :msg="worksjson"></indexnews>
-        <indexnews :msg="helpsjson"></indexnews>
+        <indexworks :msg="worksjson"></indexworks>
+        <indexhelps :msg="helpsjson"></indexhelps>
     </div>
-    <div class="continue-education">
+    <!-- <div class="continue-education">
         <div class="continue-edu-title"></div>
           <div class="year-choose">
               <div class="year-title">培训年度:</div>
@@ -96,18 +119,25 @@
                 <div class="item-teacher">主讲：<span class="teacher-name">{{item.jiangshi.name}}</span></div>
             </div>  
         </router-link>   
-    </div>
-    <div class="friend-link-box wrap">
+    </div> -->
+    <!-- <div class="friend-link-box wrap">
         <div class="friend-link-title"></div>
         <div class="links-box">
             <a v-for="(item,index) in linkdata" :key="index" class="item-link" :href="item.href" target="_blank"><img :src="item.img_url"></a>
         </div>
-    </div>
+    </div> -->
     <div class="pop" v-show="popShow">
       <img src="/static/images/index/floatbox.png">
       <span class="btn-close" @click="closePop">X</span>
+    </div>
   </div>
+  <div class="foot-top">
+      <span class="spn-one">友情链接 :</span>
+      <a href="http://www.ha.hrss.gov.cn/" class="spn-two">河南省人力资源和社会保障厅</a>
+      <a href="http://www.hnjxedu.org.cn/" class="spn-four">河南省继续教育学会在线学习平台</a>
+      <a href="https://www.hnzjgl.gov.cn/" class="spn-five">河南省专业技术人员公共服务平台</a>
   </div>
+</div>
 </template>
 
 <script>
@@ -116,11 +146,16 @@ import qs from 'qs'
 import { Message } from 'element-ui';
 import 'swiper/dist/css/swiper.css'
 import { swiper, swiperSlide } from 'vue-awesome-swiper'
-import indexnews from "@/components/indexnews.vue";
+//import indexnews from "@/components/indexnews.vue";
+import indexlaws from "@/components/indexlaws.vue";
+import indexworks from "@/components/indexworks.vue";
+import indexhelps from "@/components/indexhelps.vue";
 export default {
   name: 'index',
   components: {
-    indexnews,
+    indexlaws,
+    indexworks,
+    indexhelps,
     swiper,
     swiperSlide
   },
@@ -199,7 +234,10 @@ export default {
       sex:localStorage.getItem("sex"),
       //name
       name:localStorage.getItem("name"),
-      
+      //新闻和政策法规切换状态
+      newslawsState:0,
+      //请求接口域名
+      apiurl:'http://jixujiaoyu_api.songlongfei.club:1012',
     }
   },
   
@@ -215,7 +253,7 @@ export default {
     //轮播图
     this.$axios({
       method: 'get',
-      url: 'http://jixujiaoyu_api.songlongfei.club/lunbotu/get_lunbotu_list'
+      url: this.apiurl+'/lunbotu/get_lunbotu_list'
     }).then(function (response) {
       if(response.data.status=="ok"){
         console.log("轮播图")
@@ -228,7 +266,7 @@ export default {
     //友情链接
     this.$axios({
       method: 'get',
-      url: 'http://jixujiaoyu_api.songlongfei.club/link/get_list'
+      url: this.apiurl+'/link/get_list'
     }).then(function (response) {
       if(response.data.status=="ok"){
         console.log("友情链接")
@@ -239,10 +277,10 @@ export default {
       }
     });
     //请求新闻news
-    let datanews={type_id:'1',page:'1',num:'7'}
+    let datanews={type_id:'1',page:'1',num:'8'}
     this.$axios({
       method: 'post',
-      url: 'http://jixujiaoyu_api.songlongfei.club/news/get_news_list',
+      url: this.apiurl+'/news/get_news_list',
       data: qs.stringify(datanews) 
       }).then(function (response) {
         if(response.data.status=="ok"){
@@ -255,10 +293,10 @@ export default {
         }
       });
       //请求政策法规laws
-    let datalaws={type_id:'2',page:'1',num:'7'}
+    let datalaws={type_id:'2',page:'1',num:'8'}
     this.$axios({
       method: 'post',
-      url: 'http://jixujiaoyu_api.songlongfei.club/news/get_news_list',
+      url: this.apiurl+'/news/get_news_list',
       data: qs.stringify(datalaws) 
       }).then(function (response) {
         if(response.data.status=="ok"){
@@ -274,7 +312,7 @@ export default {
     let dataworks={type_id:'3',page:'1',num:'7'}
     this.$axios({
       method: 'post',
-      url: 'http://jixujiaoyu_api.songlongfei.club/news/get_news_list',
+      url: this.apiurl+'/news/get_news_list',
       data: qs.stringify(dataworks) 
       }).then(function (response) {
         if(response.data.status=="ok"){
@@ -290,7 +328,7 @@ export default {
     let datahelps={type_id:'4',page:'1',num:'7'}
     this.$axios({
       method: 'post',
-      url: 'http://jixujiaoyu_api.songlongfei.club/news/get_news_list',
+      url: this.apiurl+'/news/get_news_list',
       data: qs.stringify(datahelps) 
       }).then(function (response) {
         if(response.data.status=="ok"){
@@ -305,7 +343,7 @@ export default {
     //获取课程年份 
     this.$axios({
       method: 'get',
-      url: 'http://jixujiaoyu_api.songlongfei.club/kecheng/get_kecheng_year',
+      url: this.apiurl+'/kecheng/get_kecheng_year',
       }).then(function (response) {
         if(response.data.status=="ok"){
           console.log("课程年份")
@@ -318,7 +356,7 @@ export default {
      //获取课程类型 
     this.$axios({
       method: 'get',
-      url: 'http://jixujiaoyu_api.songlongfei.club/kecheng/get_kecheng_type',
+      url: this.apiurl+'/kecheng/get_kecheng_type',
       }).then(function (response) {
         if(response.data.status=="ok"){
           console.log("课程类型")
@@ -331,7 +369,7 @@ export default {
       //获取课程分类 
     this.$axios({
       method: 'get',
-      url: 'http://jixujiaoyu_api.songlongfei.club/kecheng/get_kecheng_category',
+      url: this.apiurl+'/kecheng/get_kecheng_category',
       }).then(function (response) {
         if(response.data.status=="ok"){
           console.log("课程分类")
@@ -345,7 +383,7 @@ export default {
     let datacourse={year:'2019', type_id:'',category_id:''}
     this.$axios({
       method: 'post',
-      url: 'http://jixujiaoyu_api.songlongfei.club/kecheng/get_kecheng_list',
+      url: this.apiurl+'/kecheng/get_kecheng_list',
       data: qs.stringify(datacourse) 
       }).then(function (response) {
         if(response.data.status=="ok"){
@@ -425,7 +463,11 @@ export default {
           })
         }
       },
-      
+      //跳往课程页
+      tocourse(id){
+        this.$router.push({ path: 'courses',query:{typeid:id} });
+      },
+      //清除localstorge存储
       removeInfo(){
         localStorage.removeItem("uid");
         localStorage.removeItem("token");
@@ -440,7 +482,7 @@ export default {
         let userinfo={uid:localStorage.getItem("uid"), token:localStorage.getItem("token")}
         this.$axios({
           method: 'post',
-          url: 'http://jixujiaoyu_api.songlongfei.club/user/logout',
+          url: this.apiurl+'/user/logout',
           data: qs.stringify(userinfo) 
           }).then(function (response) {
             
@@ -503,7 +545,7 @@ export default {
         let datacourse={year:yearid, type_id:typeid,category_id:categoryid,page:'1',num:'10'}
         this.$axios({
           method: 'post',
-          url: 'http://jixujiaoyu_api.songlongfei.club/kecheng/get_kecheng_list',
+          url: this.apiurl+'/kecheng/get_kecheng_list',
           data: qs.stringify(datacourse) 
           }).then(function (response) {
             if(response.data.status=="ok"){
@@ -525,44 +567,40 @@ export default {
 <!-- Add "scoped" attribute to limit CSS to this component only -->
 <style scoped lang="less">
     .index{width: 1200px;margin: 40px auto 0;font-size: 0;
-        .swiper-news-login{display: flex;justify-content: space-between;width: 100%;
-            .myswiper{width: 515px;height: 334px; margin: 0;
+        .swiper-news-login{width: 1200px;height: 470px;box-sizing: border-box;padding: 30px;display: flex;justify-content: space-between;background-color: #fff;
+            .myswiper{width: 656px;height: 408px; margin: 0;
               .slider{width: 100%;height: 100%;
                 img{width: 100%;height: 100%;}
+                .slide-title{width: 100%;height: 40px;position: absolute;bottom: 0;background-color: rgba(0,0,0,.5);font-size: 14px;line-height: 40px;color: #fff;text-align: left;padding-left: 10px;}
               }
-              .swiper-pagination-bullets {bottom: 20px;
-                .swiper-pagination-bullet{width: 15px;height: 15px;}
+              .swiper-pagination-bullets {left: 520px;width: 140px;
+                .swiper-pagination-bullet{width: 12px!important;height: 12px!important;background-color: #fff;opacity: 1;border-radius: 0!important;}
                 .swiper-pagination-bullet-active{background-color: red;}
               }
             }
-            .news-box{width: 317px;height: 336px;margin-right: 36px;overflow: hidden;
-              .news-title-box{width: 100%;height: 34px;margin-bottom: 30px;position: relative;
-                  .news-title-top{width: 100%;display: flex;justify-content:space-between;
-                      .news-title{width: 80px;height: 100%;margin-left: 25px;font-size: 20px;font-weight: bold;}
-                      .more-news{font-size: 14px;color: #878787;
-                          &:hover{color:#fb0808;}
-                      }
-                  } 
-                  .news-title-bottom{width: 100%;height: 12px; display: flex;margin-top: 5px;align-items: center;
-                      .redsqure{width: 14px;height: 4px;background-color: #c70304;align-self:flex-end;}
-                      .english-title{font-size: 12px;margin-left: 12px;}
-                      .ellipsis{width: 140px;height: 1px;border-top: 1px dashed #858585;margin-right: 0;position: absolute;right: 0;}
-                  }  
+            .news-laws{width: 39%;height: 408px;
+              .news-title-box{width: 100%;margin-bottom: 30px;height: 48px;background-color: #f7f7f7;display: flex;
+                div{width: 242px;height: 100%;line-height: 48px;font-size: 22px;text-align: center;position: relative;cursor: pointer;}
+                .cur{background-color: #952418;color: #fff;}
+                .cur:before{content: "";width: 18px;height: 18px;background-color: #952418;position: absolute;left: 50%;bottom:-9px;transform:rotate(45deg);margin-left: -9px;}                         
               }
-              .news-content-box{width: 100%;margin-top: 20px;margin-bottom: 20px;
-                &:hover{cursor: pointer;}
-                .item{position: relative; width: 100%;display: flex;justify-content:space-between;margin-bottom: 15px;box-sizing: border-box;padding:0 5px 0 12px;align-items: center;
-                    .item-title{width: 210px;font-size: 16px;color: #3d3d3d;font-weight: 500;overflow: hidden;text-overflow: ellipsis;white-space: nowrap;}
-                    .item-time{font-size: 12px;color: #3d3d3d;}
-                    
-                }
-                .item:before{content: "";width: 6px;height: 6px;border-radius: 6px;background-color: #000;position: absolute;left: 0px;top:50%;display: block;margin-top: -3px;}
-                .item:hover{
-                    div{color:#fb0808;}
-                    &:before{background-color:#fb0808;}
-                } 
-            }         
-          } 
+     
+              .news-box{
+                .news-content-box{width: 100%;margin-top: 20px;margin-bottom: 20px;
+                  &:hover{cursor: pointer;}
+                  .item{position: relative; width: 100%;display: flex;justify-content:space-between;margin-bottom: 15px;box-sizing: border-box;padding:0 5px 0 12px;align-items: center;
+                      .item-title{width: 270px;font-size: 16px;color: #3d3d3d;font-weight: 500;overflow: hidden;text-overflow: ellipsis;white-space: nowrap;}
+                      .item-time{font-size: 12px;color: #3d3d3d;}
+                  }
+                  .item:before{content: "";width: 6px;height: 6px;border-radius: 6px;background-color: #952418;position: absolute;left: 0px;top:50%;display: block;margin-top: -3px;}
+                  .item:hover{
+                      div{color:#952418;}
+                      &:before{background-color:#952418;}
+                  } 
+                }         
+              } 
+            }
+            
           .login-box{ width: 292px;border: 1px solid #d7d7d7; 
               .login-title-box{width: 100%;height: 55px;
                 .login-title{width: 126px;height: 34px;background-image: url(/static/images/index/login-title.png);margin-top: 25px;margin-left: 18px;}
@@ -578,7 +616,7 @@ export default {
               }
             }  
         }
-        .procedure-box{display: block; width: 1200px; height: 76px;background-image: url(/static/images/index/procedure.png);margin: 40px auto;}
+        .procedure-box{display: block; width: 1200px; height: 67px;background-image: url(/static/images/index/procedure.png);margin: 30px auto;}
         .index-news{width: 1200px;height: 100%;display: flex;justify-content: space-between;overflow: hidden;}
         .continue-education{width: 1200px;
           .continue-education{width: 100%;overflow: hidden;}
@@ -625,21 +663,30 @@ export default {
             }
           }
         }
-        .friend-link-box{width: 1200px; margin: 0 auto;
-          .friend-link-title{width: 100%;height: 34px;background-image: url(/static/images/index/friend-link.png);margin: 40px auto }
-          .links-box{width: 100%;display: flex;flex-wrap:wrap;justify-content: space-between;
-            .item-link{transform: scale(1);transition: all 1s;
-              &:hover{transform: scale(1.1);transition: all 1s;}
-            }
-          }
-        }
+        // .friend-link-box{width: 1200px; margin: 0 auto;
+        //   .friend-link-title{width: 100%;height: 34px;background-image: url(/static/images/index/friend-link.png);margin: 40px auto }
+        //   .links-box{width: 100%;display: flex;flex-wrap:wrap;justify-content: space-between;
+        //     .item-link{transform: scale(1);transition: all 1s;
+        //       &:hover{transform: scale(1.1);transition: all 1s;}
+        //     }
+        //   }
+        // }
     }
+
+.foot-top {text-align: center;padding-top: 30px;padding-bottom: 30px;box-sizing: border-box;border-bottom: 1px solid #d2d2d2; background-color: #e3e3e3;margin-top: 30px;}
+.foot-top a {display: inline-block;color: #6b6b6b;font-size: 18px;}
+.foot-top .spn-one {color: #4c4c4c; padding: 0 20px;box-sizing: border-box;font-size: 18px;}
+.foot-top a.spn-two {padding: 0 20px; box-sizing: border-box;border-right: 1px solid #cccccc;}
+.foot-top a.spn-three {padding: 0 35px;box-sizing: border-box;border-right: 1px solid #cccccc;}
+.foot-top a.spn-four {padding: 0 30px;box-sizing: border-box;border-right: 1px solid #cccccc;}
+.foot-top a.spn-five {padding: 0 30px;box-sizing: border-box;}
+
 .register_content_input{width:252px; height: 48px;box-sizing: border-box;padding-left: 15px;border: 1px solid #c1c1c1;border-radius: 5px;margin: 0 auto;font-size: 14px;}
 .input-pw{margin-top: 12px;}
 .yanzhengma_input{width: 130px;height: 40px;font-size: 14px;box-sizing: border-box;padding-left: 15px;border-radius: 5px;border: 1px solid #c1c1c1;display: inline-block;vertical-align: middle;margin-top: 12px;}
 .verification1{width: 100px;height: 40px;font-size: 18px;letter-spacing:3px;color: #c60404;background: #f2f2f5;border-radius: 5px;border: 1px solid #c1c1c1;margin-left: 20px;display: inline-block;vertical-align: middle;margin-top: 12px;cursor: pointer;}
 .user_login{display: block;width: 252px;height: 48px;font-size: 18px;text-align: center;line-height: 50px;color: #fff;background-color: #c60404;border-radius: 5px;margin-top: 12px;cursor:pointer;}
-.pop{width: 172px;position: fixed;right: 0;top: 275px;z-index: 100;}
+.pop{width: 145px;position: fixed;right: 0;top: 275px;z-index: 100;}
 .pop .btn-close{ width: 22px; height: 22px;line-height: 22px; font-size: 14px; margin: 0 auto; cursor: pointer;text-align: center; color: #c1c1c1; border-radius: 22px;border: 1px solid #c1c1c1;display: block;}
 
 .login-index-success{ width: 292px;height: 336px;position: relative;float: left;background-color: #fff;padding-top: 30px;border: 1px solid #c6c6c6;box-sizing: border-box;}
@@ -650,4 +697,29 @@ export default {
 .login-index-success .btn-login{width: 240px;height: 45px;background-color: #c60406;margin: 15px auto 0;cursor: pointer;}
 .login-index-success .btn-personal a {width: 100%;height: 100%; color:#fff;text-align: center;line-height: 45px;display: block;font-size: 12px;}
 .login-index-success .btn-login span{width: 100%;height: 100%; color:#fff;text-align: center;line-height: 45px;display: block;font-size: 12px;}
+
+
+
+.clearfix:after {content: ".";display: block;height: 0;clear: both;visibility: hidden;}
+.clearfix {zoom: 1;}
+.box{margin-top: 20px;}
+.box .left {padding: 27px;box-sizing: border-box; background-color: #fff;width: 67%;}
+.box h3 { width: 100%;letter-spacing: 1px;border-bottom: 1px solid #dedede;}
+.box h3 .spn {font-size: 20px;display: inline-block;padding-bottom: 16px;box-sizing: border-box;border-bottom: 1px solid #a81b15;}
+.box .left ul li {list-style: none;float: left; width: 178px; height: 64px;border: 2px solid #f0f0f0;text-align: center;line-height: 60px; margin-top: 10px;margin-right: 12px;cursor: pointer;
+    &:nth-child(4n){margin-right: 0;}
+    &:nth-child(9){cursor: not-allowed;}
+    &:nth-child(10){cursor: not-allowed;}
+    &:nth-child(11){cursor: not-allowed;}
+    &:nth-child(12){cursor: not-allowed;}
+}
+.box .left ul li:nth-child(4n) {margin-right: 0;}
+.box .left ul li span {display: inline-block;font-size: 18px;}
+.box .left ul li span:nth-child(1) { width: 27px; margin-right: 10px;}
+.box .left ul li span img {width: 100%;vertical-align: -5px;}
+.box .right {width: 31.6%;height: 321px;box-sizing: border-box;}
+.box .right div {height: 150px;}
+.box .right div img {width: 100%;height: 150px;}
+.box .right div.bottom{margin-top: 20px;}
+
 </style>

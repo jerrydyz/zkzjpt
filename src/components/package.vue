@@ -17,7 +17,7 @@
           </div>
           <div class="price-box fr">
             <div class="price"><span class="rmb">￥{{item.price}} 元</span></div>
-            <div type="button" class="btn-now" @click.stop="xuexi(item.id)" v-html="msg"></div>
+            <div type="button" class="btn-now" @click.stop="xuexi(item.id)">{{item.checkres=="0"?"购买":"已购买"}}</div>
           </div>
         </li>
         
@@ -49,38 +49,44 @@ export default {
       year:'',
       msg:'购买',
       pageNo:1,
-      idd:''
-        
+      idd:'',
+      apiurl:'http://jixujiaoyu_api.songlongfei.club:1012',
+     
     }
   },
   created (){
-    this.kechengbao()
+    
     this.uid = sessionStorage.getItem("uid");
     this.token = sessionStorage.getItem("token");
     var date = new Date();
     this.year = date.getFullYear();
+   
+  },
+  mounted(){
+    this.kechengbao();
   },
   methods:{
       kechengbao (){
-           //获取课程包信息
+      //获取课程包信息
        var that=this 
         this.$axios({
           method: 'post',
-          url: 'http://jixujiaoyu_api.songlongfei.club/kecheng/get_kechengbao_list',
+          url: this.apiurl+'/kecheng/get_kechengbao_list',
           data:qs.stringify({
             year:this.year
           })
           }).then(res => {
-            console.log("课程包信息")
-            console.log(res)
             if(res.data.status=="ok"){
-              that.list=[]
-               that.list=that.list.concat(res.data.data)
+               that.list=[]
+               that.list=that.list.concat(res.data.data);
+              //  for(let i=0; i<this.list.length;i++){
+              //    that.list[i].checkres="0";
+              //  }
+              console.log("========")
+              console.log(that.list)
+               
                for(var i=0;i<res.data.data.length;i++){
                  that.id.push(res.data.data[i].id)
-                 console.log("========")
-                 console.log(that.id)
-                
                 //  that.getbaoprogress()
                }
                for(var i=0;i<that.id.length;i++){
@@ -89,21 +95,46 @@ export default {
                    console.log(that.idd)
                   // that.getbaoprogress()
                }
+               that.isBuy();
             }else{
               
             }
       });
       },
+      //各个课程包是否购买
+      isBuy:function(){
+        let that =this;
+        for(let i=0; i<this.list.length;i++){
+          let courseId={uid:localStorage.getItem("uid"),token:localStorage.getItem("token"),kecheng_bao_id:this.list[i].id}
+          this.$axios.post(this.apiurl+'/kecheng/check_kecheng_bao_is_buy',qs.stringify(courseId))
+            .then(response => {
+              if(response.data.status=="ok"){
+                if(response.data.data.check_res=="0"){
+                  this.$set(this.list[i],"checkres",'0') 
+                  // this.$router.push({path:'packagebuy',query:{packid:packageid}});
+                }else if(response.data.data.check_res=="1"){
+                  this.$set(this.list[i],"checkres",'1') 
+                } 
+              }else if(response.data.status=="error"){
+                this.$message.error({message: response.data.msg,duration:1600});
+              }else if(response.data.status=="relogin"){
+                that.clearlocalData();
+              }
+          });
+        }
+        console.log("1111111111")
+        console.log(that.list)
+      },
       xuexi (packageid) {
         let that =this;
         let courseId={uid:localStorage.getItem("uid"),token:localStorage.getItem("token"),kecheng_bao_id:packageid}
-        this.$axios.post("http://jixujiaoyu_api.songlongfei.club/kecheng/check_kecheng_bao_is_buy",qs.stringify(courseId))
+        this.$axios.post(this.apiurl+'/kecheng/check_kecheng_bao_is_buy',qs.stringify(courseId))
           .then(response => {
             if(response.data.status=="ok"){
               if(response.data.data.check_res=="0"){
                 this.$router.push({path:'packagebuy',query:{packid:packageid}});
               }else if(response.data.data.check_res=="1"){
-                this.$message.error({message: "您已购买过该课程包",duration:1600});
+                that.gopackdetail(packageid);
               } 
             }else if(response.data.status=="error"){
               this.$message.error({message: response.data.msg,duration:1600});
@@ -116,7 +147,7 @@ export default {
       },
       getbaoprogress (){
          var that=this
-          that.$axios.post('http://jixujiaoyu_api.songlongfei.club//kecheng/get_kecheng_keshi_jindu',
+          that.$axios.post(this.apiurl+'/kecheng/get_kecheng_keshi_jindu',
                     qs.stringify({
                       kecheng_id:that.idd,
                       uid:that.uid,
@@ -126,7 +157,7 @@ export default {
                       console.log("获取课程包进度")
                       if(res.data.status=='error'){
                           that.used=0
-                           that.msg="购买课程"                             
+                          that.msg="购买课程"                             
                           
                       }else{
                           that.used=res.data.progress

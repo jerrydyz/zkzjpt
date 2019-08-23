@@ -144,7 +144,7 @@ export default {
 	        sources: [
 				{
 					type: 'application/x-mpegURL',
-					src: ''
+					src: 'http://jixujiaoyu_api.songlongfei.club/hls/576537c51c12c29adb33c072b48dda2f.m3u8'
 				}
 			],
 	        //poster: " ", //你的封面地址
@@ -178,6 +178,7 @@ export default {
 		  allbiji:'',
 		  //笔记作者
 		  name:localStorage.getItem("name"),
+		  apiurl:'http://jixujiaoyu_api.songlongfei.club:1012',
 		}
 		
   },
@@ -219,7 +220,7 @@ export default {
 		let datacourse={kecheng_id:this.$route.query.courseId,uid:localStorage.getItem("uid"),token:localStorage.getItem("token")}
 		this.$axios({
 			method: 'post',
-			url: 'http://jixujiaoyu_api.songlongfei.club/kecheng/get_kecheng_play',
+			url: apiurl+'/kecheng/get_kecheng_play',
 			data: qs.stringify(datacourse) 
 			}).then(function (response) {
 			if(response.data.status=="ok"){

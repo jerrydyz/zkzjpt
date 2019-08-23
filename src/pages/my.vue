@@ -91,7 +91,8 @@ export default {
          name:'',
          id_card:'',
          uid:'',
-         token:''
+         token:'',
+         apiurl:'http://jixujiaoyu_api.songlongfei.club:1012',
       }
     },
     created(){
@@ -115,7 +116,7 @@ export default {
       //返回按钮
       goback (){
           var that =this
-          this.$axios.post('http://jixujiaoyu_api.songlongfei.club/user/logout',
+          this.$axios.post(this.apiurl+'/user/logout',
            qs.stringify({
              uid:this.uid,
              token:this.token

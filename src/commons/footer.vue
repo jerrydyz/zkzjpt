@@ -1,7 +1,7 @@
 <template>
   <div class="common-footer">
     <div class="copy-right">
-      <div>版权所有：河南省继续教育学会</div>
+      <div>技术支持：河南省继续教育学会</div>
       <div>地址：郑州市博学路277号正商学府广场A座四层 邮政编码：450000</div>
       <div>
         Copyright © 2017 jxjyedu.club All Rights Reserved丨
@@ -40,8 +40,7 @@ export default {
 .common-footer {
   width: 100%;
   height: 140px;
-  background-color: #000;
-  margin-top: 40px;
+  background-color: #e3e3e3;
   text-align: center;
   .copy-right {
     width: 1200px;
@@ -57,7 +56,7 @@ export default {
     height: 56px;
     position: fixed;
     right: 0;
-    top: 400px;
+    top: 630px;
     background-image: url(/static/images/index/btn-top.png);
     cursor: pointer;
     z-index: 2;

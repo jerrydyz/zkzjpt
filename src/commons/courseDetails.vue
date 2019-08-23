@@ -145,6 +145,8 @@ export default {
       loginstate:0,
       buyCourseId:'',
       btnbuycourse:0,
+      //请求接口域名
+      apiurl:'http://jixujiaoyu_api.songlongfei.club:1012',
     };
   },
   created(){
@@ -152,7 +154,7 @@ export default {
     if(localStorage.getItem("login1")=="1"){
       let that =this;
       let courseId={kecheng_id:this.$route.params.courseId,uid:localStorage.getItem("uid"),token:localStorage.getItem("token")}
-      this.$axios.post("http://jixujiaoyu_api.songlongfei.club/kecheng/check_kecheng_is_buy",qs.stringify(courseId))
+      this.$axios.post(this.apiurl+'/kecheng/check_kecheng_is_buy',qs.stringify(courseId))
       .then(response => {
         if(response.data.status=="ok"){
           if(response.data.data.check_res=="0"){
@@ -184,7 +186,7 @@ export default {
     console.log(this.$route.params.courseId);
     that.buyCourseId=this.$route.params.courseId;
     let courseId={kecheng_id:this.$route.params.courseId}
-    this.$axios.post("http://jixujiaoyu_api.songlongfei.club/kecheng/get_kecheng_info",qs.stringify(courseId))
+    this.$axios.post(this.apiurl+'/kecheng/get_kecheng_info',qs.stringify(courseId))
       .then(response => {
         if(response.data.status=="ok"){
           console.log(response.data.data);
@@ -231,7 +233,7 @@ export default {
         if(localStorage.getItem("login1")=="1"){
           let that =this;
           let courseId={kecheng_id:this.$route.params.courseId,uid:localStorage.getItem("uid"),token:localStorage.getItem("token")}
-          this.$axios.post("http://jixujiaoyu_api.songlongfei.club/kecheng/check_kecheng_is_buy",qs.stringify(courseId))
+          this.$axios.post(this.apiurl+'/kecheng/check_kecheng_is_buy',qs.stringify(courseId))
           .then(response => {
             if(response.data.status=="ok"){
               if(response.data.data.check_res=="0"){
@@ -288,7 +290,7 @@ export default {
             alert("密码不能为空") 
         }else if(this.checkLpicma() == true){
           let userinfo={id_card:this.idcard, password:this.UserPsd}
-          this.$axios.post("http://jixujiaoyu_api.songlongfei.club/user/login",qs.stringify(userinfo)).then(response => {
+          this.$axios.post(this.apiurl+'/user/login',qs.stringify(userinfo)).then(response => {
             console.log(response.data);
             if(response.data.status=='ok'){
               localStorage.setItem("uid", response.data.data.uid);
@@ -340,7 +342,7 @@ export default {
       let that =this;
       if(localStorage.getItem("uid") && localStorage.getItem("token")){
         let courseId={kecheng_id:this.$route.params.courseId,uid:localStorage.getItem("uid"),token:localStorage.getItem("token")}
-        this.$axios.post("http://jixujiaoyu_api.songlongfei.club/kecheng/check_kecheng_is_buy",qs.stringify(courseId))
+        this.$axios.post(this.apiurl+'/kecheng/check_kecheng_is_buy',qs.stringify(courseId))
         .then(response => {
           if(response.data.status=="ok"){
             if(response.data.data.check_res=="0"){
