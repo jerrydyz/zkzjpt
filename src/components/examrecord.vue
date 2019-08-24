@@ -14,15 +14,15 @@
                 </ul>
             </div>
              <div class="topcon">
-                <ul class="clearfix" v-show="!nodata" v-for="(item,index) in data" :key="index">
+                <ul class="clearfix" v-show="nodata" v-for="(item,index) in data" :key="index">
                     <li class="fl l1">{{item.shijuan_title}}</li>
-                    <li class="fr l2">{{item.is_pass=='1'?'没通过':'通过'}}</li>
+                    <li class="fr l2">{{item.is_pass=='1'?'未通过':'通过'}}</li>
                     <li class="fr l3">{{item.zong_score}}</li>
                     <li class="fr l4">{{item.score}}</li>
                      <li class="fr l5"> {{item.time}}</li>
                 </ul>
             </div>
-            <div class="nodata" v-show="nodata">
+            <div class="nodata" v-show="!nodata">
 
             </div>
         </div>
