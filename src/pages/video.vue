@@ -144,7 +144,7 @@ export default {
 	        sources: [
 				{
 					type: 'application/x-mpegURL',
-					src: 'http://jixujiaoyu_api.songlongfei.club/hls/576537c51c12c29adb33c072b48dda2f.m3u8'
+					src: 'http://jixujiaoyu_api.songlongfei.club:1012/hls/576537c51c12c29adb33c072b48dda2f.m3u8'
 				}
 			],
 	        //poster: " ", //你的封面地址
