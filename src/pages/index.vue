@@ -1,5 +1,5 @@
 <template>
-<div>
+<div class="zkindex">
   
   <div class="index">
     <div class="swiper-news-login">
@@ -76,12 +76,18 @@
                 <a href="https://www.hnzjgl.gov.cn/"><img src="/static/images/index/logo-2.png" alt=""></a>
             </div>
             <div class="bottom">
-                <a href=""><img src="/static//images/index/hnzj-logo.jpg" alt=""></a>
+                <router-link to="/gongxuke"><img src="/static//images/index/hnzj-logo.jpg" alt=""></router-link>
             </div>
         </div>
     </div>
 
-    <router-link to="" class="procedure-box"></router-link>
+    <div to="" class="procedure-box">
+      <router-link to="/register" class="xyzc"></router-link>
+      <router-link to="/courses" class="xkjf"></router-link>
+      <router-link to="/courses" class="zxxx"></router-link>
+      <router-link to="" class="zxks"></router-link>
+      <router-link to="" class="zscx"></router-link>
+    </div>
     <div class="index-news">
         <indexworks :msg="worksjson"></indexworks>
         <indexhelps :msg="helpsjson"></indexhelps>
@@ -137,6 +143,13 @@
       <a href="http://www.hnjxedu.org.cn/" class="spn-four">河南省继续教育学会在线学习平台</a>
       <a href="https://www.hnzjgl.gov.cn/" class="spn-five">河南省专业技术人员公共服务平台</a>
   </div>
+  <div class="laozi">
+    <img src="http://ceshi2.jxjyedu.club/addons/theme/stv2/_static/2019/images/new_index/laozi.png" alt="">
+  </div>
+  <div class="zuzi">
+    <img src="http://ceshi2.jxjyedu.club/addons/theme/stv2/_static/2019/images/new_index/zhuzi.png" alt="">
+  </div>
+
 </div>
 </template>
 
@@ -505,6 +518,21 @@ export default {
         localStorage.setItem("login1", "0");
         this.login1=0;
       },
+      //状态为relogin时清除local数据
+      clearlocalData:function(){
+        let that = this;
+        that.$message.error({message:"请重新登录",duration:1600});
+        localStorage.removeItem("login1");
+        localStorage.removeItem("uid");
+        localStorage.removeItem("token");
+        localStorage.removeItem("sex");
+        localStorage.removeItem("name");
+        localStorage.removeItem("mobile");
+        localStorage.removeItem("id_card");
+        setTimeout(() => {
+          that.$router.push({ path: 'login' });
+        }, 1600);
+      },
       closePop(){
         this.popShow=false;
       },
@@ -566,6 +594,7 @@ export default {
 
 <!-- Add "scoped" attribute to limit CSS to this component only -->
 <style scoped lang="less">
+    .zkindex{position: relative;}
     .index{width: 1200px;margin: 40px auto 0;font-size: 0;
         .swiper-news-login{width: 1200px;height: 470px;box-sizing: border-box;padding: 30px;display: flex;justify-content: space-between;background-color: #fff;
             .myswiper{width: 656px;height: 408px; margin: 0;
@@ -616,7 +645,14 @@ export default {
               }
             }  
         }
-        .procedure-box{display: block; width: 1200px; height: 67px;background-image: url(/static/images/index/procedure.png);margin: 30px auto;}
+        .procedure-box{display: block; width: 1200px; height: 67px;background-image: url(/static/images/index/procedure.png);margin: 30px auto;position: relative;
+           a{position: absolute;width: 135px;height: 50px;display: block;}
+          .xyzc{left: 10px;top: 10px}
+          .xkjf{left: 220px;top: 10px}
+          .zxxx{left: 425px;top: 10px}
+          .zxks{left: 630px;top: 10px}
+          .zscx{left: 1050px;top: 10px}
+        }
         .index-news{width: 1200px;height: 100%;display: flex;justify-content: space-between;overflow: hidden;}
         .continue-education{width: 1200px;
           .continue-education{width: 100%;overflow: hidden;}
@@ -722,4 +758,7 @@ export default {
 .box .right div img {width: 100%;height: 150px;}
 .box .right div.bottom{margin-top: 20px;}
 
+
+.laozi {width: 179px;position: absolute;left: 0;bottom: 120px;}
+.zuzi {width: 252px;height: 302px;position: absolute;right: 0;bottom: 140px;}
 </style>

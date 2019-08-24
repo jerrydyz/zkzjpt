@@ -14,6 +14,7 @@ import register from '@/pages/register'
 import courseBuyDetails from '@/pages/courseBuyDetails'
 import packagebuy from '@/pages/packagebuy'
 import video from '@/pages/video'
+import gongxuke from '@/pages/gongxuke'
 
 import newsDetails from '@/commons/newsDetails'
 import courseDetails from '@/commons/courseDetails'
@@ -71,6 +72,14 @@ export default new Router({
             components: {
                 comheader: commonHeader,
                 default: findpw,
+                comfooter: commonFooter,
+            }
+        },
+        {
+            path: '/gongxuke',
+            name: 'gongxuke',
+            components: {
+                default: gongxuke,
                 comfooter: commonFooter,
             }
         },

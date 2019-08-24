@@ -145,6 +145,23 @@ export default {
         });
          
       },
+
+      //状态为relogin时清除local数据
+      clearlocalData:function(){
+        let that = this;
+        that.$message.error({message:"请重新登录",duration:1600});
+        localStorage.removeItem("login1");
+        localStorage.removeItem("uid");
+        localStorage.removeItem("token");
+        localStorage.removeItem("sex");
+        localStorage.removeItem("name");
+        localStorage.removeItem("mobile");
+        localStorage.removeItem("id_card");
+        setTimeout(() => {
+          that.$router.push({ path: 'login' });
+        }, 1600);
+      },
+  
       getbaoprogress (){
          var that=this
           that.$axios.post(this.apiurl+'/kecheng/get_kecheng_keshi_jindu',
