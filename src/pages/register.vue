@@ -749,7 +749,6 @@ export default {
       //验证名字
       identifyName:function(){
         var regu =/^[\u4e00-\u9fa5]+$/;
-        
         if(this.username==''){
             console.log("1111")
             this.nametips=2;
@@ -821,6 +820,41 @@ export default {
       },
       //用户注册 
       registerNow:function(){
+        //验证名字
+        let regu =/^[\u4e00-\u9fa5]+$/;
+        if(this.username==''){
+            that.$message.error({message:"姓名不能为空",duration:2000});
+            return false;
+        }else if(!regu.test(this.username) || this.username.length<2){
+            that.$message.error({message:"姓名至少为2个汉字",duration:2000});
+            return false;
+        }
+        //验证身份证号
+        let reg=/(^\d{15}$)|(^\d{18}$)|(^\d{17}(\d|X|x)$)/;
+        if(this.IDcard==''){
+            that.$message.error({message:"身份证号不能为空",duration:2000});
+            return false;
+        }else if(!reg.test(this.IDcard)){
+            that.$message.error({message:"身份证号错误",duration:2000});
+            return false;
+        }
+        //验证手机号
+        if(this.phone==''){
+           that.$message.error({message:"手机号不能为空",duration:2000});
+            return false;
+        }else if(!this.phone.match( /^1[3|4|5|6|7|8|9][0-9]\d{8}$/)){
+            that.$message.error({message:"手机号不正确",duration:2000});
+            return false;
+        }
+        //确认密码
+        if(this.confirmpw==''){
+            that.$message.error({message:"密码不能为空",duration:2000});
+            return false;
+        }else if(this.confirmpw!=this.pw){
+            that.$message.error({message:"密码不一致",duration:2000});
+            return false;
+        }
+
           let that= this;
           let userinfo={name:this.username,id_card:this.IDcard,mobile:this.phone,gongzuodanwei:this.company, password:this.pw}
           this.$axios.post(this.apiurl+'/user/reg',qs.stringify(userinfo)).then(response => {

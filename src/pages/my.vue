@@ -43,7 +43,7 @@
              <i class="iconfont iconyoujiantou fr"></i>
             </li>
           <li class="clearfix" :class="{active:bgcolor=='examrecord'}" @click="more('examrecord')" >
-               <i class="iconfont iconshijian fl"></i>
+              <i class="iconfont iconshijian fl"></i>
               <span class="fl">考试记录</span>
               <i class="iconfont iconyoujiantou fr"></i>
             </li>

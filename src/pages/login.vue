@@ -6,7 +6,7 @@
         <div class="info-box">
             <input type="text" placeholder="请输入身份证号" maxlength="18" class="register_content_input" v-model= "idcard"><br>
             <input type="password" placeholder="请输入密码" class="register_content_input input-pw" v-model="UserPsd"><br>
-            <input type="text" placeholder="请输入验证码" maxlength="4" class="yanzhengma_input" @blur="checkLpicma" v-model="picLyanzhengma">
+            <input type="text" placeholder="请输入验证码" maxlength="4" class="yanzhengma_input" v-model="picLyanzhengma">
             <input type="button" id="code" @click="createCode"  class="verification1" v-model="checkCode"/> <br>
             <a class="user_login" @click="Login">登录</a>
             <div class="btns-box">
@@ -54,19 +54,7 @@ export default {
           }   
               this.checkCode = code;//把code值赋给验证码   
       },
-      // 失焦验证图和密码
-      checkLpicma(){
-          this.picLyanzhengma.toUpperCase();//取得输入的验证码并转化为大写         
-          if(this.picLyanzhengma == '') {
-            alert("请输入验证码")
-          }else if(this.picLyanzhengma.toUpperCase() != this.checkCode ) { //若输入的验证码与产生的验证码不一致时  
-            alert("验证码不正确")  
-            this.createCode();//刷新验证码   
-            this.picLyanzhengma = '';
-          }else { //输入正确时  
-              return true;
-          } 
-      },
+      
       removeInfo(){
         localStorage.removeItem("uid");
         localStorage.removeItem("token");
@@ -78,13 +66,24 @@ export default {
       //用户登录 
       Login(){
         let that=this;
+        this.picLyanzhengma.toUpperCase();//取得输入的验证码并转化为大写    
         if(this.idcard==''){
-          alert("身份证号不能为空")
+          this.createCode();//刷新验证码
+          this.$message.error({message:"身份证号不能为空",duration:1600});
         }else if(!this.idcard.match(/(^\d{15}$)|(^\d{18}$)|(^\d{17}(\d|X|x)$)/)){
-          alert("请输入正确的身份证号")
+          this.createCode();//刷新验证码
+          this.$message.error({message:"请输入正确的身份证号",duration:1600});
         }else if(this.UserPsd==''){
-            alert("密码不能为空") 
-        }else if(this.checkLpicma() == true){
+          this.createCode();//刷新验证码
+          this.$message.error({message:"密码不能为空",duration:1600});
+        }else if(this.picLyanzhengma == '') {
+          this.createCode();//刷新验证码
+          this.$message.error({message:"请输入验证码",duration:1600});
+        }else if(this.picLyanzhengma.toUpperCase() != this.checkCode ) { //若输入的验证码与产生的验证码不一致时  
+          this.$message.error({message:"验证码不正确",duration:1600});
+          this.createCode();//刷新验证码   
+          this.picLyanzhengma = '';
+        }else { 
           let userinfo={id_card:this.idcard, password:this.UserPsd}
           this.$axios.post(this.apiurl+'/user/login',qs.stringify(userinfo)).then(response => {
             console.log(response.data);
@@ -96,6 +95,7 @@ export default {
               localStorage.setItem("mobile", response.data.data.mobile);
               localStorage.setItem("id_card", response.data.data.id_card);
               localStorage.setItem("login1", "1");
+              localStorage.setItem('types','rate')
               that.sex=response.data.data.sex;
               this.name=response.data.data.name;
               that.$message.success({message:"登陆成功，即将前往个人中心页",duration:1600});

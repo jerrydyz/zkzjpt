@@ -136,6 +136,7 @@ export default {
             .then(response => {
                 if(response.data.status=="ok"){
                     this.$message.success({message: "您已购买成功",duration:1600});
+                    localStorage.setItem('types','mykecheng');
                     this.$router.push({ path: '/my' });
                 }else if(response.data.status=="error"){
                   this.$message.error({message: response.data.errormsg,duration:1600});
@@ -240,7 +241,7 @@ export default {
 .class_order_bot .btn .now-pay{margin-top:12px;display:inline-block;width:140px;border-radius:2px;background-color:#E82F24;color:#fff;text-align:center;font-size:14px;line-height:40px;cursor: pointer;}
 .pay_number{float: left;padding: 0 10px;width: 370px;height: 35px;margin-top: 10px;border: solid 1px #b6c7d6;border-radius: 4px;}
 .pay_use_draw{display: block;width: 70px;height: 35px;margin: 10px 0 0 10px;border: solid 1px #E82F24;border-radius: 4px;background-color: #E82F24;color: #fff;text-align: center;font-size: 14px;line-height: 35px;float: left;cursor: pointer;}
-.WXbox{position: absolute;left: 0;top:0;width: 100%;height: 100%;background-color: rgba(0,0,0,.5);}
+.WXbox{position: absolute;left: 0;top:0;width: 100%;height: 112%;background-color: rgba(0,0,0,.5);}
 .WXbox .shang-box{width: 300px;height: 315px;padding: 10px;background-color: #fff; border-radius: 10px; position: fixed;z-index: 9999;left: 59%;top: 50%;margin-left: -280px;margin-top: -280px; border: 1px dotted #dedede;}
 .WXbox .shang-close{float: right;cursor: pointer;}
 .WXbox .shang-payimg{width: 250px;height: 250px;padding: 10px;margin: 20px auto 0;border-radius: 3px;}

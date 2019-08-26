@@ -25,7 +25,7 @@
           <div class="right">
             <h3>{{title}}({{xueshi}}课时)</h3>
             <div class="coursetopitem">可得学时：{{xueshi}}学时</div>
-            <div class="coursetopitem">适合区域：河南省</div>
+            <!-- <div class="coursetopitem">适合区域：河南省</div> -->
             <div class="coursetopitem">年份：{{year}}</div>
             <div class="coursetopitem">
               <div class="fl">价格：</div>

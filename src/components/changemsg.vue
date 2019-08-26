@@ -407,10 +407,10 @@ export default {
                 //this.$message.error({message: '请输入您的政治面貌',duration:1600});
                 datamsg.zhengzhimianmao_id=that.baseExt.zhengzhimianmao_id;
                 console.log(datamsg.zhengzhimianmao_id)
-        }else if(this.xuelilist==''){
+        }
+        if(this.xuelilist==''){
                 //this.$message.error({message: '请输入您的学历',duration:1600});
                 datamsg.xueli_id=that.baseExt.xueli_id;
-                console.log(datamsg.xueli_id)
         }
         if(this.worktime==''){
                //this.$message.error({message: '请输入您的工作时间',duration:1600});

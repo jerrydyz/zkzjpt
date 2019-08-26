@@ -141,6 +141,10 @@ export default {
           this.getCourseList(this.yearid,this.typeid,this.categoryid);
         }else{
           this.yeartabState='';
+          this.yearid='2019';
+          this.typeid='';
+          this.categoryid='';
+          this.getCourseList(this.yearid,this.typeid,this.categoryid);
         }
         
       }, 
@@ -151,6 +155,10 @@ export default {
           this.getCourseList(this.yearid,this.typeid,this.categoryid);
         }else{
           this.typetabState='';
+          this.yearid='2019';
+          this.typeid='';
+          this.categoryid='';
+          this.getCourseList(this.yearid,this.typeid,this.categoryid);
         }
         
       },  
@@ -161,6 +169,10 @@ export default {
           this.getCourseList(this.yearid,this.typeid,this.categoryid);
         }else{
           this.categorytabState='';
+          this.yearid='2019';
+          this.typeid='';
+          this.categoryid='';
+          this.getCourseList(this.yearid,this.typeid,this.categoryid);
         }
         
       },
