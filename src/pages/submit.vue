@@ -4,8 +4,8 @@
       <div class="top w clearfix">
         <p class="fl">河南省继续教育学会在线学习平台</p>
         <p class="fr">
-          <span class="spn1">首页</span>
-          <span>退出</span>
+          <span class="spn1" @click="tomy">个人中心</span>
+          <span @click="goback">退出</span>
         </p>
       </div>
     </div>
@@ -24,12 +24,16 @@
             <p>{{usetime}}</p>
           </li>
           <li class="bg03">
-            <h5>完成率</h5>
-            <p>{{getnum}}</p>
+            <h5>正确数量</h5>
+            <p>{{right_num}}</p>
           </li>
           <li class="bg04">
             <h5>错题数量</h5>
             <p>{{error_num}}</p>
+          </li>
+          <li class="bg01">
+            <h5>未填数量</h5>
+            <p>{{empty_num}}</p>
           </li>
         </ul>
       </div>
@@ -42,7 +46,11 @@
           <div class="error-exam fl">
             <dl class="clearfix">
               <dt>错题记录</dt>
-              <dd v-for="n in num">{{n}}</dd>
+             <template v-for=" (itemn,index) in answer" >
+                    <a :href="['#'+itemn.shiti_id]" v-if="itemn.result=='wrong'"> <dd class="active">{{index+1}}</dd></a>
+                     <a :href="itemn.shiti_id" v-else> <dd>{{index+1}}</dd></a>
+             </template>
+              
             </dl>
           </div>
         </div>
@@ -55,7 +63,7 @@
             <!-- 单多选 -->
             <li class="test-paper wrong" v-for="(item,index) in datalist1"  >
               <h5>
-                <small>{{index+1}}</small>（单选题）
+                <small @click="numberbtns($event)">{{index+1}}</small>( {{datatitle1}} {{score1}} 分 )
               </h5>
               <p></p>
               <p>{{item.question}}</p>
@@ -68,9 +76,13 @@
               </ul>
               <div class="choice"></div>
               <div class="lu-ms-tim block clearfix">
-                <em class="bgco">
+                <em class="bgco" v-if="item.result=='wrong'">
                   您的答案
-                  <strong>{{item.user_answer['answer']==""?"未做答":item.user_answer['answer']}}</strong>
+                  <strong >{{item.user_answer['answer']==""?"未做答":item.user_answer['answer']}}</strong>
+                </em>
+                <em class="bgco active" v-else>
+                  您的答案
+                  <strong >{{item.user_answer['answer']==""?"未做答":item.user_answer['answer']}}</strong>
                 </em>
                 <em>
                   正确答案
@@ -86,7 +98,7 @@
             <!-- 多选 -->
             <li class="test-paper wrong"  v-for="(check,index) in datalist2"  >
               <h5>
-                <small>{{index+1}}</small>（多选题）
+                <small @click="numberbtns($event)">{{index+1+datalist1.length}}</small>( {{datatitle2}} {{score2}} 分 )
               </h5>
               <p></p>
               <p>{{check.question}}</p>
@@ -104,11 +116,11 @@
               <div class="lu-ms-tim block clearfix">
                 <em class="bgco"  >
                   您的答案
-                  <strong>{{check.user_answer['answer'].join(" ")==""?"未做答":check.user_answer['answer'].join(" ")}}</strong>
+                  <strong>{{check.user_answer['answer'].join("、")==""?"未做答":check.user_answer['answer'].join("、")}}</strong>
                 </em>
                 <em>
                   正确答案
-                  <strong>{{check.answer.join(" ")}}</strong>
+                  <strong>{{check.answer.join("、")}}</strong>
                 </em>
               </div>
               <div class="fz block">
@@ -119,14 +131,14 @@
             <!-- 判断题 -->
             <li class="test-paper wrong" v-for="(dan,index) in datalist3" >
               <h5>
-                <small>{{index+1}}</small>（判断题）
+                <small @click="numberbtns($event)">{{index+1+datalist1.length+datalist2.length}}</small>( {{datatitle3}} {{score3}} 分 )
               </h5>
               <p></p>
               <p>{{dan.question}}</p>
               <p></p>
               <ul class="answer">
                  <li v-for="(key,val) in xuanze3">
-                      <b>{{key}}</b>
+                      <!-- <b>{{key}}</b> -->
                     </li>
               </ul>
               <div class="choice">
@@ -134,11 +146,11 @@
               <div class="lu-ms-tim block clearfix">
                 <em class="bgco">
                   您的答案
-                  <strong>{{dan.user_answer['answer']==""?"未做答":dan.user_answer['answer']}}</strong>
+                  <strong>{{dan.user_answer['answer']==""?"未做答":dan.user_answer['answer']=="false"?"没有":"有"}}</strong>
                 </em>
                 <em >
                   正确答案
-                  <strong>{{dan.answer}}</strong>
+                  <strong>{{dan.user_answer['rigth_answer']}}</strong>
                 </em>
               </div>
               <div class="fz block">
@@ -149,7 +161,7 @@
             <!-- 填空 -->
             <li class="test-paper wrong"  v-for="(tian,index) in datalist4" :key="tian.id" >
               <h5>
-                <small>{{index+1}}</small>（填空题）
+                <small  @click="numberbtns($event)">{{index+1+datalist1.length+datalist2.length+datalist3.length}}</small>( {{datatitle4}} {{score4}} 分 )
               </h5>
               <p></p>
               <p>{{tian.question}}</p>
@@ -162,7 +174,7 @@
                   <ul>
                     <li class="co">
                       <span style="font-size:30px;font-weight:bold">
-                       {{tian.user_answer['answer'].join(" ")==" "?"未做答":tian.user_answer['answer'].join(" ")}}
+                       {{tian.user_answer['answer'].join("、")==" "?"未做答":tian.user_answer['answer'].join("、")}}
                       </span>
                     </li>
                   </ul>
@@ -172,7 +184,7 @@
                   <ul>
                     <li>
                       <span>
-                        {{tian.answer.join(" ")}}
+                        {{tian.answer.join("、")==' '?"未做答":tian.answer.join("、")}}
                       </span>
                     </li>
                   </ul>
@@ -220,7 +232,7 @@ export default {
       datalist3: [],
       datalist4: [],
       jsondata:[],
-      answer:'',
+      answer:[],
       answer2:[],
       answer3:'',
       answer4:[],
@@ -233,8 +245,17 @@ export default {
       bankuai:[],
       shiti:[],
       user_answer:{},
-      shiti_arr:[]
-
+      shiti_arr:[],
+      datatitle1:'',
+      score1:'',
+      datatitle2:'',
+      score2:'',
+      datatitle3:'',
+      score3:'',
+      datatitle4:'',
+      score4:'',
+      bgcolor:"wrong",
+        apiurl:'http://jixujiaoyu_api.songlongfei.club:1012'
     };
   },
   computed:{
@@ -245,9 +266,33 @@ export default {
   created() {
     this.kaoshi_id = this.$route.query.kaoshi_id;
     this.getpaperdata();
-     
   },
   methods: {
+     //返回按钮
+      goback (){
+          var that =this
+          this.$axios.post(this.apiurl+'/user/logout',
+           qs.stringify({
+             uid:this.uid,
+             token:this.token
+           })
+          ).then(res =>{
+            that.$message.success({message:"退出成功",duration:1600});
+            that.clearlocalData();
+            setTimeout(() => {
+              that.$router.push({ path: 'index' });
+            }, 1600);
+          })
+      },
+      clearlocalData:function(){
+        localStorage.removeItem("login1");
+        localStorage.removeItem("uid");
+        localStorage.removeItem("token");
+        localStorage.removeItem("sex");
+        localStorage.removeItem("name");
+        localStorage.removeItem("mobile");
+        localStorage.removeItem("id_card");
+      },
     getpaperdata() {
       var that = this;
       var data = {
@@ -274,22 +319,22 @@ export default {
              that.score=res.data.data.score
             //  that.getshijuan ()
             //  console.log(that.datalist)
-             console.log(JSON.parse(that.datalist))
+            //  console.log(JSON.parse(that.datalist))
              that.jsondata=JSON.parse(that.datalist)
              ///////////////////////////////
-               console.log("start");
+              //  console.log("start");
             that.bankuai = res.data.data.shijuan.shijuan_bankuai;
-            var answer = JSON.parse(res.data.data.answer);
-            that.num=answer.length
-            console.log(that.bankuai);
-            console.log(answer);
+            that.answer = JSON.parse(res.data.data.answer);
+            that.num=that.answer.length
+            // console.log(that.bankuai);
+            console.log(that.answer);
             for(var i=0;i<that.bankuai.length;i++){
               that.shiti_arr = that.bankuai[i]['shiti'];
               for(var j=0;j<that.shiti_arr.length;j++){
                 var shiti_id = that.shiti_arr[j]['id'];
-                for(var n=0;n<answer.length;n++){
-                  if(answer[n]['shiti_id'] == shiti_id){
-                      that.bankuai[i]['shiti'][j]["user_answer"] = answer[n];
+                for(var n=0;n<that.answer.length;n++){
+                  if(that.answer[n]['shiti_id'] == shiti_id){
+                      that.bankuai[i]['shiti'][j]["user_answer"] = that.answer[n];
                     break;
                   }
                 }
@@ -298,31 +343,39 @@ export default {
                    var jsonobj = JSON.parse(A);
                    that.xuanze = jsonobj;
                    that.datalist1 = that.bankuai[i]['shiti'];
+                   that.datatitle1=that.bankuai[i]["title"]
+                   that.score1=that.bankuai[i]["score"]
                  }
                   if(that.shiti_arr[j].type==2){
                    var C = that.shiti_arr[j].answer_options;
                    var jsonobj2 = JSON.parse(C);
                    that.xuanze2 = jsonobj2;
                     that.datalist2 = that.bankuai[i]['shiti'];
+                     that.datatitle2=that.bankuai[i]["title"]
+                   that.score2=that.bankuai[i]["score"]
                  }
                  if(that.shiti_arr[j].type==3){
                    var E = that.shiti_arr[j].answer_options;
                    var jsonobj3 = JSON.parse(E);
                    that.xuanze3 = jsonobj3;
                      that.datalist3 = that.bankuai[i]['shiti'];
+                      that.datatitle3=that.bankuai[i]["title"]
+                   that.score3=that.bankuai[i]["score"]
                  }
                  if(that.shiti_arr[j].type==4){
                    var G = that.shiti_arr[j].answer_options;
                    var jsonobj4 = JSON.parse(G);
                    that.xuanze4 = jsonobj4;
                      that.datalist4 = that.bankuai[i]['shiti'];
+                      that.datatitle4=that.bankuai[i]["title"]
+                   that.score4=that.bankuai[i]["score"]
                  }
               }
            
             }
             console.log("杜崇")
              console.log(that.bankuai);
-            console.log("end");
+            // console.log("end");
              ///////////////////////////
              /*
             for(var i=0; i<that.data.length;i++){
@@ -397,18 +450,33 @@ export default {
           }
         });
     },
+    numberbtns (e){
+         console.log(e.target.innerHTML)
+    },
+    numberbtn (e){
+         console.log(e.target.innerHTML)
+    },
+    tomy (){
+       this.$router.push('/my')
+    }
     
     
-  }
+  },
+   
 };
 </script>
 
 <style lang="less" scoped>
 .submit {
   width: 100%;
+  cursor: default;
   .w {
     width: 1200px;
     margin: 0 auto;
+  }
+  .active{
+      background-color: red;
+      color:#fff;
   }
   .title {
     width: 100%;
@@ -453,7 +521,7 @@ export default {
         display: inline-block;
         margin: 10px auto 30px;
         li {
-          width: 250px;
+          width: 210px;
           height: 80px;
           float: left;
           h5 {
@@ -511,6 +579,7 @@ export default {
             text-align: center;
             border-radius: 5px;
             margin: 3px;
+            cursor: default;
           }
         }
       }

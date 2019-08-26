@@ -10,7 +10,8 @@
                     <li class="fl l2">试卷名称</li>
                     <li class="fl l3">总分数</li>
                     <li class="fl l4">学时</li>
-                     <li class="fl l5">操作</li>
+                     <li class="fl l5">状态</li>
+                     <li class="fl l6">操作</li>
                 </ul>
             </div>
              <div class="topcon">
@@ -19,7 +20,8 @@
                     <li class="fl l2">{{item.shijuan_info.title}}</li>
                      <li class="fl l3">{{item.shijuan_info.score}}</li>
                       <li class="fl l4">{{item.xueshi_num}}</li>
-                     <li class="fl l5" @click="gostady">{{item.is_pass=="0"?'未通过':"考试通过"}}</li>
+                     <li class="fl l5">{{item.is_pass=="0"?'未通过':"考试通过"}}</li>
+                       <li class="fl l6" @click="gostady">{{item.enable_kaoshi=="1"?'去考试':"去学习"}}</li>
                 </ul>
             </div>
              <div class="block" style="text-align:right;margin-top:20px;">
@@ -54,6 +56,7 @@ export default {
             num:10,
             currentPage:1,
             apiurl:'http://jixujiaoyu_api.songlongfei.club:1012',
+         
         }
     },
     created (){
@@ -91,7 +94,7 @@ export default {
        gostady (){
            var that=this
            for(var i=0;i<this.data.length;i++){
-               var id =this.data[i].shijuan_id
+               var id =this.data[i].id
                 if(this.data[i].enable_kaoshi==1){
                     that.$router.push({
                         path:'/kaoshi',
@@ -99,6 +102,8 @@ export default {
                             shijuan_id:id
                         }
                     })
+                }else{
+                     that.$emit('more','allCourses')
                 }
                 }
           
@@ -146,8 +151,8 @@ export default {
                     font-size:14px;
                     color:#fff;
                     text-align: center;
-                    width: 20%;
-                    
+                    width: 15%;
+                     cursor: default;
                      &.l1{
                         text-align: left;
                         width: 15%;
@@ -159,7 +164,7 @@ export default {
                          }
                      &.l4{
                     }
-                     &.l5{
+                     &.l6{
                          text-align: right;
                     }
                 }
@@ -171,6 +176,7 @@ export default {
                   width: 100%;
                   padding: 0 20px;
                     box-sizing: border-box;
+                      cursor: pointer;
                 li{
                     // width: 910px;
                    height: 35px;
@@ -178,7 +184,8 @@ export default {
                     font-size:14px;
                     color:#868686;
                     text-align: center;
-                    width: 20%;
+                    width: 15%;
+                     cursor: default;
                      &.l1{
                         text-align: left;
                         width: 15%;
@@ -190,7 +197,7 @@ export default {
                          }
                      &.l4{
                     }
-                     &.l5{
+                     &.l6{
                          text-align: right;
                     }
                 }

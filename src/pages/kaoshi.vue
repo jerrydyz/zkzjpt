@@ -4,8 +4,8 @@
       <div class="top w clearfix">
         <p class="fl">河南省继续教育学会在线学习平台</p>
         <p class="fr">
-          <span class="spn1">首页</span>
-          <span>退出</span>
+          <span class="spn1" @click="tomy">个人中心</span>
+          <span @click="goback">退出</span>
         </p>
       </div>
     </div>
@@ -62,9 +62,10 @@
                   <div class="choice shiti_select_div" :shiti_id="item.id" :shiti_type="item.type" >
                     <ul>
                       <li v-for="(key,val) in xuanze">
-                        <label ></label>
+                        <label >
                           <input class="anserItem" type="radio" :name="['danxuan_'+item.id]" :value="val"  @click="radio($event,item.id,index)" />
                           {{val}}
+                          </label>
                         
                       </li>
                     </ul>
@@ -172,7 +173,7 @@
                       </li>
                     </ul>
 
-                    <div class="collection" style="display:none">
+                    <div class="collection" @click="lookjiexi(dan.id)" style="display:none">
                       <span class="look">
                         <small>查看解析</small>
                         <i class="icon iconlook"></i>
@@ -180,9 +181,8 @@
                     </div>
                   </div>
 
-                  <div class="fz" style="display:none">
+                  <div class="fz" v-show="lookcollect " style="display:none">
                     <b>解析：</b>
-
                     <p>{{dan.tips}}</p>
                   </div>
                 </li>
@@ -309,7 +309,8 @@ export default {
       radio_id:'',
       radio_answer:'',
       checkeboxs:[],
-        times:''
+        times:'',
+         apiurl:'http://jixujiaoyu_api.songlongfei.club:1012'
     };
   },
   created() {
@@ -364,9 +365,14 @@ export default {
     },
    // 查看解析
     lookjiexi(dat) {
-      console.log("1111");
-      this.lookcollect = !this.lookcollect;
       console.log(dat);
+      for(var i=0;i<this.datalist3.length;i++){
+         var id =this.datalist3[i].id
+         if(dat==id){
+              this.lookcollect = !this.lookcollect;
+              break;
+         }
+      }
     },
     getshijuan() {
       var that = this;
@@ -437,7 +443,6 @@ export default {
                   that.H = that.datalist4[f].question;
                   var jsonobj4 = JSON.parse(G);
                   that.xuanze4 = jsonobj4;
-                  console.log("杜崇")
                   console.log(that.xuanze4)
                   console.log( that.datalist4)
                 }
@@ -450,6 +455,31 @@ export default {
       console.log(val + 1);
       this.showtip = !this.showtip;
     },
+     //返回按钮
+      goback (){
+          var that =this
+          this.$axios.post(this.apiurl+'/user/logout',
+           qs.stringify({
+             uid:this.uid,
+             token:this.token
+           })
+          ).then(res =>{
+            that.$message.success({message:"退出成功",duration:1600});
+            that.clearlocalData();
+            setTimeout(() => {
+              that.$router.push({ path: '/index' });
+            }, 1600);
+          })
+      },
+      clearlocalData:function(){
+        localStorage.removeItem("login1");
+        localStorage.removeItem("uid");
+        localStorage.removeItem("token");
+        localStorage.removeItem("sex");
+        localStorage.removeItem("name");
+        localStorage.removeItem("mobile");
+        localStorage.removeItem("id_card");
+      },
     getAnswer() {
       var that = this;
       this.$axios
@@ -584,6 +614,9 @@ export default {
       });
       //console.log(json_data);
        return json_data;
+    },
+    tomy (){
+       this.$router.push('/my')
     }
    
   }
@@ -594,6 +627,7 @@ export default {
 .w {
   width: 1200px;
   margin: 0 auto;
+  cursor: default;
 }
 
 .title {

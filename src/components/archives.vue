@@ -19,11 +19,29 @@
                     <li>{{name}}</li>
                     <li>{{id_card}}</li>
                     <li>{{item.xueshi_num}}</li>
-                    <li class="l6">下载证书</li>
+                    <li class="l6"  @click="downloadCertificate(item.xueshi_num)">下载证书</li>
                 </ul>
             </div>
             <div class="nodata" v-show="nodata">
             </div>
+             <div class="my-certificate" ref="certificate">  
+                <img src="/static/images/personal/certificate.png" class="certificateimg">
+                <div class="certificate-box">
+                    <p class="certificate-title">河南省专业技术人员继续教育网络学习<br>合格证明</p>
+                    <div class="info1 info">
+                        <div class="name-box">姓名：<span class="name">{{name}}</span> </div>
+                        <div class="idcard-box">身份证号：<span class="idcard">{{id_card}}</span></div>
+                    </div>
+                    <div class="info2 info">
+                        <div class="sex-box">性别：<span class="sex">{{sex=='1'?"男":'女'}}</span></div>
+                        <div class="year-box">培训年度：<span class="year">{{year}}年</span></div>
+                    </div>
+                    <div class="xueshi">该学员参加年度专业技术人员继续教育专业科目的网络学习，通过考核。<br>累计完成<span id="alltime">{{xueshinum}}</span>学时。</div>
+                    <div class="tczm">特此证明。</div>
+                    <div class="date" v-html="riqi"></div>
+                </div>
+                <img src="/static/images/personal/seal.png" class="seal">
+                </div>
         </div>
  
     </div>
@@ -31,6 +49,7 @@
 
 <script>
 import qs from 'qs'
+import html2canvas from 'html2canvas';
 export default {
     data(){
         return{
@@ -41,7 +60,10 @@ export default {
             list:[],//返回来的数据
             name:'',
             id_card:'',
+             riqi:'',
             apiurl:'http://jixujiaoyu_api.songlongfei.club:1012',
+            sex:'',
+            xueshinum:''
 
         }
     },
@@ -52,7 +74,14 @@ export default {
         this.token=localStorage.getItem('token')
          this.name= localStorage.getItem('name')
          this.id_card=localStorage.getItem('id_card')
+         this.sex=localStorage.getItem('sex')
         this.dangan()
+      var month = date.getMonth() + 1;
+      var strDate = date.getDate();
+      if (month >= 1 && month <= 9) {month = "0" + month;}
+      if (strDate >= 0 && strDate <= 9) {strDate = "0" + strDate;}
+      var currentdate = this.year + '<span style="margin: 0 7px;">年</span>' + month + '<span style="margin: 0 7px">月</span>' + strDate + '<span style="margin-left:7px;">日</span>';
+      this.riqi=currentdate;
     },
     methods:{
         dangan (){
@@ -71,14 +100,27 @@ export default {
                     console.log(res)
                     console.log('档案记录')
                     that.list=res.data.data
+                  
                     if(res.data.data.length){
                         that.nodata=false
+                          that.xueshinum=res.data.data[0]['xueshi_num']
+                          console.log( that.xueshinum)
                     }else{
                         that.nodata=true
                     }
                    
       });
       },
+       downloadCertificate:function(num){
+           var that=this
+            html2canvas(this.$refs.certificate).then(function(canvas) {
+                var base64 = canvas.toDataURL("image/jpeg", 1);
+                var a = document.createElement("a");
+                a.href = base64;
+                a.download = "证书下载";
+                a.click();
+            });
+    },
     }
 
 }
@@ -166,6 +208,7 @@ export default {
                     }
                     
                 }
+               
             }
             }
             .nodata{
@@ -176,90 +219,22 @@ export default {
             }
            
         }
-        .msgbox{
-            width: 100%;
-            height: 100%;
-            background-color: rgba(0,0,0,0.5);
-            z-index: 9999;
-            position: absolute;
-            top:0;
-            left: 0;
-            bottom:0;
-            .conbigbox{
-                width: 700px;
-                height: 400px;
-                border: 1px solid #ccc;
-                box-shadow: 0 5px 10px #ccc;
-                background-color: #fff;
-                position: absolute;
-                left:50%;
-                top:30%;
-                margin-left:-350px;
-                .titlebox{
-                    width: 100%;
-                    height: 50px;
-                    line-height: 50px;
-                    border-bottom: 1px solid #ccc;
-                    padding: 0 10px;
-                    box-sizing: border-box;
-                    font-size:18px;
-                    color:#1a1a1a;
-                    .btnclose{
-                        color:#ccc;
-                        cursor: pointer;
-                    }
-                }
-                .conbox{
-                    width: 100%;
-                    
-                    .topcon{
-                        height: 40px;
-                        line-height: 40px;
-                        font-size: 15px;
-                        span{
-                            display: inline-block;
-                            text-align: center;
-                            
-                            &.spn1{
-                                width: 29%;
-                                border-right:1px solid #c1c1c1;
-                            }
-                             &.spn2{
-                                width: 25%;
-                                border-right:1px solid #c1c1c1;
-                            }
-                             &.spn3{
-                                width: 25%;
-                                border-right:1px solid #c1c1c1;
-                            }
-                             &.spn4{
-                                width: 19%;
-                            }
-                            &.spn{
-                                color:#333;
-                               font-weight: bold;
-                            }
-                            &.load{
-                                color:#138bef;
-                            }
-                            &.load:hover{
-                                color:red;
-                            }
-                        }
-                    }
-                    .bg{
-                        font-size: 15px;
-                        font-weight: bold;
-                        background-color: #ccc;
-                        margin-top:15px;
-                    }
-                    .borcon{
-                        border-bottom: 1px solid #c1c1c1;
-                    }
-
-                }
-            }
-        }
-
+         .my-certificate{width: 822px;height: 590px;position: absolute;left: -850px;top:-600px;}
+                .certificate-box{width: 100%;height: 100%;position: absolute;left: 0;top:0;z-index: 1;}
+                .certificate-box .certificate-title{width: 560px;line-height: 42px; margin: 100px auto 0; font-size: 32px;text-align: center;color:#48538d;}
+                .certificate-box .info{width: 512px;display: flex;}
+                .certificate-box .info1{margin: 60px auto 0;}
+                .certificate-box .info2{margin: 25px auto 0;}
+                .certificate-box div{font-size: 18px;font-family: 'KaiTi';}
+                .certificate-box div span{font-size: 18px;font-family: 'Microsoft YaHei';}
+                .certificate-box .name-box{width: 220px;}
+                .certificate-box .sex-box{width: 220px;}
+                .certificate-box .xueshi{width: 648px;margin: 20px auto 0;text-indent: 68px;font-size: 18px;line-height: 30px;}
+                .certificate-box .alltime{width: 130px;height: 30px;line-height: 30px;font-size: 18px;display: inline-block;border-bottom: 1px solid #000;text-indent: 0;text-align: center;}
+                .certificate-box .tczm{width: 648px;margin: 20px auto 0;text-indent: 72px;font-size: 18px;}
+                .certificate-box .date{position: absolute;right:108px;bottom:75px;font-size: 18px;font-family: 'Microsoft YaHei';}
+                .certificate-box .date span{font-size: 18px;font-family: 'KaiTi';}
+                .my-certificate .certificateimg{width: 100%;height: 100%;position: absolute;left: 0;top:0;}
+                .my-certificate .seal{position: absolute;right: 100px;bottom: 90px;width: 146px;}
     }
 </style>

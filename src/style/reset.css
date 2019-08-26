@@ -92,7 +92,7 @@ body {
     /* height: 100%; */
     color: #4b4b4b!important;
     background-color: #f4f4f4;
-    overflow-x: hidden;
+    /* overflow-x: hidden; */
 }
 
 input,

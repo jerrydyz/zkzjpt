@@ -1,7 +1,7 @@
 <template>
   <div class="footer">
     <div class="con">
-      <div class="text1">技术支持：河南省继续教育协会</div>
+      <div class="text1">技术支持：河南省继续教育学会</div>
       <div>地址：郑州市博学路277号正商学府广场A座四层 邮政编码：450000</div>
       <div>
         Copyright © 2017 jxjyedu.club All Rights Reserved

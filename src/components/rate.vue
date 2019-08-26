@@ -258,6 +258,7 @@ export default {
         padding: 20px 40px 47px 40px;
         box-sizing: border-box;
         background-color: #fff;
+         cursor: default;
         .top{
           margin-bottom: 45px;
              h3{
