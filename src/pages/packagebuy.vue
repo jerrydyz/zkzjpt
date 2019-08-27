@@ -45,7 +45,7 @@
             <div class="class_order_bot">
               <div class="custom-box">
                 <label class="check">
-                  <input type="checkbox" class="check_xy" checked />我已阅读并同意
+                  <input type="checkbox" class="check_xy" checked @click="agreerule"/>我已阅读并同意
                   <a target="_blank" href="http://ceshi2.jxjyedu.club/single/buy.html" style="color: #188eee;">《河南省继续教育在线公共服务平台购买条款》</a>
                 </label>
                   <div class="btn">
@@ -86,6 +86,7 @@ export default {
       wxPayQRcode:'',
       courseInfo:'',
       teacher:'',
+      rulestate:true,
       apiurl:'http://jixujiaoyu_api.songlongfei.club:1012',
     };
   },
@@ -140,7 +141,8 @@ export default {
           this.selectstate=2;
       },
       useCardPay:function(){
-            let buycourse={uid:localStorage.getItem("uid"),token:localStorage.getItem("token"),type:'1',type_id:this.buycourseId,code:this.xueshika}
+        if(this.rulestate==true){
+          let buycourse={uid:localStorage.getItem("uid"),token:localStorage.getItem("token"),type:'1',type_id:this.buycourseId,code:this.xueshika}
             this.$axios.post(this.apiurl+'/pay/xueshika',qs.stringify(buycourse))
             .then(response => {
                 if(response.data.status=="ok"){
@@ -153,42 +155,50 @@ export default {
                   this.clearlocalData();
                 }
                 
-            })
-            .catch(response => {
-                console.log(response);
             });
+        }else{
+          this.$message.error({message: '请同意阅读条款',duration:1600});
+        }
+            
       },
       nowPay:function(){
+        if(this.rulestate==true){
           let that = this;
           if(this.selectstate==1){
               //alipay
             var urllink=this.apiurl+'/pay/alipay?uid='+localStorage.getItem("uid")+'&token='+localStorage.getItem("token")+'&type='+1+'&type_id='+this.buycourseId+''
             window.open(urllink);
           }else if(this.selectstate==2){
-              //wxpay
-                let buycourse={uid:localStorage.getItem("uid"),token:localStorage.getItem("token"),type:'1',type_id:this.buycourseId}
-                this.$axios.post(this.apiurl+'/pay/wxpay',qs.stringify(buycourse))
-                .then(response => {
-                    if(response.data.status=="ok"){
-                        that.wxpaybox=1;
-                        that.wxPayQRcode=response.data.data.url;
-                        console.log(response.data.data.url);
-
-                    }else if(response.data.status=="error"){
-
-                    }else if(response.data.status=="relogin"){
-
-                    }
-                    
-                })
-                .catch(response => {
-                    console.log(response);
-                });
+            //wxpay
+              let buycourse={uid:localStorage.getItem("uid"),token:localStorage.getItem("token"),type:'1',type_id:this.buycourseId}
+              this.$axios.post(this.apiurl+'/pay/wxpay',qs.stringify(buycourse))
+              .then(response => {
+                  if(response.data.status=="ok"){
+                      that.wxpaybox=1;
+                      that.wxPayQRcode=response.data.data.url;
+                      console.log(response.data.data.url);
+                  }else if(response.data.status=="error"){
+                    this.$message.error({message: response.data.errormsg,duration:1600});
+                  }else if(response.data.status=="relogin"){
+                    this.clearlocalData();
+                  }
+              });
           }
+        }else{
+          this.$message.error({message: '请同意阅读条款',duration:1600});
+        }
+          
       },
       closeWXpay:function(){
           this.wxpaybox=0;
-      }
+      },
+      agreerule:function(){
+         if(this.rulestate==true){
+           this.rulestate=false;
+         }else{
+            this.rulestate=true;
+         }
+      },
   },
 };
 </script>
