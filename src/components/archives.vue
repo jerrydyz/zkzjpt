@@ -19,7 +19,7 @@
                     <li>{{name}}</li>
                     <li>{{id_card}}</li>
                     <li>{{item.xueshi_num}}</li>
-                    <li class="l6"  @click="downloadCertificate(item.xueshi_num)">下载证书</li>
+                    <li class="l6"  @click="downloadCertificate(index)">下载证书</li>
                 </ul>
             </div>
             <div class="nodata" v-show="nodata">
@@ -103,7 +103,7 @@ export default {
                   
                     if(res.data.data.length){
                         that.nodata=false
-                          that.xueshinum=res.data.data[0]['xueshi_num']
+                        //   that.xueshinum=res.data.data[0]['xueshi_num']
                           console.log( that.xueshinum)
                     }else{
                         that.nodata=true
@@ -113,6 +113,11 @@ export default {
       },
        downloadCertificate:function(num){
            var that=this
+           for(var i=0;i< that.list.length;i++){
+                that.xueshinum=that.list[i]['xueshi_num']
+           }
+           console.log(num)
+        //    this.xueshinum=num
             html2canvas(this.$refs.certificate).then(function(canvas) {
                 var base64 = canvas.toDataURL("image/jpeg", 1);
                 var a = document.createElement("a");

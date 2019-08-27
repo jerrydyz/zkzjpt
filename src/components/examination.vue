@@ -21,7 +21,7 @@
                      <li class="fl l3">{{item.shijuan_info.score}}</li>
                       <li class="fl l4">{{item.xueshi_num}}</li>
                      <li class="fl l5">{{item.is_pass=="0"?'未通过':"考试通过"}}</li>
-                       <li class="fl l6" @click="gostady">{{item.enable_kaoshi=="1"?'去考试':"去学习"}}</li>
+                       <li class="fl l6" @click="gostady(item.id)">{{item.is_pass==1?'--':item.is_pass==0&&item.enable_kaoshi==0?'去学习':item.is_pass==0&&item.enable_kaoshi==1?'去考试':'' }}</li>
                 </ul>
             </div>
              <div class="block" style="text-align:right;margin-top:20px;">
@@ -91,19 +91,23 @@ export default {
                 }
             })
        },
-       gostady (){
+       gostady (num){
            var that=this
            for(var i=0;i<this.data.length;i++){
-               var id =this.data[i].id
                 if(this.data[i].enable_kaoshi==1){
                     that.$router.push({
                         path:'/kaoshi',
                         query:{
-                            shijuan_id:id
+                            shijuan_id:num
                         }
                     })
                 }else{
-                     that.$emit('more','allCourses')
+                    if(this.data[i].is_pass==1){
+                             that.$emit('more','examination')
+                    }else{
+                             that.$emit('more','allCourses')
+                    }
+                    
                 }
                 }
           
