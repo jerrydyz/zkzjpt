@@ -20,7 +20,17 @@
               </router-link>
               <div class="page">
                   <div class="pagebox">
-                      <span @click="prev">上一页</span><span @click="next">下一页</span> </div>
+                      <div class="block">
+                        <el-pagination
+                        @size-change="handleSizeChange"
+                        @current-change="handleCurrentChange"
+                        :current-page.sync="currentPage"
+                        :page-size="10"
+                        layout="prev, pager, next, jumper"
+                        :total='allnum'>
+                        </el-pagination>
+                    </div> 
+                  </div>
               </div>
           </div>
       </div>
@@ -33,7 +43,8 @@ export default {
   name: 'news',
   data () {
     return {
-      page:1,
+      currentPage:1,
+      allnum:1,
       newsdata: {
           title:'新闻资讯',
           englishTitle:'NEWS INFORMATION',
@@ -51,24 +62,18 @@ export default {
     this.ajaxdata();
   },
 methods:{
-    prev:function(){
-        this.page-=1;
-        if(this.page>=1){
-            this.ajaxdata();
-        }else{
-            this.page=1;
-            this.ajaxdata();
-            console.log("page小于1")
-        }
-    },
-    next:function(){
-        this.page+=1;
-        this.ajaxdata();
-    },
-    ajaxdata:function(){
+    handleSizeChange(val) {
+        console.log(`每页 ${val} 条`);
+      },
+      handleCurrentChange(val) {
+        console.log(`当前页: ${val}`);
+        this.ajaxdata(val);
+      },
+    
+    ajaxdata:function(pagenum){
         let that=this;
         //请求新闻news
-        let datanews={type_id:'1',page:this.page,num:'15'}
+        let datanews={type_id:'1',page:pagenum,num:'10'}
         this.$axios({
           method: 'post',
           url: this.apiurl+'/news/get_news_list',

@@ -3,7 +3,7 @@
 		<div class="videopage-left">
 			<div class="video-top">
 				<div class="video-top-l">
-					<a><i class="video-fh"></i><span @click="returnMyCourse">返回我的课程&nbsp;&nbsp;&nbsp;|</span></a>
+					<a><i class="video-fh"></i><span @click="returnMyCourse">返回我的课程</span></a>
 				</div>
 				<div class="video-top-con">
 					<!-- <a class="cl-prev"></a> -->
@@ -14,7 +14,7 @@
 			<div class="player-container">
 				<div class="videobox">
 					<div class="middlebox">
-						<video-player class="vjs-custom-skin" :options="playerOptions" ref="videoPlayer" @play="onplayerplay" @pause="onplayerpause"></video-player>
+						<video-player class="vjs-custom-skin" :options="playerOptions" ref="videoPlayer" @play="onplayerplay" @pause="onplayerpause" @ended="onPlayerEnded($event)"></video-player>
 					</div>
 					
 				</div>
@@ -99,7 +99,8 @@
 								<div class="li-fr">
 									<div class="reply-star clearfix">
 										<label class="form-label  fl f3" for="score"><a class="f3">{{name}}</a> <span class=" f9">的笔记</span></label>
-										<div class="delete" @click="deletebiji(item.id)">删除</div>
+										<i class="delete iconfont icon-delete" @click="deletebiji(item.id)"></i>
+										
 									</div>
 									<a><p>标题：{{item.title}}</p></a>
 									<p>内容：{{item.contents}}</p>
@@ -215,6 +216,11 @@ export default {
 	 //点击video暂停按钮
 	onplayerpause:function(){
 		clearInterval(this.T);
+	},
+	//结束播放
+	onPlayerEnded:function($event){
+		console.log("播放结束");
+		this.wslink();
 	},
 	init:function(){
 		//获取播放课程信息
@@ -337,10 +343,6 @@ export default {
 		let that = this;
 		//获取播放器dom
 		let myPlayer = this.$refs.videoPlayer.player;
-		myPlayer.addEventListener('ended', function(e) {
-			console.log("监测视频结束")
-			this.wslink();
-		})
 		if(that.curtime<that.jiealltime){
 			myPlayer.currentTime(that.curtime);
 			console.log("当前播放时长")
@@ -573,7 +575,7 @@ export default {
 .m-chapterList .ksname{ max-width:200px; height:26px; line-height:26px; white-space:nowrap; overflow:hidden; text-overflow:ellipsis; position:relative;margin-left: 5px;color:#999999;}
 .m-chapterList .section:hover .ks,.m-chapterList .section:hover .ksname{color:#ffffff}
 .reply-star{ width:330px;}
-.reply-star .delete{width: 50px;background-color: red;color:#fff;line-height: 30px;border-radius: 20px;float: left;margin-left: 135px;text-align: center;cursor: pointer;}
+.reply-star .delete{width: 50px;color:red;line-height: 30px;border-radius: 20px;float: left;margin-left: 135px;text-align: center;cursor: pointer;}
 .m-ctb{width:370px; overflow:hidden; z-index:10; position:absolute;right: 0;top:0;}
 .m-ctb .courseintro{height: auto;background:#FFF; width:370px; overflow:hidden;}
 .m-ctb .courseintro h2{ width:330px; padding:0 20px; height:70px;  line-height:70px;font-size:16px;font-weight:600;display: block; overflow: hidden;  text-overflow: ellipsis;white-space: nowrap;word-break:keep-all;-o-text-overflow:ellipsis; background:#F3F3F3;box-sizing: content-box;}
@@ -635,7 +637,7 @@ export default {
 #tagcontent1{background-color: #fff;}
 .tips {color: #B2B2B2;height: 26px;line-height: 27px;font-weight: bold;position: absolute;right: 0;top: -27px;font-size: 12px;}
 .tips span {color: #FF0000;font-size: 12px;}
-.edittxt{outline: none;resize: none; border: 0;background: none repeat scroll 0 0 transparent;border: medium none;font-size: 12px;height: 50px;line-height: 16px;overflow-x: hidden;overflow-y: auto; width: 100%;}
+.edittxt{outline: none;resize: none; border: 0;background: 0 0 transparent;border: medium none;font-size: 12px;height: 50px;line-height: 16px;-overflow-x: hidden;-overflow-y: auto; width: 100%;}
 
 
 /*问答*/

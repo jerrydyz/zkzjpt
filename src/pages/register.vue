@@ -865,7 +865,7 @@ export default {
           this.$axios.post(this.apiurl+'/user/reg',qs.stringify(userinfo)).then(response => {
               if(response.data.status=='ok'){
                 console.log(response);
-                that.$message.success({message:"您已注册成功，即将前往登录",duration:2000});
+                that.$message.success({message:"您已注册成功，即将跳转至登录页",duration:2000});
                 setTimeout(() => {
                     that.$router.push({ path: '/login' });
                 }, 2000);

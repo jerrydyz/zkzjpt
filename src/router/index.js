@@ -18,6 +18,8 @@ import gongxuke from '@/pages/gongxuke'
 
 import newsDetails from '@/commons/newsDetails'
 import courseDetails from '@/commons/courseDetails'
+import personcourseDetails from '@/commons/personcourseDetails'
+
 
 import basicinfo from '@/components/basicinfo'
 import pxcourses from '@/components/pxcourses'
@@ -33,6 +35,7 @@ import couse from '../pages/couse'
 import my from '../pages/my'
 import textpaper from '../pages/textpaper'
 import packagedetail from '../pages/packagedetail'
+import personalpackage from '../pages/personalpackage'
 import kaoshi from '../pages/kaoshi'
 import submit from '../pages/submit'
 Vue.use(Router)
@@ -183,6 +186,13 @@ export default new Router({
             }
         },
         {
+            path: '/personcourseDetails/:courseId',
+            name: 'personcourseDetails',
+            components: {
+                default: personcourseDetails,
+            }
+        },
+        {
             path: '/personal',
             components: {
                 comheader: commonHeader,
@@ -218,6 +228,12 @@ export default new Router({
                 comheader: commonHeader,
                 default: packagedetail,
                 comfooter: commonFooter,
+            }
+        }, {
+            path: '/personalpackage',
+            name: 'personalpackage',
+            components: {
+                default: personalpackage,
             }
         }, {
             path: '/kaoshi',
