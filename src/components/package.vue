@@ -89,17 +89,13 @@ export default {
             year:this.year
           })
           }).then(res => {
+              console.log(res)
             if(res.data.status=="ok"){
                that.list=[]
-               that.list=that.list.concat(res.data.data);
-              //  for(let i=0; i<this.list.length;i++){
-              //    that.list[i].checkres="0";
-              //  }
-              console.log("========")
-              console.log(that.list)
-               
-               for(var i=0;i<res.data.data.length;i++){
-                 that.id.push(res.data.data[i].id)
+               that.list=that.list.concat(res.data.data.data);
+                 that.count=Number(res.data.data.count)
+               for(var i=0;i<res.data.data.data.length;i++){
+                 that.id.push(res.data.data.data[i].id)
                 //  that.getbaoprogress()
                }
                for(var i=0;i<that.id.length;i++){

@@ -29,10 +29,10 @@
               <!--答题卡-->
               <dl class="answer-sheet">
                 <dt>答题卡</dt>
-                <dd v-for="(item,index) in datalist1" @click="leftBtn($event)">{{index+1}}</dd>
-                <dd v-for="(item,index) in datalist2"  @click="leftBtn($event)">{{index+datalist1.length+1}}</dd>
-                 <dd v-for="(item,index) in datalist3"  @click="leftBtn($event)">{{index+datalist1.length+datalist2.length+1}}</dd>
-                  <dd v-for="(item,index) in datalist3"  @click="leftBtn($event)">{{index+datalist1.length+datalist2.length+datalist3.length+1}}</dd>
+                <dd v-for="(item1,index) in datalist1" :shiti_id="item1.id"  @click="leftBtn($event)">{{index+1}}</dd>
+                <dd v-for="(item2,index) in datalist2"  @click="leftBtn($event)">{{index+datalist1.length+1}}</dd>
+                 <dd v-for="(item3,index) in datalist3"  @click="leftBtn($event)">{{index+datalist1.length+datalist2.length+1}}</dd>
+                  <dd v-for="(item4,index) in datalist3"  @click="leftBtn($event)">{{index+datalist1.length+datalist2.length+datalist3.length+1}}</dd>
               </dl>
             </div>
           </div>
@@ -310,7 +310,8 @@ export default {
       radio_answer:'',
       checkeboxs:[],
         times:'',
-         apiurl:'http://jixujiaoyu_api.songlongfei.club:1012'
+         apiurl:'http://jixujiaoyu_api.songlongfei.club:1012',
+      
     };
   },
   created() {
@@ -350,6 +351,7 @@ export default {
     //获取单选按钮的值
     radio(e,id,num) {
       // Vue.set(this.answers,num,{'shiti_id':id,'answer':e.target.value})
+      console.log(e,id,num)
     },
     //获取多选按钮的值
     checkbox(e,id,num) {
@@ -754,6 +756,9 @@ export default {
   float: left;
   cursor: pointer;
   margin: 20px 6px 10px 10px;
+  &.active{
+  color:red
+}
 }
 .answer-sheet dd a {
   display: block;

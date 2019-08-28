@@ -47,8 +47,8 @@
             <dl class="clearfix">
               <dt>错题记录</dt>
              <template v-for=" (itemn,index) in answer" >
-                    <a :href="['#'+itemn.shiti_id]" v-if="itemn.result=='wrong'"> <dd class="active">{{index+1}}</dd></a>
-                     <a :href="itemn.shiti_id" v-else> <dd>{{index+1}}</dd></a>
+                    <a :href="['#'+itemn.shiti_id]"> <dd :class="{active:itemn.result=='wrong',active2:itemn.result=='right'}">{{index+1}}</dd></a>
+                     <!-- <dd :href="itemn.shiti_id" v-else> <dd>{{index+1}}</dd></a> -->
              </template>
               
             </dl>
@@ -76,18 +76,18 @@
               </ul>
               <div class="choice"></div>
               <div class="lu-ms-tim block clearfix">
-                <em class="bgco" v-if="item.result=='wrong'">
+                <span class="bgco" v-if="item.result=='wrong'">
                   您的答案
                   <strong >{{item.user_answer['answer']==""?"未做答":item.user_answer['answer']}}</strong>
-                </em>
-                <em class="bgco active" v-else>
+                </span>
+                <span class="bgco active" v-else>
                   您的答案
                   <strong >{{item.user_answer['answer']==""?"未做答":item.user_answer['answer']}}</strong>
-                </em>
-                <em>
+                </span>
+                <span>
                   正确答案
                   <strong>{{item.answer}}</strong>
-                </em>
+                </span>
               </div>
               <div class="fz block">
                 <b>解析：</b>
@@ -114,14 +114,14 @@
                 
               </div>
               <div class="lu-ms-tim block clearfix">
-                <em class="bgco"  >
+                <span class="bgco"  >
                   您的答案
                   <strong>{{check.user_answer['answer'].join("、")==""?"未做答":check.user_answer['answer'].join("、")}}</strong>
-                </em>
-                <em>
+                </span>
+                <span>
                   正确答案
                   <strong>{{check.answer.join("、")}}</strong>
-                </em>
+                </span>
               </div>
               <div class="fz block">
                 <b>解析：</b>
@@ -144,14 +144,14 @@
               <div class="choice">
               </div>
               <div class="lu-ms-tim block clearfix">
-                <em class="bgco">
+                <span class="bgco">
                   您的答案
                   <strong>{{dan.user_answer['answer']==""?"未做答":dan.user_answer['answer']=="false"?"没有":"有"}}</strong>
-                </em>
-                <em >
+                </span>
+                <span>
                   正确答案
                   <strong>{{dan.user_answer['rigth_answer']}}</strong>
-                </em>
+                </span>
               </div>
               <div class="fz block">
                 <b>解析：</b>
@@ -169,7 +169,7 @@
               <div class="choice">
               </div>
               <div class="lu-ms-tim block clearfix">
-                <em class="blank-cls bgco">
+                <span class="blank-cls bgco">
                   您的答案
                   <ul>
                     <li class="co">
@@ -178,8 +178,8 @@
                       </span>
                     </li>
                   </ul>
-                </em>
-                <em class="blank-cls">
+                </span>
+                <span class="blank-cls">
                   正确答案
                   <ul>
                     <li>
@@ -188,7 +188,7 @@
                       </span>
                     </li>
                   </ul>
-                </em>
+                </span>
               </div>
               <div class="fz block">
                 <b>解析：</b>
@@ -498,10 +498,6 @@ export default {
     width: 1200px;
     margin: 0 auto;
   }
-  .active{
-      background-color: red;
-      color:#fff;
-  }
   .title {
     width: 100%;
     height: 72px;
@@ -604,6 +600,14 @@ export default {
             border-radius: 5px;
             margin: 3px;
             cursor: default;
+            &.active{
+                 background-color: red;
+                color:#fff;
+            }
+            &.active2{
+                  background-color: #51cb96;
+                 color:#fff;
+            }
           }
         }
       }
@@ -616,8 +620,9 @@ export default {
             color: #656565;
             font-size: 16px;
             border-left: 5px solid #e82f24;
-            padding: 0 16px;
-            margin-bottom: 22px;
+            padding: 10px 16px;
+            box-sizing: border-box;
+            // margin-bottom: 22px;
           }
           .test-paper {
             border-top: 1px solid #eee;
@@ -670,17 +675,20 @@ export default {
             .lu-ms-tim {
               color: #51cb96;
               // display: none;
-              em {
-                float: left;
+              span {
+                display: inline-block;
+                // float: left;
                 padding: 5px 50px;
                 font-size: 14px;
                 background: #f0fefa;
                 text-align: center;
                 line-height: 36px;
                 box-sizing: border-box;
+                // border: 1px solid red;
                 strong {
                   display: block;
                   font-size: 30px;
+                    // border: 1px solid red;
                 }
               }
               .bgco {
@@ -688,15 +696,16 @@ export default {
                 color: #6565;
               }
             }
-            .block {
-              display: block !important;
-              padding-left: 10px;
-              box-sizing: border-box;
-              b {
-                color: #ea6c6c;
-                font-size: 12px;
-              }
-            }
+            // .block {
+            //   display: block !important;
+            //   padding-left: 10px;
+            //   box-sizing: border-box;
+            //     border: 1px solid red;
+            //   b {
+            //     color: #ea6c6c;
+            //     font-size: 12px;
+            //   }
+            // }
             .fz {
               font-size: 14px;
               margin: 20px 20px 30px;
