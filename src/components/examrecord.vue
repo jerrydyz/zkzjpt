@@ -66,7 +66,7 @@ export default {
     created (){
             this.uid=localStorage.getItem('uid')
             this.token=localStorage.getItem('token')
-              this.kaoshi()
+            this.kaoshi()
     },
      mounted() {
         // 计算一共有几页
@@ -89,9 +89,9 @@ export default {
                 num:this.num
             }
                 this.$axios({
-                method: 'post',
-                url: this.apiurl+'/kaoshi/get_kaoshi_log',
-                data:qs.stringify(data)
+                    method: 'post',
+                    url: this.apiurl+'/kaoshi/get_kaoshi_log',
+                    data:qs.stringify(data)
                 }).then(res => {
                     console.log(res)
                     if(res.data.status=="ok"){
@@ -104,31 +104,15 @@ export default {
                         }else{
                             that.nodata=false
                         }
-                    }else
-                    if(res.data.status=="relogin"){
-                         that.login1=0;
-                        that.$message.error({message:"请重新登录",duration:1600});
-                        localStorage.removeItem("login1");
+                    }else if(res.data.status=="relogin"){
                         that.removeInfo();
                     }else {
-                        that.login1=0;
-                        that.clearlocalData();
                         that.$message.error({message:response.data.errormsg,duration:1600});
                     }
 
             });
       },  
        removeInfo(){
-        localStorage.removeItem("uid");
-        localStorage.removeItem("token");
-        localStorage.removeItem("sex");
-        localStorage.removeItem("name");
-        localStorage.removeItem("mobile");
-        localStorage.removeItem("id_card");
-      },
-       //状态为relogin时清除local数据
-      clearlocalData:function(){
-        let that = this;
         that.$message.error({message:"请重新登录",duration:1600});
         localStorage.removeItem("login1");
         localStorage.removeItem("uid");
@@ -138,9 +122,10 @@ export default {
         localStorage.removeItem("mobile");
         localStorage.removeItem("id_card");
         setTimeout(() => {
-          that.$router.push({ path: 'login' });
+            this.$router.push({ path: '/login' });
         }, 1600);
       },
+     
       todetail (num){
           this.$router.push({
               path:"/submit",

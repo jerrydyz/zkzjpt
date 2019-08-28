@@ -192,25 +192,47 @@ export default {
         
   },
   mounted () {
-      
       let that = this;
       //获取学历
-       this.$axios.get(this.apiurl+'/user/get_xueli').then(res=>{
+      this.$axios.get(this.apiurl+'/user/get_xueli').then(res=>{
+        if(res.data.status=="ok"){
           that.opt=res.data.data;
           console.log(that.opt);
+        }else if((res.data.status=="error")){
+          this.$message.error({message:res.data.errormsg,duration:1600});
+        }else if((res.data.status=="relogin")){
+          this.$message.error({message:"重新登录",duration:1600});
+          that.removeInfo();
+        }
+
+          
        })
     
      //获取政治面貌
-       this.$axios.get(this.apiurl+'/user/get_zhengzhimianmao').then(res=>{
+      this.$axios.get(this.apiurl+'/user/get_zhengzhimianmao').then(res=>{
+        if(res.data.status=="ok"){
           that.mao=res.data.data;
           console.log(that.mao);
-       })
+        }else if((res.data.status=="error")){
+          this.$message.error({message:res.data.errormsg,duration:1600});
+        }else if((res.data.status=="relogin")){
+          this.$message.error({message:"重新登录",duration:1600});
+          that.removeInfo();
+        } 
+      })
   
      //获取民族
-       this.$axios.get(this.apiurl+'/user/get_minzu').then(res=>{
+      this.$axios.get(this.apiurl+'/user/get_minzu').then(res=>{
+        if(res.data.status=="ok"){
           that.minzu=res.data.data;
           console.log(that.minzu);
-       })
+        }else if((res.data.status=="error")){
+          this.$message.error({message:res.data.errormsg,duration:1600});
+        }else if((res.data.status=="relogin")){
+          this.$message.error({message:"重新登录",duration:1600});
+          that.removeInfo();
+        } 
+      })
     //获取用户基本资料信息
     this.getUserInfo();
 
@@ -224,12 +246,11 @@ export default {
           method: 'post',
           url: this.apiurl+'/user/get_user_info',
           data: qs.stringify(usreinfo) 
-          }).then(function (response) {
-          if(response.data.status=="ok"){
-            that.baseInfo = response.data.data;
-            that.baseExt = response.data.data.ext;
+          }).then(function (res) {
+          if(res.data.status=="ok"){
+            that.baseInfo = res.data.data;
+            that.baseExt = res.data.data.ext;
             that.sexSelected = that.baseInfo.sex == "0"? '女' : that.baseInfo.sex == '1'? '男' :'请选择性别';
-
             if(that.baseExt.minzu_id=="0"){
               that.minzuSelected ='请选择民族';
             }else{
@@ -268,31 +289,16 @@ export default {
 
             console.log("该用户信息");
             console.log(that.baseInfo);
-          }else if(response.data.status=="error"){
-            that.$message.error({message:response.data.errormsg,duration:1600});
-          }else if(response.data.status=="relogin"){
-            that.clearlocalData();
+          }else if(res.data.status=="error"){
+            that.$message.error({message:res.data.errormsg,duration:1600});
+          }else if(res.data.status=="relogin"){
+            that.$message.error({message:"重新登录",duration:1600});
+            that.removeInfo();
           }
         });
 
     },
         
-
-    //状态为relogin时清除local数据
-    clearlocalData:function(){
-      let that = this;
-      that.$message.error({message:"请重新登录",duration:1600});
-      localStorage.removeItem("login1");
-      localStorage.removeItem("uid");
-      localStorage.removeItem("token");
-      localStorage.removeItem("sex");
-      localStorage.removeItem("name");
-      localStorage.removeItem("mobile");
-      localStorage.removeItem("id_card");
-      setTimeout(() => {
-        that.$router.push({ path: '/login' });
-      }, 1600);
-    },
     sect (e){
       for(let i=0;i<this.selt.length;i++){
         if(this.selt[i].name==e.target.value){
@@ -330,29 +336,33 @@ export default {
           method: 'post',
           url: this.apiurl+'/user/update_password',
           data: qs.stringify(userinfo) 
-          }).then(function (response) {
-            console.log(response)
-              if(response.data.status=="ok"){
+          }).then(function (res) {
+            console.log(res)
+              if(res.data.status=="ok"){
                   that.$message.success({message: '密码修改成功',duration:1600});
-                  // that.clearlocalData();
-                  // that.$router.push('/login')
                   localStorage.removeItem('lin')
-              }else{
-                 that.$message.error({message: response.data.errormsg,duration:1600});
+              }else if((res.data.status=="error")){
+                this.$message.error({message:res.data.errormsg,duration:1600});
+              }else if((res.data.status=="relogin")){
+                this.$message.error({message:"重新登录",duration:1600});
+                that.removeInfo();
               }
           });
       }
     },
 
      //状态为relogin时清除local数据
-      clearlocalData:function(){
-        localStorage.removeItem("login1");
+      removeInfo(){
         localStorage.removeItem("uid");
         localStorage.removeItem("token");
         localStorage.removeItem("sex");
         localStorage.removeItem("name");
         localStorage.removeItem("mobile");
         localStorage.removeItem("id_card");
+        localStorage.setItem("types",'rate');
+        setTimeout(() => {
+          this.$router.push({ path: '/login' });
+        }, 1600);
       },
     // 修改资料
     xiugaibaseData (){
@@ -435,9 +445,14 @@ export default {
         
         that.$axios.post(this.apiurl+'/user/edit',
         qs.stringify(datamsg)).then(res =>{
-            if(res.data.status=='ok'){
-              this.$message.success({message: '修改成功',duration:1600});
-            }
+          if(res.data.status=="ok"){
+            this.$message.success({message: '修改成功',duration:1600});
+          }else if((res.data.status=="error")){
+            this.$message.error({message:res.data.errormsg,duration:1600});
+          }else if((res.data.status=="relogin")){
+            this.$message.error({message:"重新登录",duration:1600});
+            that.removeInfo();
+          }
         });
         
              

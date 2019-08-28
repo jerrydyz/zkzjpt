@@ -66,6 +66,19 @@ export default {
     this.kechengbao();
   },
   methods:{
+    removeInfo(){
+      this.$message.error({message:"重新登录",duration:1600});
+      localStorage.removeItem("uid");
+      localStorage.removeItem("token");
+      localStorage.removeItem("sex");
+      localStorage.removeItem("name");
+      localStorage.removeItem("mobile");
+      localStorage.removeItem("id_card");
+      localStorage.setItem("types",'rate');
+      setTimeout(() => {
+        this.$router.push({ path: '/login' });
+      }, 1600);
+    },
       kechengbao (){
       //获取课程包信息
        var that=this 
@@ -96,8 +109,10 @@ export default {
                   // that.getbaoprogress()
                }
                that.isBuy();
-            }else{
-              
+            }else if((res.data.status=="error")){
+              this.$message.error({message:res.data.errormsg,duration:1600});
+            }else if((res.data.status=="relogin")){
+              that.removeInfo();
             }
       });
       },
@@ -107,18 +122,18 @@ export default {
         for(let i=0; i<this.list.length;i++){
           let courseId={uid:localStorage.getItem("uid"),token:localStorage.getItem("token"),kecheng_bao_id:this.list[i].id}
           this.$axios.post(this.apiurl+'/kecheng/check_kecheng_bao_is_buy',qs.stringify(courseId))
-            .then(response => {
-              if(response.data.status=="ok"){
-                if(response.data.data.check_res=="0"){
+            .then(res => {
+              if(res.data.status=="ok"){
+                if(res.data.data.check_res=="0"){
                   this.$set(this.list[i],"checkres",'0') 
                   // this.$router.push({path:'packagebuy',query:{packid:packageid}});
-                }else if(response.data.data.check_res=="1"){
+                }else if(res.data.data.check_res=="1"){
                   this.$set(this.list[i],"checkres",'1') 
                 } 
-              }else if(response.data.status=="error"){
-                this.$message.error({message: response.data.msg,duration:1600});
-              }else if(response.data.status=="relogin"){
-                that.clearlocalData();
+              }else if(res.data.status=="error"){
+                this.$message.error({message: res.data.msg,duration:1600});
+              }else if(res.data.status=="relogin"){
+                that.removeInfo();
               }
           });
         }
@@ -129,39 +144,23 @@ export default {
         let that =this;
         let courseId={uid:localStorage.getItem("uid"),token:localStorage.getItem("token"),kecheng_bao_id:packageid}
         this.$axios.post(this.apiurl+'/kecheng/check_kecheng_bao_is_buy',qs.stringify(courseId))
-          .then(response => {
-            if(response.data.status=="ok"){
-              if(response.data.data.check_res=="0"){
+          .then(res => {
+            if(res.data.status=="ok"){
+              if(res.data.data.check_res=="0"){
                 this.$router.push({path:'packagebuy',query:{packid:packageid}});
-              }else if(response.data.data.check_res=="1"){
+              }else if(res.data.data.check_res=="1"){
                 that.gopackdetail(packageid);
               } 
-            }else if(response.data.status=="error"){
-              this.$message.error({message: response.data.msg,duration:1600});
-            }else if(response.data.status=="relogin"){
-              that.clearlocalData();
+            }else if(res.data.status=="error"){
+              this.$message.error({message: res.data.msg,duration:1600});
+            }else if(res.data.status=="relogin"){
+              that.removeInfo();
             }
             
         });
          
       },
 
-      //状态为relogin时清除local数据
-      clearlocalData:function(){
-        let that = this;
-        that.$message.error({message:"请重新登录",duration:1600});
-        localStorage.removeItem("login1");
-        localStorage.removeItem("uid");
-        localStorage.removeItem("token");
-        localStorage.removeItem("sex");
-        localStorage.removeItem("name");
-        localStorage.removeItem("mobile");
-        localStorage.removeItem("id_card");
-        setTimeout(() => {
-          that.$router.push({ path: 'login' });
-        }, 1600);
-      },
-  
       getbaoprogress (){
          var that=this
           that.$axios.post(this.apiurl+'/kecheng/get_kecheng_keshi_jindu',
@@ -171,15 +170,14 @@ export default {
                       token:that.token
                     })
                   ).then(res =>{
-                      console.log("获取课程包进度")
-                      if(res.data.status=='error'){
-                          that.used=0
-                          that.msg="购买课程"                             
-                          
-                      }else{
-                          that.used=res.data.progress
-                          console.log("=======================")
-                      }
+                    if(res.data.status=="ok"){
+                      that.used=res.data.progress;
+                    }else if((res.data.status=="error")){
+                      that.used=0
+                      that.msg="购买课程"
+                    }else if((res.data.status=="relogin")){
+                      that.removeInfo();
+                    }
                   })
          
       },

@@ -332,6 +332,19 @@ export default {
     deep: true
   },
   methods: {
+    removeInfo(){
+      this.$message.error({message:"重新登录",duration:1600});
+      localStorage.removeItem("uid");
+      localStorage.removeItem("token");
+      localStorage.removeItem("sex");
+      localStorage.removeItem("name");
+      localStorage.removeItem("mobile");
+      localStorage.removeItem("id_card");
+      localStorage.setItem("types",'rate');
+      setTimeout(() => {
+        this.$router.push({ path: '/login' });
+      }, 1600);
+    },
     //获取单选按钮的值
     radio(e,id) {
       console.log(e.target.value,id);
@@ -411,6 +424,10 @@ export default {
                 }
               }
             }
+          }else if((res.data.status=="error")){
+            that.$message.error({message:res.data.errormsg,duration:1600});
+          }else if((res.data.status=="relogin")){
+            that.removeInfo();
           }
         });
     },
@@ -457,6 +474,10 @@ export default {
                 }
               }
             }
+          }else if((res.data.status=="error")){
+            that.$message.error({message:res.data.errormsg,duration:1600});
+          }else if((res.data.status=="relogin")){
+            that.removeInfo();
           }
         });
     },
@@ -480,8 +501,15 @@ export default {
         post(
           "http://jixujiaoyu_api.songlongfei.club/kaoshi/submit_shijuan"
         ).then(res => {
-          console.log("提交考试试卷");
-          console.log(res);
+          if(res.data.status=="ok"){
+            console.log("提交考试试卷");
+            console.log(res);
+          }else if((res.data.status=="error")){
+            that.$message.error({message:res.data.errormsg,duration:1600});
+          }else if((res.data.status=="relogin")){
+            that.removeInfo();
+          }
+          
         });
     }
   }

@@ -86,8 +86,10 @@ export default {
           console.log("课程年份")
           console.log(response.data.data)
           that.kecheng_year=response.data.data;
-        }else{
-          
+        }else if((response.data.status=="error")){
+          that.$message.error({message:response.data.errormsg,duration:1600});
+        }else if((response.data.status=="relogin")){
+          that.removeInfo();
         }
       });
      //获取课程类型 
@@ -99,9 +101,12 @@ export default {
           console.log("课程类型")
           console.log(response.data.data)
           that.kecheng_type=response.data.data;
-        }else{
-          
+        }else if((response.data.status=="error")){
+          that.$message.error({message:response.data.errormsg,duration:1600});
+        }else if((response.data.status=="relogin")){
+          that.removeInfo();
         }
+        
       });
       //获取课程分类 
     this.$axios({
@@ -113,9 +118,12 @@ export default {
           console.log(response.data.data)
           that.kecheng_category=response.data.data;
           that.courseType(that.typetabState);
-        }else{
-          
+        }else if((response.data.status=="error")){
+          that.$message.error({message:response.data.errormsg,duration:1600});
+        }else if((response.data.status=="relogin")){
+          that.removeInfo();
         }
+        
       });
        //获取课程列表 
     let datacourse={year:'2019', type_id:'',category_id:''}
@@ -128,12 +136,28 @@ export default {
           console.log("课程列表")
           console.log(response.data.data.data)
           that.courseslist=response.data.data.data;
-        }else{
-          
+        }else if((response.data.status=="error")){
+          that.$message.error({message:response.data.errormsg,duration:1600});
+        }else if((response.data.status=="relogin")){
+          that.removeInfo();
         }
+        
       });
   },
   methods:{
+      removeInfo(){
+        this.$message.error({message:"重新登录",duration:1600});
+        localStorage.removeItem("uid");
+        localStorage.removeItem("token");
+        localStorage.removeItem("sex");
+        localStorage.removeItem("name");
+        localStorage.removeItem("mobile");
+        localStorage.removeItem("id_card");
+        localStorage.setItem("types",'rate');
+        setTimeout(() => {
+          this.$router.push({ path: '/login' });
+        }, 1600);
+      },
       courseYear(id) {
         if(id){
           this.yeartabState=id;

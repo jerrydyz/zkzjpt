@@ -69,21 +69,33 @@ export default {
     },
     created (){
         var date=new Date;
-       this.year=date.getFullYear()
+        this.year=date.getFullYear()
         this.uid=localStorage.getItem('uid')
         this.token=localStorage.getItem('token')
-         this.name= localStorage.getItem('name')
-         this.id_card=localStorage.getItem('id_card')
-         this.sex=localStorage.getItem('sex')
+        this.name= localStorage.getItem('name')
+        this.id_card=localStorage.getItem('id_card')
+        this.sex=localStorage.getItem('sex')
         this.dangan()
-      var month = date.getMonth() + 1;
-      var strDate = date.getDate();
-      if (month >= 1 && month <= 9) {month = "0" + month;}
-      if (strDate >= 0 && strDate <= 9) {strDate = "0" + strDate;}
-      var currentdate = this.year + '<span style="margin: 0 7px;">年</span>' + month + '<span style="margin: 0 7px">月</span>' + strDate + '<span style="margin-left:7px;">日</span>';
-      this.riqi=currentdate;
+        var month = date.getMonth() + 1;
+        var strDate = date.getDate();
+        if (month >= 1 && month <= 9) {month = "0" + month;}
+        if (strDate >= 0 && strDate <= 9) {strDate = "0" + strDate;}
+        var currentdate = this.year + '<span style="margin: 0 7px;">年</span>' + month + '<span style="margin: 0 7px">月</span>' + strDate + '<span style="margin-left:7px;">日</span>';
+        this.riqi=currentdate;
     },
     methods:{
+        removeInfo(){
+            localStorage.removeItem("uid");
+            localStorage.removeItem("token");
+            localStorage.removeItem("sex");
+            localStorage.removeItem("name");
+            localStorage.removeItem("mobile");
+            localStorage.removeItem("id_card");
+            localStorage.setItem("types",'rate');
+            setTimeout(() => {
+            this.$router.push({ path: '/login' });
+            }, 1600);
+        },
         dangan (){
            //获取课程包信息
             var that=this 
@@ -92,25 +104,30 @@ export default {
                 uid:this.uid,
                 token:this.token
             }
-                this.$axios({
+            this.$axios({
                 method: 'post',
                 url: this.apiurl+'/dangan/get_user_year_xueshi',
                 data:qs.stringify(data)
-                }).then(res => {
+            }).then(res => {
+                if(res.data.status=="ok"){
                     console.log(res)
                     console.log('档案记录')
                     that.list=res.data.data
-                  
                     if(res.data.data.length){
                         that.nodata=false
                         //   that.xueshinum=res.data.data[0]['xueshi_num']
-                          console.log( that.xueshinum)
+                        console.log( that.xueshinum)
                     }else{
                         that.nodata=true
                     }
-                   
-      });
-      },
+                }else if((res.data.status=="error")){
+                    this.$message.error({message:res.data.errormsg,duration:1600});
+                }else if((res.data.status=="relogin")){
+                    this.$message.error({message:"重新登录",duration:1600});
+                    that.removeInfo();
+                }
+            });
+        },
        downloadCertificate:function(num){
            var that=this
            for(var i=0;i< that.list.length;i++){

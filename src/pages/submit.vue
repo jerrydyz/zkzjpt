@@ -277,11 +277,18 @@ export default {
              token:this.token
            })
           ).then(res =>{
-            that.$message.success({message:"退出成功",duration:1600});
-            that.clearlocalData();
-            setTimeout(() => {
-              that.$router.push({ path: 'index' });
-            }, 1600);
+            if(res.data.status=="ok"){
+              that.$message.success({message:"退出成功",duration:1600});
+              that.clearlocalData();
+              setTimeout(() => {
+                that.$router.push({ path: 'index' });
+              }, 1600);
+            }else if((res.data.status=="error")){
+              that.$message.error({message:res.data.errormsg,duration:1600});
+            }else if((res.data.status=="relogin")){
+              that.removeInfo();
+            }
+            
           })
       },
       clearlocalData:function(){
@@ -292,6 +299,19 @@ export default {
         localStorage.removeItem("name");
         localStorage.removeItem("mobile");
         localStorage.removeItem("id_card");
+      },
+      removeInfo(){
+        this.$message.error({message:"重新登录",duration:1600});
+        localStorage.removeItem("uid");
+        localStorage.removeItem("token");
+        localStorage.removeItem("sex");
+        localStorage.removeItem("name");
+        localStorage.removeItem("mobile");
+        localStorage.removeItem("id_card");
+        localStorage.setItem("types",'rate');
+        setTimeout(() => {
+          this.$router.push({ path: '/login' });
+        }, 1600);
       },
     getpaperdata() {
       var that = this;
@@ -447,6 +467,10 @@ export default {
             }
         } 
           */
+          }else if((res.data.status=="error")){
+            that.$message.error({message:res.data.errormsg,duration:1600});
+          }else if((res.data.status=="relogin")){
+            that.removeInfo();
           }
         });
     },

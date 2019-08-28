@@ -44,11 +44,24 @@ export default {
     created (){
         this.uid=localStorage.getItem('uid')
         this.token=localStorage.getItem('token')
-         var date=new Date;
+        var date=new Date;
         this.year=date.getFullYear()
         this.checkkecheng()
     },
     methods: {
+      removeInfo(){
+        this.$message.error({message:"重新登录",duration:1600});
+        localStorage.removeItem("uid");
+        localStorage.removeItem("token");
+        localStorage.removeItem("sex");
+        localStorage.removeItem("name");
+        localStorage.removeItem("mobile");
+        localStorage.removeItem("id_card");
+        localStorage.setItem("types",'rate');
+        setTimeout(() => {
+          this.$router.push({ path: '/login' });
+        }, 1600);
+      },
       //我的课程
       checkkecheng(){
          var that=this
@@ -59,19 +72,20 @@ export default {
              year:this.year
           })
          ).then(res =>{
-           console.log("检查是否购买")
-           console.log(res)
-           if(res.data.status=="ok"){
-                that.datalist=that.datalist.concat(res.data.data)
-                console.log( that.datalist)
-                for(var i=0;i<that.datalist.length;i++){
-                   console.log(i)
-                  //  获取课程id
-                   that.idd =that.datalist[i].id
-                  // that.getprogress ()
-                  
-                }
-           }
+            if(res.data.status=="ok"){
+              that.datalist=that.datalist.concat(res.data.data)
+              console.log( that.datalist)
+              for(var i=0;i<that.datalist.length;i++){
+                  console.log(i)
+                //  获取课程id
+                  that.idd =that.datalist[i].id;
+              }
+            }else if((res.data.status=="error")){
+              this.$message.error({message:res.data.errormsg,duration:1600});
+            }else if((res.data.status=="relogin")){
+              that.removeInfo();
+            }
+           
          }) 
       },
       //到课程详情页
@@ -95,16 +109,13 @@ export default {
               token:that.token
             })
         ).then(res =>{
-            console.log("获取进度")
-            console.log(res)
-            console.log(res.data.status)
-            if(res.data.status=='error'){
-              that.used=0
-            }else{
-               if(res.data.status=="ok"){
-                  that.used=res.data.progress
-               }
-            }
+          if(res.data.status=="ok"){
+            that.used=res.data.progress
+          }else if((res.data.status=="error")){
+            that.used=0;
+          }else if((res.data.status=="relogin")){
+            that.removeInfo();
+          }
         })
     },
    

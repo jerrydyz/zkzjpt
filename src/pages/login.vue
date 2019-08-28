@@ -56,12 +56,17 @@ export default {
       },
       
       removeInfo(){
+        this.$message.error({message:"重新登录",duration:1600});
         localStorage.removeItem("uid");
         localStorage.removeItem("token");
         localStorage.removeItem("sex");
         localStorage.removeItem("name");
         localStorage.removeItem("mobile");
         localStorage.removeItem("id_card");
+        localStorage.setItem("types",'rate');
+        setTimeout(() => {
+          this.$router.push({ path: '/login' });
+        }, 1600);
       },
       //用户登录 
       Login(){
@@ -105,12 +110,8 @@ export default {
             }else if(response.data.status=='error'){
               this.$message.error({message:response.data.errormsg,duration:1600});
             }else if(response.data.status=='relogin'){
-              that.$message.error({message:"请重新登录",duration:1600});
               localStorage.removeItem("login1");
               that.removeInfo();
-              setTimeout(() => {
-                that.$router.push({ path: '/my' });
-              }, 1600);
               that.login1=0;
             }
             

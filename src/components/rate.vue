@@ -8,7 +8,7 @@
                 <p class="p1">本年度已获学时</p>
                 <p class="p2">{{xueshi}}</p>    
             </div>
-            <div class="two fl" style="background-color:#e1f1ff">
+            <div class="two fl" style="background-color:#e1f1ff" @click="needtest">
                <div class="clearfix">
                     <div class="zuo fl">
                     <p>
@@ -110,9 +110,22 @@ export default {
     },
     
     methods:{
-           //获取课程包信息
+        removeInfo(){
+            this.$message.error({message:"重新登录",duration:1600});
+            localStorage.removeItem("uid");
+            localStorage.removeItem("token");
+            localStorage.removeItem("sex");
+            localStorage.removeItem("name");
+            localStorage.removeItem("mobile");
+            localStorage.removeItem("id_card");
+            localStorage.setItem("types",'rate');
+            setTimeout(() => {
+                this.$router.push({ path: '/login' });
+            }, 1600);
+        },
+        //获取课程包信息
        kechengbao (){
-       var that=this 
+        var that=this 
         this.$axios({
           method: 'post',
           url: this.apiurl+'/kecheng/get_kechengbao_list',
@@ -135,10 +148,12 @@ export default {
                    console.log("单个id")
                    console.log(that.idd)
                }
-            }else{
-              
+            }else if((res.data.status=="error")){
+                that.$message.error({message:res.data.errormsg,duration:1600});
+            }else if((res.data.status=="relogin")){
+                that.removeInfo();
             }
-      });
+        });
       },
       //获取待考试个数
        getdata (){
@@ -151,19 +166,29 @@ export default {
                     psge:this.page,
                 })
             ).then(res =>{
-                console.log("获取考试信息")
-                console.log(res)
-                that.data=that.data.concat(res.data.data.data)
-                //  var nums=0;
-                 for(var i=0;i<that.data.length;i++){
-                      var obj=that.data[i].is_pass
-                   if(that.data[i].is_pass=="0"){
-                      that.nums++
-                   }
+                if(res.data.status=="ok"){
+                    console.log("获取考试信息")
+                    console.log(res)
+                    that.data=that.data.concat(res.data.data.data)
+                    //  var nums=0;
+                    for(var i=0;i<that.data.length;i++){
+                        var obj=that.data[i].is_pass
+                    if(that.data[i].is_pass=="0"){
+                        that.nums++
+                    }
+                    }
+                }else if((res.data.status=="error")){
+                    that.$message.error({message:res.data.errormsg,duration:1600});
+                }else if((res.data.status=="relogin")){
+                    that.removeInfo();
                 }
                 
             })
        },
+    //待考试
+      needtest (){
+          this.$emit('more','examination')
+      },
       //下载证书
       download (){
           this.$emit('more','archives')
@@ -182,24 +207,24 @@ export default {
           this.$axios.post(this.apiurl+'/kecheng/get_kecheng_list',
             qs.stringify(datalist)
           ).then(res =>{
-              console.log('获取全部课程')
-              console.log(res)
-              that.allcourse=that.allcourse.concat(res.data.data.data)
-              that.count=Number(res.data.data.data.length)
-              localStorage.setItem("id", res.data.data.data.id);
+            if(res.data.status=="ok"){
+                console.log('获取全部课程')
+                console.log(res)
+                that.allcourse=that.allcourse.concat(res.data.data.data)
+                that.count=Number(res.data.data.data.length)
+                localStorage.setItem("id", res.data.data.data.id);
                 for(var i=0 ;i<res.data.data.data.length;i++){
                     // console.log(i)
                     that.id.push(res.data.data.data[i].id)
                     // console.log(that.id)
                 }
-                // for(var i=0;i<that.id.length;i++){
-                //     that.idd=that.id[i]
-                //     console.log("==================")
-                //     console.log(that.idd)
-                // }
-                // that. getprogress ()
-                })
-                
+            }else if((res.data.status=="error")){
+                that.$message.error({message:res.data.errormsg,duration:1600});
+            }else if((res.data.status=="relogin")){
+                that.removeInfo();
+            }
+            
+        })
       },
       //获取年度学时
       getyeartime (){
@@ -211,13 +236,20 @@ export default {
                     token:that.token
             })
           ).then(res =>{
-              console.log("获取课成学时")
-              console.log(res)
-              if(res.data.data.length){
-                  that.xueshi=res.data.data.xueshi_num
-              }else{
-                  that.xueshi=0
-              }
+            if(res.data.status=="ok"){
+                console.log("获取课成学时")
+                console.log(res)
+                if(res.data.data.length){
+                    that.xueshi=res.data.data.xueshi_num
+                }else{
+                    that.xueshi=0
+                }
+            }else if((res.data.status=="error")){
+                that.$message.error({message:res.data.errormsg,duration:1600});
+            }else if((res.data.status=="relogin")){
+                that.removeInfo();
+            }
+              
           })
       },
      
@@ -231,15 +263,12 @@ export default {
               token:that.token
             })
         ).then(res =>{
-            // console.log("获取进度")
-            // console.log(res)
-            // console.log(res.data.status)
-            if(res.data.status=='error'){
-              that.used=0
-            }else{
-               if(res.data.status=="ok"){
-                  that.used=res.data.progress
-               }
+            if(res.data.status=="ok"){
+                that.used=res.data.progress
+            }else if((res.data.status=="error")){
+                 that.used=0
+            }else if((res.data.status=="relogin")){
+                that.removeInfo();
             }
         })
     }

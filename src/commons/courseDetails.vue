@@ -169,9 +169,6 @@ export default {
           console.log(response);
           this.$message.error({message:"重新登录",duration:1600});
           that.removeInfo();
-          setTimeout(() => {
-            that.$router.push({ path: '/login' });
-          }, 1600);
         }
         
       })
@@ -248,9 +245,6 @@ export default {
               console.log(response);
               this.$message.error({message:"重新登录",duration:1600});
               that.removeInfo();
-              setTimeout(() => {
-                that.$router.push({ path: '/my' });
-              }, 1600);
             }
             
           })
@@ -275,6 +269,10 @@ export default {
         localStorage.removeItem("name");
         localStorage.removeItem("mobile");
         localStorage.removeItem("id_card");
+        localStorage.setItem("types",'rate');
+        setTimeout(() => {
+          this.$router.push({ path: '/login' });
+        }, 1600);
       },
       closeLogin(){
         this.loginstate=0;
@@ -311,9 +309,6 @@ export default {
               that.$message.error({message:"请重新登录",duration:1600});
               localStorage.removeItem("login1");
               that.removeInfo();
-              setTimeout(() => {
-                that.$router.push({ path: '/my' });
-              }, 1600);
             }
             
           });
@@ -356,6 +351,7 @@ export default {
           }else if((response.data.status=="relogin")){
             console.log(response);
             this.$message.error({message:"重新登录",duration:1600});
+            that.removeInfo();
           }
           
         })

@@ -70,6 +70,18 @@ export default {
         this.getOrder()
     },
     methods:{
+        removeInfo(){
+            localStorage.removeItem("uid");
+            localStorage.removeItem("token");
+            localStorage.removeItem("sex");
+            localStorage.removeItem("name");
+            localStorage.removeItem("mobile");
+            localStorage.removeItem("id_card");
+            localStorage.setItem("types",'rate');
+            setTimeout(() => {
+            this.$router.push({ path: '/login' });
+            }, 1600);
+        },
         getOrder (){
             var that=this
             var data={
@@ -81,14 +93,16 @@ export default {
             this.$axios.post(this.apiurl+'/pay/get_pay_order',
             qs.stringify(data)
             ).then(res =>{
-                console.log("订单列表")
-                console.log(res)
                 if(res.data.status=="ok"){
                     that.data=[]
-                     that.data=that.data.concat(res.data.data)
-                     console.log(that.data)
+                    that.data=that.data.concat(res.data.data)
+                    console.log(that.data)
+                }else if((res.data.status=="error")){
+                    this.$message.error({message:res.data.errormsg,duration:1600});
+                }else if((res.data.status=="relogin")){
+                    this.$message.error({message:"重新登录",duration:1600});
+                    that.removeInfo();
                 }
-
             })
         },
         current_change(page){

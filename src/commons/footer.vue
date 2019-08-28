@@ -25,6 +25,7 @@ export default {
   methods:{
     toPersonal:function(){
       if(localStorage.getItem("login1")==1){
+        localStorage.setItem("types",'rate');
         this.$router.push({ path: '/my' })
       }else{
         this.$router.push({ path: '/login' })

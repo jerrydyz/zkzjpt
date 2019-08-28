@@ -106,7 +106,6 @@ export default {
                   console.log(that.courseInfo);
               }
           }
-        //   that.teacher=response.data.data.jiangshi
         }else if(response.data.status=="error"){
           this.$message.error({message: response.data.msg,duration:1600});
         }else if(response.data.status=="relogin"){
@@ -121,8 +120,7 @@ export default {
   methods:{
       //状态为relogin时清除local数据
       clearlocalData:function(){
-        let that = this;
-        that.$message.error({message:"请重新登录",duration:1600});
+        this.$message.error({message:"请重新登录",duration:1600});
         localStorage.removeItem("login1");
         localStorage.removeItem("uid");
         localStorage.removeItem("token");
@@ -131,7 +129,7 @@ export default {
         localStorage.removeItem("mobile");
         localStorage.removeItem("id_card");
         setTimeout(() => {
-          that.$router.push({ path: '/login' });
+          this.$router.push({ path: '/login' });
         }, 1600);
       },
       alipay:function(){

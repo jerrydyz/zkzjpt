@@ -61,6 +61,18 @@ export default {
     this.getallcourse();
   },
   methods: {
+    removeInfo(){
+      localStorage.removeItem("uid");
+      localStorage.removeItem("token");
+      localStorage.removeItem("sex");
+      localStorage.removeItem("name");
+      localStorage.removeItem("mobile");
+      localStorage.removeItem("id_card");
+      localStorage.setItem("types",'rate');
+      setTimeout(() => {
+        this.$router.push({ path: '/login' });
+      }, 1600);
+    },
     //获取全部课程
     getallcourse() {
       var that = this;
@@ -75,19 +87,26 @@ export default {
           qs.stringify(datalist)
         )
         .then(res => {
-          console.log("获取全部课程");
-          console.log(res);
-          that.allcourse=[];
-          that.allcourse = that.allcourse.concat(res.data.data.data);
-          that.count = parseInt(res.data.data.count);
-          that.pagesize = res.data.data.pagesize;
-          for(var i=0 ;i<res.data.data.data.length;i++){
-              that.id=that.id.concat(res.data.data.data[i].id)
+          if(res.data.status=="ok"){
+            console.log("获取全部课程");
+            console.log(res);
+            that.allcourse=[];
+            that.allcourse = that.allcourse.concat(res.data.data.data);
+            that.count = parseInt(res.data.data.count);
+            that.pagesize = res.data.data.pagesize;
+            for(var i=0 ;i<res.data.data.data.length;i++){
+                that.id=that.id.concat(res.data.data.data[i].id)
+            }
+            for(var i=0;i<that.id.length;i++){
+              that.idd=that.id[i]
+              console.log(this.idd)
+            }
+          }else if((res.data.status=="error")){
+            this.$message.error({message:res.data.errormsg,duration:1600});
+          }else if((res.data.status=="relogin")){
+            this.$message.error({message:"重新登录",duration:1600});
+            that.removeInfo();
           }
-           for(var i=0;i<that.id.length;i++){
-                  that.idd=that.id[i]
-                  console.log(this.idd)
-                }
         });
     },
     //获取课程进度
@@ -100,6 +119,7 @@ export default {
               token:that.token
             })
         ).then(res =>{
+          if(res.data.status=="ok"){
             console.log("获取进度")
             console.log(res)
             console.log(res.data.status)
@@ -110,7 +130,13 @@ export default {
                   that.used=res.data.progress
                }
             }
-        })
+          }else if((res.data.status=="error")){
+            this.$message.error({message:res.data.errormsg,duration:1600});
+          }else if((res.data.status=="relogin")){
+            this.$message.error({message:"重新登录",duration:1600});
+            that.removeInfo();
+          } 
+        });
     },
     //到课程详情页
     todetail (val){

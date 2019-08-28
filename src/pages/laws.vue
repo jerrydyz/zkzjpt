@@ -73,8 +73,10 @@ export default {
               console.log("news")
               that.lawsdata.list=response.data.data.data
               console.log(response.data.data.data)
-            }else{
-              
+            }else if((response.data.status=="error")){
+            that.$message.error({message:response.data.errormsg,duration:1600});
+            }else if((response.data.status=="relogin")){
+            that.removeInfo();
             }
           });
       }

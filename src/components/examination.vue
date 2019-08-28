@@ -69,6 +69,19 @@ export default {
 
     },
     methods :{
+        removeInfo(){
+            this.$message.error({message:"重新登录",duration:1600});
+            localStorage.removeItem("uid");
+            localStorage.removeItem("token");
+            localStorage.removeItem("sex");
+            localStorage.removeItem("name");
+            localStorage.removeItem("mobile");
+            localStorage.removeItem("id_card");
+            localStorage.setItem("types",'rate');
+            setTimeout(() => {
+                this.$router.push({ path: '/login' });
+            }, 1600);
+        },
        getdata (){
             var that=this
             this.$axios.post(this.apiurl+'/kaoshi/get_shijuan_list',
@@ -80,16 +93,22 @@ export default {
                     num:this.num
                 })
             ).then(res =>{
-                console.log("获取考试信息")
-                console.log(res)
-                that.data=that.data.concat(res.data.data.data)
-                console.log(that.data)
-                if(res.data.data.data){
-                    that.nodata=false
-                }else{
-                    that.nodata=true
+                if(res.data.status=="ok"){
+                    console.log("获取考试信息")
+                    console.log(res)
+                    that.data=that.data.concat(res.data.data.data)
+                    console.log(that.data)
+                    if(res.data.data.data){
+                        that.nodata=false
+                    }else{
+                        that.nodata=true
+                    }
+                }else if((res.data.status=="error")){
+                    that.$message.error({message:res.data.errormsg,duration:1600});
+                }else if((res.data.status=="relogin")){
+                    that.removeInfo();
                 }
-            })
+            });
        },
        gostady (num){
            var that=this

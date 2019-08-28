@@ -811,12 +811,17 @@ export default {
 
       },
       removeInfo(){
+        this.$message.error({message:"重新登录",duration:1600});
         localStorage.removeItem("uid");
         localStorage.removeItem("token");
         localStorage.removeItem("sex");
         localStorage.removeItem("name");
         localStorage.removeItem("mobile");
         localStorage.removeItem("id_card");
+        localStorage.setItem("types",'rate');
+        setTimeout(() => {
+            this.$router.push({ path: '/login' });
+        }, 1600);
       },
       //用户注册 
       registerNow:function(){
@@ -868,15 +873,8 @@ export default {
               }else if(response.data.status=='error'){
                   that.$message.error({message:response.data.errormsg,duration:2000});
               }else if(response.data.status=='relogin'){
-                  that.$message.error({message:"请重新登录",duration:2000});
-                  that.removeInfo();
-                  setTimeout(() => {
-                    that.$router.push({ path: '/login' });
-                }, 2000);
+                that.removeInfo();
               }
-          })
-          .catch(response => {
-            console.log(response);
           });
       },
   }

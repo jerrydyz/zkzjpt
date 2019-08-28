@@ -448,7 +448,12 @@ export default {
                 }
               }
             }
+          }else if((res.data.status=="error")){
+            that.$message.error({message:res.data.errormsg,duration:1600});
+          }else if((res.data.status=="relogin")){
+            that.removeInfo();
           }
+
         });
     },
     showtips(val) {
@@ -479,6 +484,19 @@ export default {
         localStorage.removeItem("name");
         localStorage.removeItem("mobile");
         localStorage.removeItem("id_card");
+      },
+      removeInfo(){
+        this.$message.error({message:"重新登录",duration:1600});
+        localStorage.removeItem("uid");
+        localStorage.removeItem("token");
+        localStorage.removeItem("sex");
+        localStorage.removeItem("name");
+        localStorage.removeItem("mobile");
+        localStorage.removeItem("id_card");
+        localStorage.setItem("types",'rate');
+        setTimeout(() => {
+          this.$router.push({ path: '/login' });
+        }, 1600);
       },
     getAnswer() {
       var that = this;
@@ -519,6 +537,10 @@ export default {
                 }
               }
             }
+          }else if((res.data.status=="error")){
+            that.$message.error({message:res.data.errormsg,duration:1600});
+          }else if((res.data.status=="relogin")){
+            that.removeInfo();
           }
         });
     },
@@ -548,8 +570,11 @@ export default {
               query:{
                  kaoshi_id:kaoshi_id
               }
-            })
-           
+            });
+          }else if((res.data.status=="error")){
+            that.$message.error({message:res.data.errormsg,duration:1600});
+          }else if((res.data.status=="relogin")){
+            that.removeInfo();
           }
         });
     },

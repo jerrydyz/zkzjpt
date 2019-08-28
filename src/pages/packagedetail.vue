@@ -112,6 +112,7 @@ export default {
               kechengbao_id:this.codeid
           })
           ).then(res =>{
+            if(res.data.status=="ok"){
               console.log("课程包列表")
               console.log(res)
               that.data=that.data.concat(res.data.data.kecheng)
@@ -124,8 +125,14 @@ export default {
               for(var i=0;i<res.data.data.kecheng.length;i++){
                   that.idd=res.data.data.kecheng[i].id
               }
+            }else if((res.data.status=="error")){
+              that.$message.error({message:res.data.errormsg,duration:1600});
+            }else if((res.data.status=="relogin")){
+              that.removeInfo();
+            }
+              
           })     
-          },
+      },
     // gopackdetail (){
     //   this.$router.push({
     //     name:'courseDetails',
@@ -142,7 +149,19 @@ export default {
         }
       });
     },
-
+    removeInfo(){
+      this.$message.error({message:"重新登录",duration:1600});
+      localStorage.removeItem("uid");
+      localStorage.removeItem("token");
+      localStorage.removeItem("sex");
+      localStorage.removeItem("name");
+      localStorage.removeItem("mobile");
+      localStorage.removeItem("id_card");
+      localStorage.setItem("types",'rate');
+      setTimeout(() => {
+        this.$router.push({ path: '/login' });
+      }, 1600);
+    },
 
   },
 };

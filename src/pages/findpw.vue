@@ -62,7 +62,19 @@ export default {
     };
   },
   methods:{
-      
+      removeInfo(){
+          this.$message.error({message:"重新登录",duration:1600});
+          localStorage.removeItem("uid");
+          localStorage.removeItem("token");
+          localStorage.removeItem("sex");
+          localStorage.removeItem("name");
+          localStorage.removeItem("mobile");
+          localStorage.removeItem("id_card");
+          localStorage.setItem("types",'rate');
+          setTimeout(() => {
+              this.$router.push({ path: '/login' });
+          }, 1600);
+      },
       nextstep1:function(){
         let reg=/(^\d{15}$)|(^\d{18}$)|(^\d{17}(\d|X|x)$)/;
         let that=this;
@@ -80,14 +92,18 @@ export default {
             url: this.apiurl+'/user/check_id_card',
             data: qs.stringify(userinfo) 
             }).then(function (response) {
-                if(response.data.data.check_res=="1"){
-                    that.listate=2;
-                    console.log("验证姓名和身份证号")
-                    console.log(response.data)
-                
-                }else{
-                
+                if(response.data.status=="ok"){
+                  if(response.data.data.check_res=="1"){
+                      that.listate=2;
+                      console.log("验证姓名和身份证号")
+                      console.log(response.data)
+                  }
+                }else if((response.data.status=="error")){
+                  that.$message.error({message:response.data.errormsg,duration:1600});
+                }else if((response.data.status=="relogin")){
+                  that.removeInfo();
                 }
+                
             });
         }
       },
@@ -110,9 +126,10 @@ export default {
                     that.listate=3;
                     console.log("验证姓名和身份证号")
                     console.log(response.data)
-                
-                }else{
-                
+                }else if((response.data.status=="error")){
+                  that.$message.error({message:response.data.errormsg,duration:1600});
+                }else if((response.data.status=="relogin")){
+                  that.removeInfo();
                 }
             });
         }

@@ -124,9 +124,7 @@ export default {
           ).then(res =>{
             that.$message.success({message:"退出成功",duration:1600});
             that.clearlocalData();
-            setTimeout(() => {
-              that.$router.push({ path: 'index' });
-            }, 1600);
+            
           })
       },
 
@@ -139,6 +137,9 @@ export default {
         localStorage.removeItem("name");
         localStorage.removeItem("mobile");
         localStorage.removeItem("id_card");
+        setTimeout(() => {
+          this.$router.push({ path: 'index' });
+        }, 1600);
       },
      
 

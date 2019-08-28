@@ -46,6 +46,19 @@ export default {
     this.ajaxdata();
   },
    methods:{
+       removeInfo(){
+        this.$message.error({message:"重新登录",duration:1600});
+        localStorage.removeItem("uid");
+        localStorage.removeItem("token");
+        localStorage.removeItem("sex");
+        localStorage.removeItem("name");
+        localStorage.removeItem("mobile");
+        localStorage.removeItem("id_card");
+        localStorage.setItem("types",'rate');
+        setTimeout(() => {
+            this.$router.push({ path: '/login' });
+        }, 1600);
+      },
       prev:function(){
           this.page-=1;
           if(this.page>=1){
@@ -73,8 +86,10 @@ export default {
               console.log("news")
               that.worksdata.list=response.data.data.data
               console.log(response.data.data.data)
-            }else{
-              
+            }else if((response.data.status=="error")){
+                that.$message.error({message:response.data.errormsg,duration:1600});
+            }else if((response.data.status=="relogin")){
+                that.removeInfo();
             }
           });
       }
