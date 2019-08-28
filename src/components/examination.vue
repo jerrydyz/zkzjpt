@@ -20,13 +20,15 @@
                     <li class="fl l2">{{item.shijuan_info.title}}</li>
                      <li class="fl l3">{{item.shijuan_info.score}}</li>
                       <li class="fl l4">{{item.xueshi_num}}</li>
-                     <li class="fl l5">{{item.is_pass=="0"?'未通过':"考试通过"}}</li>
-                       <li class="fl l6" @click="gostady(item.id)">{{item.is_pass==1?'--':item.is_pass==0&&item.enable_kaoshi==0?'继续学习':item.is_pass==0&&item.enable_kaoshi==1?'去考试':'' }}</li>
+                     <!-- <li class="fl l5">{{item.is_pass=="0"?'未通过':"考试通过"}}</li> -->
+                    <li class="fl l5 active" v-if="item.is_pass=='0'">{{item.is_pass=="0"?'未通过':"考试通过"}}</li>
+                    <li class="fl l5" v-else>{{item.is_pass=="0"?'未通过':"考试通过"}}</li>
+                    <li class="fl l6" @click="gostady(item.id)">{{item.is_pass==1?'--':item.is_pass==0&&item.enable_kaoshi==0?'继续学习':item.is_pass==0&&item.enable_kaoshi==1?'去考试':'' }}</li>
                 </ul>
             </div>
              <div class="block" style="text-align:right;margin-top:20px;">
                 <el-pagination
-                    layout="prev, pager, next"
+                    layout="prev, pager, next,jumper"
                     :total="data.length"
                     :page-size="num"    
                     @current-change="current_change" 
@@ -37,6 +39,17 @@
             <div class="nodata" v-show="nodata">
 
             </div>
+             <!-- <div class="block" v-show="fenye" style="text-align:right;margin-top:20px;">
+                <el-pagination
+                    @current-change="handleCurrentChange"
+                    :current-page.sync="pageNo"
+                    :page-size="14"
+                    layout="prev, pager, next, jumper"
+                    :total="count"
+                    :pager-count="7"
+                    >
+                </el-pagination>
+              </div> -->
         </div>
        
     </div>
@@ -53,9 +66,13 @@ export default {
             uid:'',
             token:'',
             page:1,
-            num:10,
             currentPage:1,
             apiurl:'http://jixujiaoyu_api.songlongfei.club:1012',
+            fenye:true,
+             page:1,
+            num:14,
+            count:0,
+              pageNo:1,
          
         }
     },
@@ -69,6 +86,13 @@ export default {
 
     },
     methods :{
+        //分页
+          handleCurrentChange(val) {
+              this.page=val
+           console.log(`当前页: ${val}`);
+           localStorage.setItem('pagenum',this.page)
+           this.getdata ()
+          },
         removeInfo(){
             this.$message.error({message:"重新登录",duration:1600});
             localStorage.removeItem("uid");
@@ -96,7 +120,9 @@ export default {
                 if(res.data.status=="ok"){
                     console.log("获取考试信息")
                     console.log(res)
+                    that.data=[]
                     that.data=that.data.concat(res.data.data.data)
+                     that.count=Number(res.data.data.count)
                     console.log(that.data)
                     if(res.data.data.data){
                         that.nodata=false
@@ -145,6 +171,7 @@ export default {
         width: 948px;
         // border:1px solid red;
         cursor: default;
+        
         .title{
             width: 100%;
             height: 55px;
@@ -218,8 +245,10 @@ export default {
                     }
                      &.l3{
                          }
-                     &.l4{
-                    }
+                     &.active{
+                         color:red;
+                    }   
+
                      &.l6{
                          text-align: right;
                     }

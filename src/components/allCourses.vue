@@ -17,15 +17,17 @@
           <p class="jindu"><span>讲师:&nbsp;</span>{{item.jiangshi.name}}</p>
         </li>
       </ul>
-      <div class="block" >
-       <el-pagination
-					layout="prev, pager, next"
-					:current-page.sync="pageNo"
-					:total="count"
-					:page-size="6"
-					@current-change="changePage()"
-				></el-pagination>
-      </div>
+      <div class="block" v-show="fenye" style="text-align:right;margin-top:20px;">
+          <el-pagination
+              @current-change="handleCurrentChange"
+              :current-page.sync="pageNo"
+              :page-size="6"
+              layout="prev, pager, next, jumper"
+              :total="count"
+              :pager-count="7"
+              >
+          </el-pagination>
+        </div>
     </div>
   </div>
 </template>
@@ -36,12 +38,14 @@ export default {
   data() {
     return {
       pageNo:1,
+      count:0,
+      page:1,
       year: "",
       uid: "",
       token: "",
-      // num: 2,
+      fenye:true,
+      num: 6,
       allcourse: [],
-      count: 1,
       pagesize: 1,
       yenum: "",
       allxueshi: "",
@@ -61,6 +65,12 @@ export default {
     this.getallcourse();
   },
   methods: {
+    //分页
+          handleCurrentChange(val) {
+              this.page=val
+           console.log(`当前页: ${val}`);
+           this.getallcourse ()
+          },
     removeInfo(){
       localStorage.removeItem("uid");
       localStorage.removeItem("token");
@@ -77,9 +87,11 @@ export default {
     getallcourse() {
       var that = this;
       var datalist = {
-        // num: this.num,
+        num: this.num,
         year: this.year,
-        page: 1
+        page: this.page,
+        year:this.year,
+
       };
       this.$axios
         .post(

@@ -15,28 +15,30 @@
                 </ul>
             </div>
              <div class="topcon">
-                <ul class="clearfix" v-show="nodata" v-for="(item,index) in data" :key="index">
+                <ul class="clearfix" v-show="!nodata" v-for="(item,index) in data" :key="index">
                     <li class="fl l1">{{item.shijuan_title}}</li>
                      <li class="fr l2" @click="todetail(item.id)">查看详情</li>
-                    <li class="fr l2">{{item.is_pass=='0'?'未通过':'通过'}}</li>
+                     <li class="fr l2 active" v-if="item.is_pass=='0'">{{item.is_pass=='0'?'未通过':'考试通过'}}</li>
+                    <li class="fr l2" v-else>{{item.is_pass=='0'?'未通过':'考试通过'}}</li>
                     <li class="fr l3">{{item.zong_score}}</li>
                     <li class="fr l4">{{item.score}}</li>
                      <li class="fr l5"> {{item.time}}</li>
                 </ul>
             </div>
-            <div class="nodata" v-show="!nodata">
+            <div class="nodata" v-show="nodata">
 
             </div>
-             <div class="block">
-                <button @click="prevPage()">
-                    上一页
-                </button>
-                <span>第{{currentPage}}页/共{{totalPage}}页</span>
-                <button @click="nextPage()">
-                    下一页
-                </button>
-           </div>
-            
+              <div class="block" v-show="fenye" >
+                <el-pagination
+                    @current-change="handleCurrentChange"
+                    :current-page.sync="pageNo"
+                    :page-size="14"
+                    layout="prev, pager, next, jumper"
+                    :total="count"
+                    :pager-count="7"
+                    >
+                </el-pagination>
+              </div>
         </div>
        
     </div>
@@ -47,38 +49,42 @@ import qs from 'qs'
 export default {
     data(){
         return{
-            nodata:false,
+            nodata:true,
             uid:'',
             token:'',
-            page:'1',
-            num:'10',
+            page:1,
+            num:14,
             data:[],
             apiurl:'http://jixujiaoyu_api.songlongfei.club:1012',
             pageNo:1,
-             productList:[], //所有数据
-            totalPage: 1, // 统共页数，默认为1
             currentPage: 1, //当前页数 ，默认为1
-            pageSize: 3, // 每页显示数量
+             numlist:100,
             currentPageData: [], //当前页显示内容
-            pageSize:1
+            pageSize:1,
+            fenye:true,
+            count:0
         }
     },
     created (){
+        var that=this
             this.uid=localStorage.getItem('uid')
             this.token=localStorage.getItem('token')
             this.kaoshi()
+             if(localStorage.getItem('pagenum')){
+                this.page=Number(localStorage.getItem('pagenum'))
+                this.kaoshi ()
+            }
+           
     },
-     mounted() {
-        // 计算一共有几页
-        this.totalPage = Math.ceil(this.data.length / this.pageSize);
-        console.log("杜崇")
-        console.log(this.data.length)
-        // 计算得0时设置为1
-        this.totalPage = this.totalPage == 0 ? 1 : this.totalPage;
-        this.getCurrentPageData();
-       
-    },
+   
     methods:{
+        //分页
+          handleCurrentChange(val) {
+              this.page=val
+           console.log(`当前页: ${val}`);
+           localStorage.setItem('pagenum',this.page)
+           this.kaoshi ()
+          },
           kaoshi (){
            //获取考试记录
             var that=this 
@@ -97,17 +103,19 @@ export default {
                     if(res.data.status=="ok"){
                         that.data=[]
                         that.data =res.data.data.data
-                        that.count=res.data.data.count
+                        that.count=Number(res.data.data.count)
                         that.pageSize=res.data.data.pageSize
-                        if(res.data.data.data){
+                        if(res.data.data.data.length==0){
                             that.nodata=true
+                            that.fenye=false
                         }else{
                             that.nodata=false
+                            that.fenye=true
                         }
                     }else if(res.data.status=="relogin"){
                         that.removeInfo();
                     }else {
-                        that.$message.error({message:response.data.errormsg,duration:1600});
+                        that.$message.error({message:res.data.errormsg,duration:1600});
                     }
 
             });
@@ -134,33 +142,7 @@ export default {
               }
           })
       } ,
-      getCurrentPageData() {
-            let begin = (this.currentPage - 1) * this.pageSize;
-            let end = this.currentPage * this.pageSize;
-            this.currentPageData = this.productList.slice(
-                begin,
-                end
-            );
-        },
-        //上一页
-        prevPage() {
-            console.log(this.currentPage);
-            if (this.currentPage == 1) {
-                return false;
-            } else {
-                this.currentPage--;
-                this.getCurrentPageData();
-            }
-        },
-        // 下一页
-        nextPage() {
-            if (this.currentPage == this.totalPage) {
-                return false;
-            } else {
-                this.currentPage++;
-                this.getCurrentPageData();
-            }
-        }
+     
     }
 
 }
@@ -259,6 +241,9 @@ export default {
                         text-align: center;
 
                     }
+                       &.active{
+                         color:red;
+                    }  
                      &.l5{
                         width: 260px;
                         text-align: center;

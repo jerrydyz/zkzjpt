@@ -34,12 +34,12 @@
            
           <div class="block" style="text-align:right;margin-top:20px;">
             <el-pagination
-                layout="prev, pager, next"
+                layout="prev, pager, next,jumper"
                 :page-size="5" 
-                :total="data.length"   
-                @current-change="current_change" 
-                :current-page.sync="page" 
-                :page-count='6'
+                :total="count"   
+                @current-change="handleCurrentChange" 
+                :current-page.sync="pageNo" 
+                :page-count='3'
                 >
             </el-pagination>
             </div>
@@ -58,6 +58,9 @@ export default {
             uid:'',
             token:'',
             page:1,
+            pageNo:1,
+             num:5,
+             count:0,
             data:[],
             // currentPage:1
             apiurl:'http://jixujiaoyu_api.songlongfei.club:1012',
@@ -93,11 +96,13 @@ export default {
             this.$axios.post(this.apiurl+'/pay/get_pay_order',
             qs.stringify(data)
             ).then(res =>{
+                console.log(res)
+                that.count=Number(res.data.data.count)
                 if(res.data.status=="ok"){
                     that.data=[]
-                    that.data=that.data.concat(res.data.data)
-                    console.log(that.data)
-                }else if((res.data.status=="error")){
+                    that.data=that.data.concat(res.data.data.data)
+                    console.log( that.data)
+                }else if((res.data.data.status=="error")){
                     this.$message.error({message:res.data.errormsg,duration:1600});
                 }else if((res.data.status=="relogin")){
                     this.$message.error({message:"重新登录",duration:1600});
@@ -105,13 +110,13 @@ export default {
                 }
             })
         },
-        current_change(page){
-            // console.log(currentPage)
-            this.page=page
-            this.data=[]
-             console.log(page)
-            this.getOrder()
-        }
+       //分页
+          handleCurrentChange(val) {
+              this.page=val
+           console.log(`当前页: ${val}`);
+           localStorage.setItem('pagenum',this.page)
+           this.getOrder ()
+          },
     }
 };
 </script>

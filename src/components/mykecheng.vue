@@ -29,6 +29,7 @@
 <script>
 import qs from 'qs'
 export default {
+  name:'mykecheng',
    data() {
       return {
         used: 0,
@@ -72,8 +73,10 @@ export default {
              year:this.year
           })
          ).then(res =>{
+            console.log(res)
             if(res.data.status=="ok"){
-              that.datalist=that.datalist.concat(res.data.data)
+              that.datalist=[]
+              that.datalist=that.datalist.concat(res.data.data.data)
               console.log( that.datalist)
               for(var i=0;i<that.datalist.length;i++){
                   console.log(i)
