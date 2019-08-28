@@ -13,11 +13,16 @@
             </li>
            
         </ul>
-         <div class="blocks" v-if="datalist.length" style="text-align:right;margin-right:30px;margin-top:20px;">
+          <div class="blocks" style="text-align:right;margin-right:20px;margin-top:20px;">
               <el-pagination
-                layout="prev, pager, next"
-                :total="datalist.length">
-              </el-pagination>
+                    @current-change="handleCurrentChange"
+                    :current-page.sync="pageNo"
+                    :page-size="6"
+                    layout="prev, pager, next, jumper"
+                    :total="count"
+                    :pager-count="7"
+                    >
+                </el-pagination>
             </div>
         <div class="nodata" v-show="!datalist.length" >
         </div>
@@ -39,6 +44,11 @@ export default {
         datalist:[],
         idd:'',
         apiurl:'http://jixujiaoyu_api.songlongfei.club:1012',
+         fenye:true,
+       count:0,
+        page:1,
+        num:6,
+        pageNo:1,
         
       }
     },
@@ -50,6 +60,13 @@ export default {
         this.checkkecheng()
     },
     methods: {
+      //分页
+          handleCurrentChange(val) {
+              this.page=val
+           console.log(`当前页: ${val}`);
+           localStorage.setItem('pagenum',this.page)
+           this.checkkecheng ()
+          },
       removeInfo(){
         this.$message.error({message:"重新登录",duration:1600});
         localStorage.removeItem("uid");
@@ -70,13 +87,16 @@ export default {
           qs.stringify({
              uid:this.uid,
              token:this.token,
-             year:this.year
+             year:this.year,
+             page:this.page,
+             num:this.num
           })
          ).then(res =>{
             console.log(res)
             if(res.data.status=="ok"){
               that.datalist=[]
               that.datalist=that.datalist.concat(res.data.data.data)
+              that.count=Number(res.data.data.count)
               console.log( that.datalist)
               for(var i=0;i<that.datalist.length;i++){
                   console.log(i)

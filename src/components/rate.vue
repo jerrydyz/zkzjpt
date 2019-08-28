@@ -137,9 +137,9 @@ export default {
             console.log(res)
             if(res.data.status=="ok"){
               that.allcourse=[]
-               that.allcourse=that.allcourse.concat(res.data.data)
-               for(var i=0;i<res.data.data.length;i++){
-                 that.id.push(res.data.data[i].id)
+               that.allcourse=that.allcourse.concat(res.data.data.data)
+               for(var i=0;i<res.data.data.data.length;i++){
+                 that.id.push(res.data.data.data[i].id)
                  console.log("========")
                  console.log(that.id)
                }

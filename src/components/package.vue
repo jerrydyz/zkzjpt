@@ -25,13 +25,14 @@
       </ul>
        <div class="blocks" style="text-align:right;margin-right:20px;margin-top:20px;">
               <el-pagination
-                layout="prev, pager, next"
-                :total="list.length"
-                :current-page.sync="pageNo"
-                :page-size="3"
-                @current-change="changePage()"
-                >
-              </el-pagination>
+                    @current-change="handleCurrentChange"
+                    :current-page.sync="pageNo"
+                    :page-size="3"
+                    layout="prev, pager, next, jumper"
+                    :total="count"
+                    :pager-count="7"
+                    >
+                </el-pagination>
             </div>
     </div>
   </div>
@@ -51,6 +52,11 @@ export default {
       pageNo:1,
       idd:'',
       apiurl:'http://jixujiaoyu_api.songlongfei.club:1012',
+       fenye:true,
+       count:0,
+        page:1,
+        num:3,
+        pageNo:1,
      
     }
   },
@@ -61,11 +67,18 @@ export default {
     var date = new Date();
     this.year = date.getFullYear();
    
+   
   },
   mounted(){
-    this.kechengbao();
+     this.kechengbao();
   },
   methods:{
+     //分页
+          handleCurrentChange(val) {
+              this.page=val
+           console.log(`当前页: ${val}`);
+           this.kechengbao ()
+          },
     removeInfo(){
       this.$message.error({message:"重新登录",duration:1600});
       localStorage.removeItem("uid");
@@ -86,7 +99,9 @@ export default {
           method: 'post',
           url: this.apiurl+'/kecheng/get_kechengbao_list',
           data:qs.stringify({
-            year:this.year
+            year:this.year,
+            page:this.page,
+            num:this.num
           })
           }).then(res => {
               console.log(res)
