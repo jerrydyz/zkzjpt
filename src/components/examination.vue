@@ -9,30 +9,41 @@
                     <li class="fl l1">年度</li>
                     <li class="fl l2">试卷名称</li>
                     <li class="fl l3">总分数</li>
-                    <li class="fl l4">课程标题</li>
                     <li class="fl l4">公需课学时</li>
-                    <li class="fl l4">专业课学时</li>
+                     <li class="fl l4">专业课学时</li>
+                      <li class="fl l4">课程题目</li>
                      <li class="fl l5">状态</li>
                      <li class="fl l6">操作</li>
                 </ul>
             </div>
              <div class="topcon">
-                <ul class="clearfix" v-for="(item,index) in data" :key="item.id">
+                <ul class="clearfix" v-for="item in data" :key="item.id">
                     <li class="fl l1">{{item.year}}</li>
                     <li class="fl l2">{{item.shijuan_info.title}}</li>
                      <li class="fl l3">{{item.shijuan_info.score}}</li>
-                      <li class="fl l7">{{item.kecheng_title}}</li>
-                       <li class="fl l4">{{item.gongxuke_xueshi_num}}</li>
-                        <li class="fl l4">{{item.zhuanyeke_xueshi_num}}</li>
-                     <li class="fl l5 active" v-if="item.is_pass=='0'">{{item.is_pass=="0"?'未通过':"考试通过"}}</li>
-                      <li class="fl l5" v-else>{{item.is_pass=="0"?'未通过':"考试通过"}}</li>
-                       <li class="fl l6" @click="gostady(item.id,index)">{{item.is_pass==1?'--':item.is_pass==0&&item.enable_kaoshi==0?'继续学习':item.is_pass==0&&item.enable_kaoshi==1?'去考试':'' }}</li>
+                      <li class="fl l4">{{item.gongxuke_xueshi_num}}</li>
+                       <li class="fl l4">{{item.zhuanyeke_xueshi_num}}</li>
+                        <li class="fl l7">{{item.kecheng_title}}</li>
+                     <!-- <li class="fl l5">{{item.is_pass=="0"?'未通过':"考试通过"}}</li> -->
+                    <li class="fl l5 active" v-if="item.is_pass=='0'">{{item.is_pass=="0"?'未通过':"考试通过"}}</li>
+                    <li class="fl l5" v-else>{{item.is_pass=="0"?'未通过':"考试通过"}}</li>
+                    <li class="fl l6" @click="gostady(item.id)">{{item.is_pass==1?'--':item.is_pass==0&&item.enable_kaoshi==0?'继续学习':item.is_pass==0&&item.enable_kaoshi==1?'去考试':'' }}</li>
                 </ul>
             </div>
+             <div class="block" style="text-align:right;margin-top:20px;">
+                <el-pagination
+                    layout="prev, pager, next,jumper"
+                    :total="data.length"
+                    :page-size="num"    
+                    @current-change="current_change" 
+                    :current-page.sync="currentPage" 
+                    >
+                </el-pagination>
+                </div>
             <div class="nodata" v-show="nodata">
 
             </div>
-             <div class="block" v-show="fenye" style="text-align:right;margin-top:20px;">
+             <!-- <div class="block" v-show="fenye" style="text-align:right;margin-top:20px;">
                 <el-pagination
                     @current-change="handleCurrentChange"
                     :current-page.sync="pageNo"
@@ -42,7 +53,7 @@
                     :pager-count="7"
                     >
                 </el-pagination>
-              </div>
+              </div> -->
         </div>
        
     </div>
@@ -129,23 +140,24 @@ export default {
                 }
             });
        },
-       gostady (num,val){
+       gostady (num){
            var that=this
-           console.log(num,val)
            for(var i=0;i<this.data.length;i++){
-                if(this.data[i].is_pass==0&&this.data[i].enable_kaoshi==1){
-                        that.$router.push({
-                            path:'/kaoshi',
-                            query:{
-                                shijuan_id:num
-                            }
-                          
+                if(this.data[i].enable_kaoshi==1){
+                    that.$router.push({
+                        path:'/kaoshi',
+                        query:{
+                            shijuan_id:num
+                        }
                     })
-                   
+                }else{
+                    if(this.data[i].is_pass==1){
+                             that.$emit('more','examination')
+                    }else{
+                             that.$emit('more','allCourses')
+                    }
+                    
                 }
-                // if(this.data[i].is_pass==0&&this.data[i].enable_kaoshi==0){
-                //          that.$emit('more','allCourses')
-                //     }
                 }
           
        },
@@ -197,6 +209,14 @@ export default {
                      cursor: default;
                      &.l1{
                         text-align: left;
+                        // width: 15%;
+                    }
+                    &.l2{   
+                        // width: 25%;
+                    }
+                     &.l3{
+                         }
+                     &.l4{
                     }
                      &.l6{
                          text-align: right;
@@ -222,18 +242,24 @@ export default {
                      cursor: default;
                      &.l1{
                         text-align: left;
-                        // width: 15%;/
+                        // width: 15%;
                     }
+                    &.l2{   
+                        // width: 25%;
+                    }
+                     &.l3{
+                         }
                      &.active{
                          color:red;
                     }   
+
                      &.l6{
                          text-align: right;
                     }
                     &.l7{
-                         overflow: hidden;
-                         white-space: nowrap;
-                         text-overflow: ellipsis;
+                        overflow: hidden;
+                         text-overflow:ellipsis;
+                          white-space: nowrap;
                     }
                 }
             }

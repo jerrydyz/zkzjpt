@@ -1,4 +1,14 @@
 <template>
+<div class="my">
+    <div class="title">
+      <div class="top w clearfix">
+        <p class="fl">河南省继续教育学会在线学习平台</p>
+        <p class="fr xiaoshou">
+          <span class="spn1" @click="personal" >个人中心</span>
+          <span @click="goback">退出</span>
+        </p>
+      </div>
+    </div>
   <div class="courseDetails">
     <div class="classtopbox">
       <div class="left">
@@ -122,12 +132,18 @@
       </div>
     </div>
   </div>
+  <foot></foot>
+</div>
 </template>
 
 <script>
 import qs from 'qs'
+import foot from '@/components/footer';
 export default {
-  name: "courseDetails",
+  name: "personcourseDetails",
+  components:{
+      foot,
+  },
   data() {
     return {
       //教师详情展开
@@ -322,6 +338,24 @@ export default {
       localStorage.removeItem("mobile");
       localStorage.removeItem("id_card");
     },
+    //返回按钮
+      goback (){
+          var that =this
+          this.$axios.post(this.apiurl+'/user/logout',
+           qs.stringify({
+             uid:this.uid,
+             token:this.token
+           })
+          ).then(res =>{
+            that.$message.success({message:"退出成功",duration:1600});
+            that.clearlocalData();
+            
+          })
+      },
+    //返回个人中心
+    personal(){
+        this.$router.push({path:'/my'});
+    },
     teacherDetails:function(){
       if(this.zhankai==0){
         this.zhankai=1;
@@ -372,6 +406,34 @@ export default {
 
 <!-- Add "scoped" attribute to limit CSS to this component only -->
 <style scoped lang="less">
+.my {
+  width: 100%;
+  height: 100%;
+  background-color: #f4f4f4;
+  cursor: default;
+  .w {
+    width: 1200px;
+    margin: 0 auto;
+  }
+  
+  .title {
+    width: 100%;
+    height: 72px;
+    line-height: 72px;
+    background-color: #0169cc;
+    color: #fff;
+    font-size: 28px;
+    letter-spacing: 2px;
+    .fr {
+      font-size: 16px;
+      .spn1 {
+        margin-right: 45px;
+      }
+      span{cursor: pointer;}
+    }
+  }
+  
+  }
 .classtopbox {
   width: 1200px;
   margin: 15px auto;

@@ -7,25 +7,25 @@
     <div class="content" v-show="basedata">
       <ul>
         <li>
-          <span>姓名 :</span>
+          <span>姓&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp名 :</span>
           <span>{{name}}</span>
         </li>
         <li>
-          <span>身份证号 :</span>
+          <span>身&nbsp&nbsp份&nbsp&nbsp证&nbsp&nbsp号 :</span>
           <span>{{idcode}}</span>
         </li>
         <li>
-          <span>手机号 :</span>
+          <span>手&nbsp&nbsp&nbsp&nbsp&nbsp机&nbsp&nbsp&nbsp&nbsp号 :</span>
           <span>{{phone}}</span>
         </li>
         <li>
-          <span>常用邮箱 :</span>
+          <span>常&nbsp&nbsp用&nbsp&nbsp邮&nbsp&nbsp箱 :</span>
           <span>
             <input type="email" :placeholder="baseExt.email == '' ? '请填写邮箱': baseExt.email" v-model="email"/>
           </span>
         </li>
         <li>
-          <span>请选择性别 :</span>
+          <span>请&nbsp选&nbsp择&nbsp性别 :</span>
           <span>
             <select name id @click="sect" v-model="sexSelected">
               <option v-for="item in selt" :key="item.id">{{item.name}}</option>
@@ -33,25 +33,25 @@
           </span>
         </li>
         <li>
-          <span>技术职称 :</span>
+          <span>技&nbsp&nbsp术&nbsp&nbsp职&nbsp&nbsp称 :</span>
           <span>  
             <input type="text" :placeholder="baseExt.jishuzhicheng == '' ? '请输入技术职称': baseExt.jishuzhicheng" v-model="zhicheng"/>
           </span>
         </li>
         <li>
-          <span>工作单位 :</span>
+          <span>工&nbsp&nbsp作&nbsp&nbsp单&nbsp&nbsp位 :</span>
           <span>
             <input type="text" :placeholder="baseInfo.gongzuodanwei == '' ? '请输入工作单位': baseInfo.gongzuodanwei" v-model="job"/>
           </span>
         </li>
         <li>
-          <span>行政职务 :</span>
+          <span>行&nbsp&nbsp政&nbsp&nbsp职&nbsp&nbsp务 :</span>
           <span>
             <input type="text" :placeholder="baseExt.xingzhengzhiwu == '' ? '请输入行政职务': baseExt.xingzhengzhiwu"  v-model="xingzheng" />
           </span>
         </li>
         <li>
-          <span>民族 :</span>
+          <span>民&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp族 :</span>
           <span>
             <select name id @change="getminzu" v-model="minzuSelected">
               
@@ -60,7 +60,7 @@
           </span>
         </li>
         <li>
-          <span>政治面貌 :</span>
+          <span>政&nbsp&nbsp治&nbsp&nbsp面&nbsp&nbsp貌 :</span>
           <span>
             <select name id @change="getmianmao" v-model="maoSelected">
               <option v-for="item in mao" :key="item.id" >{{item.name}}</option>
@@ -68,19 +68,19 @@
           </span>
         </li>
         <li>
-          <span>学历 :</span>
+          <span>学&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp历 :</span>
           <span>
             <select name id @change="getxueli" v-model="xueliSelected">
-             
               <option v-for="(item,index) in opt" :key="index">{{item.name}}</option>
-              
             </select>
           </span>
         </li>
         <li>
           <span>参加工作时间 :</span>
           <span> 
-            <input type="text" :placeholder="baseExt.gongzuo_year == '' ? '请输入参加工作时间': baseExt.gongzuo_year" v-model="worktime" />
+            <select name id @change="gongzuotime" v-model="worktime">
+              <option v-for="(item,index) in arrYear" :key="index">{{item}}</option>
+            </select>
           </span>
         </li>
         <!-- <li>
@@ -90,19 +90,19 @@
           </span>
         </li> -->
         <li>  
-          <span>通讯地址 :</span>
+          <span>通&nbsp&nbsp讯&nbsp&nbsp地&nbsp&nbsp址 :</span>
           <span>
             <input type="text" :placeholder="baseExt.tongxundizhi == '' ? '请输入通信地址': baseExt.tongxundizhi" v-model="address" />
           </span>
         </li>
         <li>
-          <span>联系电话 :</span>
+          <span>联&nbsp&nbsp系&nbsp&nbsp电&nbsp&nbsp话 :</span>
           <span>  
             <input type="number" :placeholder="baseExt.lianxidianhua == '' ? '请输入联系电话': baseExt.lianxidianhua" maxlength="11" v-model="mobil" />
           </span>
         </li>
         <li>
-          <span>证书管理 :</span>
+          <span>证&nbsp&nbsp书&nbsp&nbsp编&nbsp&nbsp号 :</span>
           <span> 
             <input type="text" :placeholder="baseExt.zhengshubianhao == '' ? '请输入证书管理号': baseExt.zhengshubianhao" v-model="zhengshuhao" />
           </span>
@@ -160,7 +160,7 @@ export default {
       zhengshuhao:'',
       mobil:'',
       address:'',
-      worktime:"",
+      worktime:'',
       xingzheng:'',
       job:'',
       zhicheng:'',
@@ -177,18 +177,27 @@ export default {
       minzuSelected:'',
       maoSelected:'',
       xueliSelected:'',
+      arrYear:[],
       apiurl:'http://jixujiaoyu_api.songlongfei.club:1012',
     };
   },
   created (){
     if(localStorage.getItem('lin')){
-        this.tab(localStorage.getItem('lin'))
+        this.tab(localStorage.getItem('lin'));
      }
-        this.uid=localStorage.getItem('uid')
-        this.token=localStorage.getItem('token')
-        this.name= localStorage.getItem('name')
-        this.idcode=localStorage.getItem('id_card')
-        this.phone=localStorage.getItem('mobile')
+        this.uid=localStorage.getItem('uid');
+        this.token=localStorage.getItem('token');
+        this.name= localStorage.getItem('name');
+        this.idcode=localStorage.getItem('id_card');
+        this.phone=localStorage.getItem('mobile');
+        var myDate = new Date();       
+        var thisYear = myDate.getFullYear();  // 获取当年年份
+        var Section = thisYear - 1980;  // 声明一个变量 获得当前年份至想获取年份差
+        for(var i = 0;i<=Section;i++){
+            this.arrYear.push(thisYear--)
+        } // 遍历并添加年份到数组
+        console.log(this.arrYear)
+
         
   },
   mounted () {
@@ -251,6 +260,7 @@ export default {
             that.baseInfo = res.data.data;
             that.baseExt = res.data.data.ext;
             that.sexSelected = that.baseInfo.sex == "0"? '女' : that.baseInfo.sex == '1'? '男' :'请选择性别';
+            that.worktime = that.baseExt.gongzuo_year=''?'请选择工作时间':that.baseExt.gongzuo_year;
             if(that.baseExt.minzu_id=="0"){
               that.minzuSelected ='请选择民族';
             }else{
@@ -485,6 +495,12 @@ export default {
       }
       console.log(this.minzulist);
     },
+    gongzuotime(e){
+      this.worktime = e.target.value;
+    },
+
+
+
   }
 };
 </script>

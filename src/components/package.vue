@@ -198,7 +198,7 @@ export default {
       },
        gopackdetail (id){
        this.$router.push({
-         path:'/packagedetail',
+         path:'/personalpackage',
          query:{
               codeid:id
            }

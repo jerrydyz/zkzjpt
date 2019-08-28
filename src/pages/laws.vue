@@ -20,7 +20,17 @@
               </router-link>
               <div class="page">
                   <div class="pagebox">
-                      <span @click="prev">上一页</span><span @click="next">下一页</span> </div>
+                    <div class="block">
+                        <el-pagination
+                        @size-change="handleSizeChange"
+                        @current-change="handleCurrentChange"
+                        :current-page.sync="currentPage"
+                        :page-size="10"
+                        layout="prev, pager, next, jumper"
+                        :total='allnum'>
+                        </el-pagination>
+                    </div>
+                  </div>
               </div>
           </div>
       </div>
@@ -33,12 +43,14 @@ export default {
   name: 'news',
   data () {
     return {
-      page:1,
+      currentPage:1,
+      allnum:1,
       lawsdata:{
           title:'政策法规',
           englishTitle:'POLICIES REGULATIONS',
           list:'',
       },
+      
       apiurl:'http://jixujiaoyu_api.songlongfei.club:1012',
     }
   },
@@ -46,24 +58,18 @@ export default {
     this.ajaxdata();
   },
    methods:{
-      prev:function(){
-          this.page-=1;
-          if(this.page>=1){
-            this.ajaxdata();
-          }else{
-              this.page=1;
-              this.ajaxdata();
-              console.log("page小于1")
-          }
+       handleSizeChange(val) {
+        console.log(`每页 ${val} 条`);
       },
-      next:function(){
-          this.page+=1;
-          this.ajaxdata();
+      handleCurrentChange(val) {
+        console.log(`当前页: ${val}`);
+        this.ajaxdata(val);
       },
-      ajaxdata:function(){
+    
+      ajaxdata:function(pagenum){
         let that=this;
         //请求新闻news
-        let datanews={type_id:'2',page:this.page,num:'15'}
+        let datanews={type_id:'2',page:pagenum,num:'10'}
         this.$axios({
           method: 'post',
           url:this.apiurl+'/news/get_news_list',
@@ -71,8 +77,10 @@ export default {
           }).then(function (response) {
             if(response.data.status=="ok"){
               console.log("news")
-              that.lawsdata.list=response.data.data.data
-              console.log(response.data.data.data)
+              that.lawsdata.list=response.data.data.data;
+              that.allnum=parseInt(response.data.data.count);
+
+              console.log(that.allnum);
             }else if((response.data.status=="error")){
             that.$message.error({message:response.data.errormsg,duration:1600});
             }else if((response.data.status=="relogin")){
