@@ -13,7 +13,7 @@
             <div class="item-title">{{item.title}}</div>
             <div class="item-time clearfix">
             </div>
-            <div class="total-time">学时：<span>{{item.xueshi_num}}</span></div>
+            <div class="total-time">学时：<span>{{parseInt(item.gongxuke_xueshi_num)+parseInt(item.zhuanyeke_xueshi_num)}}</span></div>
           </div>
           <div class="price-box fr">
             <div class="price"><span class="rmb">￥{{item.price}} 元</span></div>
