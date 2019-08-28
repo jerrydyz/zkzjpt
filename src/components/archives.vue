@@ -18,7 +18,7 @@
                     <li class="l1">{{item.year}}</li>
                     <li>{{name}}</li>
                     <li>{{id_card}}</li>
-                    <li>{{item.xueshi_num}}</li>
+                    <li>{{parseInt(item.get_gongxuke_xueshi_num)+parseInt(item.get_zhuanyeke_xueshi_num)}}</li>
                     <li class="l6"  @click="downloadCertificate(index)">下载证书</li>
                 </ul>
             </div>
@@ -57,7 +57,7 @@ export default {
             uid:'',
             token:'',
             year:'',
-            list:[],//返回来的数据
+            list:'',//返回来的数据
             name:'',
             id_card:'',
              riqi:'',
@@ -111,12 +111,13 @@ export default {
             }).then(res => {
                 if(res.data.status=="ok"){
                     console.log(res)
-                    console.log('档案记录')
-                    that.list=res.data.data
+                    console.log('档案记录');
+                    that.list=res.data.data;
+                    console.log(that.list)
                     if(res.data.data.length){
                         that.nodata=false
-                          that.xueshinum=res.data.data[0]['xueshi_num']
-                        console.log( that.xueshinum)
+                        // that.xueshinum=res.data.data[0]['xueshi_num']
+                        // console.log( that.xueshinum)
                     }else{
                         that.nodata=true
                     }
