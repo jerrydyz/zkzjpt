@@ -30,7 +30,7 @@
                     <li class="fl l6" @click="gostady(item.id)">{{item.is_pass==1?'--':item.is_pass==0&&item.enable_kaoshi==0?'继续学习':item.is_pass==0&&item.enable_kaoshi==1?'去考试':'' }}</li>
                 </ul>
             </div>
-             <div class="block" style="text-align:right;margin-top:20px;">
+             <!-- <div class="block" style="text-align:right;margin-top:20px;">
                 <el-pagination
                     layout="prev, pager, next,jumper"
                     :total="data.length"
@@ -39,11 +39,11 @@
                     :current-page.sync="currentPage" 
                     >
                 </el-pagination>
-                </div>
+                </div> -->
             <div class="nodata" v-show="nodata">
 
             </div>
-             <!-- <div class="block" v-show="fenye" style="text-align:right;margin-top:20px;">
+             <div class="block" v-show="fenye" style="text-align:right;margin-top:20px;">
                 <el-pagination
                     @current-change="handleCurrentChange"
                     :current-page.sync="pageNo"
@@ -53,7 +53,7 @@
                     :pager-count="7"
                     >
                 </el-pagination>
-              </div> -->
+              </div>
         </div>
        
     </div>
