@@ -115,7 +115,7 @@ export default {
                     that.list=res.data.data
                     if(res.data.data.length){
                         that.nodata=false
-                        //   that.xueshinum=res.data.data[0]['xueshi_num']
+                          that.xueshinum=res.data.data[0]['xueshi_num']
                         console.log( that.xueshinum)
                     }else{
                         that.nodata=true

@@ -29,10 +29,10 @@
               <!--答题卡-->
               <dl class="answer-sheet">
                 <dt>答题卡</dt>
-                <dd v-for="(item1,index) in datalist1" :shiti_id="item1.id"  @click="leftBtn($event)">{{index+1}}</dd>
-                <dd v-for="(item2,index) in datalist2"  @click="leftBtn($event)">{{index+datalist1.length+1}}</dd>
-                 <dd v-for="(item3,index) in datalist3"  @click="leftBtn($event)">{{index+datalist1.length+datalist2.length+1}}</dd>
-                  <dd v-for="(item4,index) in datalist3"  @click="leftBtn($event)">{{index+datalist1.length+datalist2.length+datalist3.length+1}}</dd>
+                <dd class="datika " :class="{active:bgcolor}" v-for="(item1,index) in datalist1" :name="['danxuan_'+item1.id]"   @click="leftBtn($event)">{{index+1}}</dd>
+                <dd class="datika"  v-for="(item2,index) in datalist2"  @click="leftBtn($event)">{{index+datalist1.length+1}}</dd>
+                 <dd class="datika"  v-for="(item3,index) in datalist3"  @click="leftBtn($event)">{{index+datalist1.length+datalist2.length+1}}</dd>
+                  <dd class="datika"  v-for="(item4,index) in datalist3"  @click="leftBtn($event)">{{index+datalist1.length+datalist2.length+datalist3.length+1}}</dd>
               </dl>
             </div>
           </div>
@@ -311,6 +311,8 @@ export default {
       checkeboxs:[],
         times:'',
          apiurl:'http://jixujiaoyu_api.songlongfei.club:1012',
+         bgcolor:false,
+         datika:[]
       
     };
   },
@@ -325,9 +327,7 @@ export default {
     this.times=setInterval(function(){
       that.usetime ()
     },1000)
-    
-    //console.log($)
-    
+   
   },
   watch: {},
   methods: {
@@ -350,8 +350,12 @@ export default {
     },
     //获取单选按钮的值
     radio(e,id,num) {
-      // Vue.set(this.answers,num,{'shiti_id':id,'answer':e.target.value})
-      console.log(e,id,num)
+      // console.log(this.datika.length)
+      console.log(e.target.checked)
+       var datika=document.getElementsByClassName('datika')
+       console.log(datika)
+     
+      
     },
     //获取多选按钮的值
     checkbox(e,id,num) {
@@ -583,14 +587,13 @@ export default {
     //单体模式
     ckecktype (e){
           console.log(e.target.checked)
-          if(e.target.checked){
+          if(e.target){
               
           }
     },
   //左侧按钮
     leftBtn (e){
        console.log(e.target.innerHTML)
-      
     },
     shouji_input(){
       //$(".")
