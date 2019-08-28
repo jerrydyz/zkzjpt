@@ -5,7 +5,7 @@
       <div class="top w clearfix">
         <p class="fl">河南省继续教育学会在线学习平台</p>
         <p class="fr xiaoshou">
-          <span class="spn1" @click="more('rate')" >首页</span>
+          <span class="spn1" @click="more('rate')" >个人中心</span>
           <span @click="goback">退出</span>
         </p>
       </div>
@@ -23,39 +23,39 @@
         <div class="leftbot">
           <ul>
             <li class="clearfix" :class="{active:bgcolor=='allCourses'}" @click="more('allCourses')">
-              <i class="iconfont iconshijian fl"></i>
-              <span class="fl">全部课程</span>
-              <i class="iconfont iconyoujiantou fr"></i>
+              <i class="iconfont icon-file"></i>
+              <span>全部课程</span>
+              <i class="iconfont icon-right fr"></i>
             </li>
            <li class="clearfix" :class="{active:bgcolor=='packages'}" @click="more('packages')">
-               <i class="iconfont iconshijian fl"></i>
-              <span  class="fl">课程包</span>
-              <i class="iconfont iconyoujiantou fr"></i>
+               <i class="iconfont icon-shop"></i>
+              <span>课程包</span>
+              <i class="iconfont icon-right fr"></i>
             </li>
            <li class="clearfix" :class="{active:bgcolor=='mykecheng'}" @click="more('mykecheng')">
-              <i class="iconfont iconshijian fl"></i>
-              <span class="fl">我的课程</span>
-              <i class="iconfont iconyoujiantou fr"></i>
+              <i class="iconfont icon-vipcard"></i>
+              <span>我的课程</span>
+              <i class="iconfont icon-right fr"></i>
             </li>
             <li class="clearfix" :class="{active:bgcolor=='examination'}" @click="more('examination')">
-               <i class="iconfont iconshijian fl"></i>
-              <span class="fl">参加考试</span>
-             <i class="iconfont iconyoujiantou fr"></i>
+               <i class="iconfont icon-edit_light"></i>
+              <span>参加考试</span>
+             <i class="iconfont icon-right fr"></i>
             </li>
           <li class="clearfix" :class="{active:bgcolor=='examrecord'}" @click="more('examrecord')" >
-              <i class="iconfont iconshijian fl"></i>
-              <span class="fl">考试记录</span>
-              <i class="iconfont iconyoujiantou fr"></i>
+              <i class="iconfont icon-text"></i>
+              <span>考试记录</span>
+              <i class="iconfont icon-right fr"></i>
             </li>
            <li class="clearfix" :class="{active:bgcolor=='archives'}" @click="more('archives')">
-                <i class="iconfont iconshijian fl"></i>
-              <span class="fl">档案记录</span>
-              <i class="iconfont iconyoujiantou fr"></i>
+                <i class="iconfont icon-news_light"></i>
+              <span>档案记录</span>
+              <i class="iconfont icon-right fr"></i>
             </li>
            <li class="clearfix" :class="{active:bgcolor=='allOrder'}" @click="more('allOrder')">
-               <i class="iconfont iconshijian fl"></i>
-              <span class="fl">我的订单</span>
-              <i class="iconfont iconyoujiantou fr"></i>
+               <i class="iconfont icon-calendar"></i>
+              <span>我的订单</span>
+              <i class="iconfont icon-right fr"></i>
             </li>
           </ul>
         </div>

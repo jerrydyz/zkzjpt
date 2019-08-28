@@ -6,9 +6,9 @@
 					<a><i class="video-fh"></i><span @click="returnMyCourse">返回我的课程&nbsp;&nbsp;&nbsp;|</span></a>
 				</div>
 				<div class="video-top-con">
-					<a class="cl-prev"></a>
+					<!-- <a class="cl-prev"></a> -->
 					<h2>{{courseInfo.title}}</h2>
-					<a class="cl-next"></a>
+					<!-- <a class="cl-next"></a> -->
 				</div>
 			</div>
 			<div class="player-container">
@@ -18,18 +18,18 @@
 					</div>
 					
 				</div>
-				<div class="cl-info f-cb">
+				<!-- <div class="cl-info f-cb">
 					<div style="" title="分享" class="cli-share j-sharebox">
 						<span class="fl">分享到：</span>
 						<div data-bd-bind="1565399572085" class="bdsharebuttonbox bdshare-button-style1-16">
 							<a data-cmd="more" class="bds_more " href="#"></a>
 							<a title="分享到微信" data-cmd="weixin" class="bds_weixin" href="#"></a>
-							<!-- <a title="分享到QQ好友" data-cmd="sqq" class="bds_sqq" href="#"></a>
+							<a title="分享到QQ好友" data-cmd="sqq" class="bds_sqq" href="#"></a>
 							<a title="分享到QQ空间" data-cmd="qzone" class="bds_qzone" href="#"></a>
-							<a title="分享到新浪微博" data-cmd="tsina" class="bds_tsina" href="#"></a> -->
+							<a title="分享到新浪微博" data-cmd="tsina" class="bds_tsina" href="#"></a>
 						</div>
 					</div>
-				</div>
+				</div> -->
 				
 			</div>
 		</div>
@@ -81,12 +81,12 @@
 						<div class="editwrap_tittle mt22">
 							<div class="tips r5">标题限<span id="notetittle_length">45</span>字符内</div>
 							<textarea  class="j-edittxt edittxt" maxlength="45" id="notetittle" placeholder="在此输入笔记标题... " v-model="bijiTitle"></textarea>
-							<label for="edittxt" class="j-hint hint" id="auto-id-drt6TisVISpRhnQa"></label>
+							
 						</div>
 						<div class="editwrap mt22">
 							<div class="tips r5">内容限<span id="notecont_length">200</span>字符内</div>
 							<textarea  class="j-edittxt edittxt" maxlength="200" id="notecont" placeholder="在此记录你的想法... " v-model="bijiContent"></textarea>
-							<label for="edittxt" class="j-hint hint" id="auto-id-drt6TisVISpRhnQa"></label>
+							
 						</div>
 						<div class="mt5 clearfix">
 							<input type="button" @click="addjieBiji" class="bg_btn_gray Secrecy fr" style="cursor:pointer" value="保存">
@@ -99,8 +99,10 @@
 								<div class="li-fr">
 									<div class="reply-star clearfix">
 										<label class="form-label  fl f3" for="score"><a class="f3">{{name}}</a> <span class=" f9">的笔记</span></label>
+										<div class="delete" @click="deletebiji(item.id)">删除</div>
 									</div>
-									<a><p>{{item.title}}</p></a>
+									<a><p>标题：{{item.title}}</p></a>
+									<p>内容：{{item.contents}}</p>
 									<div class="replymegfooter">
 										<div class="wenda-time"> <em>时间：{{item.time}}</em> </div>
 									</div>
@@ -178,6 +180,7 @@ export default {
 		  allbiji:'',
 		  //笔记作者
 		  name:localStorage.getItem("name"),
+		  websock :false,
 		  apiurl:'http://jixujiaoyu_api.songlongfei.club:1012',
 		}
 		
@@ -213,7 +216,6 @@ export default {
 	onplayerpause:function(){
 		clearInterval(this.T);
 	},
-	//刚开始mounted的数据迁移到这
 	init:function(){
 		//获取播放课程信息
 		let that = this;
@@ -233,7 +235,6 @@ export default {
 				that.jiangshi=response.data.data.jiangshi;
 				//获取课程小节笔记
 				that.getbiji();
-				
 				that.getInfo();
 			}else if(response.data.status=="error"){
 				that.$message.error({message:response.data.errormsg,duration:1600});
@@ -303,7 +304,7 @@ export default {
 		let that = this;
 		//获取播放器dom
 		let myPlayer = this.$refs.videoPlayer.player;
-
+		
 		for(let i=0;i<that.newzhang.length;i++){
 			for(let j=0;j<that.newzhang[i].jie.length;j++){
 				if(that.newzhang[i].jie[j].id==videoId){
@@ -336,24 +337,29 @@ export default {
 		let that = this;
 		//获取播放器dom
 		let myPlayer = this.$refs.videoPlayer.player;
+		myPlayer.addEventListener('ended', function(e) {
+			console.log("监测视频结束")
+			this.wslink();
+		})
 		if(that.curtime<that.jiealltime){
 			myPlayer.currentTime(that.curtime);
+			console.log("当前播放时长")
+			console.log(myPlayer.currentTime());
+			//每隔5秒websocket.send()
+			this.T = window.setInterval(this.wslink, 5000);
 		}else{
 			if(this.T){clearInterval(this.T)}
 		}
 		
-		console.log("当前播放时长")
-		console.log(myPlayer.currentTime());
-		//每隔5秒websocket.send()
-		this.T = window.setInterval(wslink, 5000);
-		//websocket连接
-		function wslink(){
-			let websock = false;
+	},
+	//websocket连接
+	wslink:function(){
+			let that = this;
 			let url = 'ws://jixujiaoyu_server.songlongfei.club:9501';
 			if ("WebSocket" in window){
-				if(websock)return true;var ws = new WebSocket(url);
+				if(this.websock){console.log("web");return true;}else{var ws = new WebSocket(url);console.log("noweb")};
 				ws.onopen = function(){
-					websock = true;
+					this.websock = true;
 					let myjieid=that.$route.query.vid
 					let jsondata={"kecheng_jie_id":myjieid,"uid":localStorage.getItem("uid"),"token":localStorage.getItem("token"),"url":"incr@jindu"};
 					let duixiang = JSON.stringify(jsondata);
@@ -361,12 +367,12 @@ export default {
 				};
 				ws.onmessage = function (evt) 
 				{ 
-					let jsonduixiang=JSON.parse(evt.data)
+					let jsonduixiang=JSON.parse(evt.data);
 					//视频已经看的时长
 					if(jsonduixiang.status=="ok"){
-						if(that.curtime<=that.jiealltime){
+						if(that.curtime<=(that.jiealltime+5)){
 							that.curtime+=5;
-							if(that.jieprogress>100){
+							if(that.jieprogress>=99){
 								that.jieprogress=100;
 							}else{
 								that.jieprogress=parseInt(that.curtime*100/that.jiealltime);
@@ -377,7 +383,6 @@ export default {
 							console.log(that.jiealltime);
 							console.log("进度百分比");
 							console.log(that.jieprogress);
-							
 						}else{
 							clearInterval(that.T)
 						}	
@@ -386,12 +391,15 @@ export default {
 					}
 					
 				};
+				ws.onclose = function()
+               { 
+                  // 关闭 websocket
+                  console.log("连接已关闭..."); 
+               };
 			}else{
 				alert("您的浏览器不支持 WebSocket!");
 			}
-		}
-
-	},
+		},
 	
 	//获取该课程进度包含的章节进度
 	getKeshiProgress:function(courseid){
@@ -436,6 +444,11 @@ export default {
 				console.log(response);
 			if(response.data.status=="ok"){
 				that.$message.success({message:"添加笔记成功",duration:1600});
+				setTimeout(() => {
+					document.getElementById("notetittle").value="";
+					document.getElementById("notecont").value="";
+				}, 1000);
+				
 				//获取课程小节笔记
 				that.getbiji();
 			}else if(response.data.status=="error"){
@@ -445,7 +458,26 @@ export default {
 			}
 		});
 	},
-
+	deletebiji:function(bijiid){
+		let that = this;
+		let kecheng_jie={id:bijiid,uid:localStorage.getItem("uid"),token:localStorage.getItem("token")}
+		this.$axios({
+			method: 'post',
+			url: this.apiurl+'/kecheng/del_kecheng_xiaojie_biji',
+			data: qs.stringify(kecheng_jie) 
+			}).then(function (response) {
+				console.log(response);
+			if(response.data.status=="ok"){
+				that.$message.success({message:"笔记删除成功",duration:1600});
+				//获取课程小节笔记
+				that.getbiji();
+			}else if(response.data.status=="error"){
+				that.$message.error({message:response.data.errormsg,duration:1600});
+			}else if(response.data.status=="relogin"){
+				that.clearlocalData();
+			}
+		});
+	},
 	//获取课程小节笔记 /kecheng/get_kecheng_xiaojie_biji
 	getbiji:function(){
 		let that = this;
@@ -458,7 +490,7 @@ export default {
 			if(response.data.status=="ok"){
 				console.log("该播放课程笔记信息");
 				console.log(response.data.data);
-				that.allbiji=response.data.data.reverse();
+				that.allbiji=response.data.data;
 			}else if(response.data.status=="error"){
 				that.$message.error({message:response.data.errormsg,duration:1600});
 			}else if(response.data.status=="relogin"){
@@ -541,6 +573,7 @@ export default {
 .m-chapterList .ksname{ max-width:200px; height:26px; line-height:26px; white-space:nowrap; overflow:hidden; text-overflow:ellipsis; position:relative;margin-left: 5px;color:#999999;}
 .m-chapterList .section:hover .ks,.m-chapterList .section:hover .ksname{color:#ffffff}
 .reply-star{ width:330px;}
+.reply-star .delete{width: 50px;background-color: red;color:#fff;line-height: 30px;border-radius: 20px;float: left;margin-left: 135px;text-align: center;cursor: pointer;}
 .m-ctb{width:370px; overflow:hidden; z-index:10; position:absolute;right: 0;top:0;}
 .m-ctb .courseintro{height: auto;background:#FFF; width:370px; overflow:hidden;}
 .m-ctb .courseintro h2{ width:330px; padding:0 20px; height:70px;  line-height:70px;font-size:16px;font-weight:600;display: block; overflow: hidden;  text-overflow: ellipsis;white-space: nowrap;word-break:keep-all;-o-text-overflow:ellipsis; background:#F3F3F3;box-sizing: content-box;}
@@ -598,11 +631,11 @@ export default {
 .mt5 {margin-top: 10px;}
 .hint { color: #ccc;font-size: 12px;left: 5px; position: absolute; top: 5px;}
 .Secrecy{ background: none repeat scroll 0 0 #E82F24;border: medium none;color: #ffffff;font-size: 12px;height: 29px;line-height: 29px; padding: 0 15px;}
-#notetittle ,#questiontitle{height:26px;}
+#notetittle ,#questiontitle{height:16px;}
 #tagcontent1{background-color: #fff;}
 .tips {color: #B2B2B2;height: 26px;line-height: 27px;font-weight: bold;position: absolute;right: 0;top: -27px;font-size: 12px;}
 .tips span {color: #FF0000;font-size: 12px;}
-.edittxt{outline: none;resize: none; border: 0;background: none repeat scroll 0 0 transparent;border: medium none;font-size: 12px;height: 65px;line-height: 16px;overflow-x: hidden;overflow-y: auto; width: 100%;}
+.edittxt{outline: none;resize: none; border: 0;background: none repeat scroll 0 0 transparent;border: medium none;font-size: 12px;height: 50px;line-height: 16px;overflow-x: hidden;overflow-y: auto; width: 100%;}
 
 
 /*问答*/
