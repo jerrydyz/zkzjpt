@@ -39,7 +39,7 @@
 				<div class="courseintro">
 					<h2>{{courseInfo.title}}</h2>
 					<div class="video_rinfo" style="position:relative;">
-						<img src="http://ceshi2.jxjyedu.club/data/upload/2019/0730/16/5d400136bc6a1_147_95_147_95.jpg">
+						<img :src="courseInfo.img_url">
 						<div class="video_rinfo-con">
 							<p>年度：{{courseInfo.year}}</p>
 							<p>分类：{{courseInfo.type_name}}</p>
@@ -637,7 +637,7 @@ export default {
 #tagcontent1{background-color: #fff;}
 .tips {color: #B2B2B2;height: 26px;line-height: 27px;font-weight: bold;position: absolute;right: 0;top: -27px;font-size: 12px;}
 .tips span {color: #FF0000;font-size: 12px;}
-.edittxt{outline: none;resize: none; border: 0;background: 0 0 transparent;border: medium none;font-size: 12px;height: 50px;line-height: 16px;-overflow-x: hidden;-overflow-y: auto; width: 100%;}
+.edittxt{outline: none;resize: none; border: 0;background: 0 0 transparent;border: medium none;font-size: 12px;height: 50px;line-height: 16px;overflow: hidden;-overflow-y: auto; width: 100%;}
 
 
 /*问答*/

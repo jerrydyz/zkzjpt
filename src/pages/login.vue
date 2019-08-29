@@ -1,6 +1,9 @@
 <template>
   <div class="login">
-    <img class="login-title" src="/static/images/personal/login-logo.png"/>
+    <div class="login-title">
+      <p>周口市专业技术人员继续教育协会</p>
+      <p>Association for Continuing Education of Professional and Technical Personnel of Zhoukou </p>
+    </div>
     <div class="login-bg1">
       <img src="/static/images/personal/runperson.png" class="run-person"/>
         <div class="info-box">

@@ -154,7 +154,7 @@ export default {
     todetail (val){
       console.log(val)
         this.$router.push({
-          name:'courseDetails',
+          name:'personcourseDetails',
           params:{
             courseId:val
           }
