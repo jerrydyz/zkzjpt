@@ -36,14 +36,12 @@
             <p>{{empty_num}}</p>
           </li>
         </ul>
-      </div>
-      <div class="screen-outer">
-        <div
-          class="score-left clearfix"
-          style="position: static; top: 20px; bottom: auto; margin-top: 0px;"
-        >
+      </div> 
+      <div class="screen-outer clearfix">
+         <div class="score-left1 fl"  style="position: static; margin-top: 0px; top: 20px;"></div>
+        <div class="score-left fl"  style="position: fixed; margin-top: 0px; top: 373px;">
           <!--错题列表-->
-          <div class="error-exam fl">
+          <div class="error-exam">
             <dl class="clearfix">
               <dt>错题记录</dt>
              <template v-for=" (itemn,index) in answer" >
@@ -55,13 +53,13 @@
           </div>
         </div>
         <!--答题-->
-        <div class="score-content fl">
+        <div class="score-content fl" >
           <ul class="test-paper-box" style="padding-left:10px;box-sizing:border-box" 
           >
             <h4>试题解析</h4>
             <!--单选题-->
             <!-- 单多选 -->
-            <li class="test-paper wrong" v-for="(item,index) in datalist1"  >
+            <li class="test-paper wrong" v-for="(item,index) in datalist1" :id="item.id" >
               <h5>
                 <small @click="numberbtns($event)">{{index+1}}</small>( {{datatitle1}} {{score1}} 分 )
               </h5>
@@ -96,7 +94,7 @@
             </li>
            
             <!-- 多选 -->
-            <li class="test-paper wrong"  v-for="(check,index) in datalist2"  >
+            <li class="test-paper wrong"  v-for="(check,index) in datalist2" :id="check.id" >
               <h5>
                 <small @click="numberbtns($event)">{{index+1+datalist1.length}}</small>( {{datatitle2}} {{score2}} 分 )
               </h5>
@@ -129,7 +127,7 @@
               </div>
             </li>
             <!-- 判断题 -->
-            <li class="test-paper wrong" v-for="(dan,index) in datalist3" >
+            <li class="test-paper wrong" v-for="(dan,index) in datalist3" :id="dan.id" >
               <h5>
                 <small @click="numberbtns($event)">{{index+1+datalist1.length+datalist2.length}}</small>( {{datatitle3}} {{score3}} 分 )
               </h5>
@@ -159,7 +157,7 @@
               </div>
             </li>
             <!-- 填空 -->
-            <li class="test-paper wrong"  v-for="(tian,index) in datalist4" :key="tian.id" >
+            <li class="test-paper wrong"  v-for="(tian,index) in datalist4" :key="tian.id"  :id="tian.id">
               <h5>
                 <small  @click="numberbtns($event)">{{index+1+datalist1.length+datalist2.length+datalist3.length}}</small>( {{datatitle4}} {{score4}} 分 )
               </h5>
@@ -170,20 +168,20 @@
               </div>
               <div class="lu-ms-tim block clearfix">
                 <div class="blank-cls fl" style="background:#f7f7f7;">
-                 <span style="margin-top:-10px;background:#f7f7f7;"> 您的答案</span>
+                 <span style="margin-top:-10px;background:#f7f7f7;color:#6565:font-weight:bold"> 您的答案</span>
                   <ul style="background:#f7f7f7;" >
                     <li class="co chaokuan " style="">
-                      <span style="font-size:30px;font-weight:bold;display:inline-block;background:#f7f7f7;">
+                      <span style="font-size:30px;font-weight:bold;display:inline-block;background:#f7f7f7;color:#6565">
                        {{tian.user_answer['answer'].join("、")==" "?"未做答":tian.user_answer['answer'].join("、")}}
                       </span>
                     </li>
                   </ul>
                 </div>
-                <div class="blank-cls fl">
+                <div class="blank-cls fl" >
                   正确答案
                   <ul>
                     <li>
-                      <span>
+                      <span >
                         {{tian.answer.join("、")==' '?"未做答":tian.answer.join("、")}}
                       </span>
                     </li>
@@ -569,10 +567,17 @@ export default {
       }
     }
     .screen-outer {
+       .score-left1 {
+        width: 280px;
+        background: #fff;
+        float: left;
+        height: 10px;
+       }
       .score-left {
         width: 280px;
         background: #fff;
         float: left;
+
         .error-exam {
           width: 100%;
           box-shadow: 5px 5px 5px #ccc;

@@ -13,9 +13,9 @@
     <div class="content w clearfix">
       <div class="leftcon fl">
         <div class="top">
-          <div class="one">
+          <!-- <div class="one">
             <img src="../assets/my01.png" alt />
-          </div>
+          </div> -->
           <p class="p1">{{name}}</p>
           <p class="p2">{{id_card}}</p>
           <p class="p3" @click="more('changemsg')">个人设置</p>
@@ -252,6 +252,8 @@ export default {
           background-color: #fff;
           ul{
               width: 100%;
+              padding:30px 0 60px  ;
+              box-sizing: border-box;
               li{
               width: 100%;
               height: 45px;
