@@ -36,7 +36,7 @@
                         <div class="sex-box">性别：<span class="sex">{{sex=='1'?"男":'女'}}</span></div>
                         <div class="year-box">培训年度：<span class="year">{{year}}年</span></div>
                     </div>
-                    <div class="xueshi">该学员参加年度专业技术人员继续教育专业科目的网络学习，通过考核。<br>累计完成<span id="alltime">{{xueshinum}}</span>学时。</div>
+                    <div class="xueshi">该学员参加年度专业技术人员继续教育专业科目的网络学习，通过考核。<br>累计完成<span class="alltime">{{xueshinum}}</span>学时。</div>
                     <div class="tczm">特此证明。</div>
                     <div class="date" v-html="riqi"></div>
                 </div>
@@ -116,8 +116,7 @@ export default {
                     console.log(that.list)
                     if(res.data.data.length){
                         that.nodata=false
-                        // that.xueshinum=res.data.data[0]['xueshi_num']
-                        // console.log( that.xueshinum)
+                        
                     }else{
                         that.nodata=true
                     }
@@ -132,10 +131,13 @@ export default {
        downloadCertificate:function(num){
            var that=this
            for(var i=0;i< that.list.length;i++){
-                that.xueshinum=that.list[i]['xueshi_num']
+                that.xueshinum=parseFloat(that.list[i]['get_gongxuke_xueshi_num'])+parseFloat(that.list[i]['get_zhuanyeke_xueshi_num']);
+                //that.xueshinum=parseFloat(Number(res.data.data[0].get_gongxuke_xueshi_num).toFixed(1))+parseFloat(Number(res.data.data[0].get_zhuanyeke_xueshi_num).toFixed(1));
+                console.log( that.xueshinum);
            }
            console.log(num)
         //    this.xueshinum=num
+        setTimeout(() => {
             html2canvas(this.$refs.certificate).then(function(canvas) {
                 var base64 = canvas.toDataURL("image/jpeg", 1);
                 var a = document.createElement("a");
@@ -143,6 +145,8 @@ export default {
                 a.download = "证书下载";
                 a.click();
             });
+        }, 500);
+            
     },
     }
 
@@ -253,7 +257,7 @@ export default {
                 .certificate-box .name-box{width: 220px;}
                 .certificate-box .sex-box{width: 220px;}
                 .certificate-box .xueshi{width: 648px;margin: 20px auto 0;text-indent: 68px;font-size: 18px;line-height: 30px;}
-                .certificate-box .alltime{width: 130px;height: 30px;line-height: 30px;font-size: 18px;display: inline-block;border-bottom: 1px solid #000;text-indent: 0;text-align: center;}
+                .certificate-box .alltime{width: 60px;height: 30px;line-height: 30px;font-size: 18px;display: inline-block;border-bottom: 1px solid #000;text-indent: 0;text-align: center;}
                 .certificate-box .tczm{width: 648px;margin: 20px auto 0;text-indent: 72px;font-size: 18px;}
                 .certificate-box .date{position: absolute;right:108px;bottom:75px;font-size: 18px;font-family: 'Microsoft YaHei';}
                 .certificate-box .date span{font-size: 18px;font-family: 'KaiTi';}

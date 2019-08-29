@@ -34,13 +34,13 @@
          </div>
          <div class="bottom">
              <h3 class="tit">课程包</h3>
-            <div class="shang clearfix" v-for="item in allcourse" :key="item.id" @click="gopackage">
+            <div class="shang clearfix" v-for="item in allcourse" :key="item.id" @click="gopackage(item.id)">
                  <div class="imgleft fl">
                      <img :src="item.img_url" alt="">
                  </div>
                  <div class="imgmodel fl">
                      <h3 class="lgtit">{{item.title}}</h3>
-                     <p>学时:&nbsp;{{item.xueshi_num}}</p>
+                     <p>学时:&nbsp;{{parseInt(item.gongxuke_xueshi_num)+parseInt(item.zhuanyeke_xueshi_num) }}</p>
                  </div>
                  <div class="imgright fr">
                       <p>价格：{{item.price}}</p>
@@ -193,8 +193,13 @@ export default {
       download (){
           this.$emit('more','archives')
       },
-      gopackage (){
-           this.$emit('more','packages') 
+      gopackage (id){
+           this.$router.push({
+                path:'/personalpackage',
+                query:{
+                    codeid:id
+                }
+            });
       },
       //获取全部课程
       getallcourse (){
@@ -240,7 +245,11 @@ export default {
                 console.log("获取课成学时")
                 console.log(res)
                 if(res.data.data.length){
-                    that.xueshi=res.data.data.xueshi_num
+                    let zhuanyeke=Number(res.data.data[0].get_zhuanyeke_xueshi_num).toFixed(1);
+                    let gongxuke=Number(res.data.data[0].get_gongxuke_xueshi_num).toFixed(1);
+                    console.log(zhuanyeke);
+                    console.log(gongxuke);
+                    that.xueshi=Number(zhuanyeke)+Number(gongxuke);
                 }else{
                     that.xueshi=0
                 }

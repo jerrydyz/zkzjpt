@@ -13,7 +13,7 @@
             <div class="item-title">{{item.title}}</div>
             <div class="item-time clearfix">
             </div>
-            <div class="total-time">学时：<span>{{parseInt(item.gongxuke_xueshi_num)+parseInt(item.zhuanyeke_xueshi_num)}}</span></div>
+            <div class="total-time">学时：<span>{{Number(parseFloat(item.gongxuke_xueshi_num).toFixed(1))+Number(parseFloat(item.zhuanyeke_xueshi_num).toFixed(1))}}</span></div>
           </div>
           <div class="price-box fr">
             <div class="price"><span class="rmb">￥{{item.price}} 元</span></div>
@@ -202,8 +202,6 @@ export default {
          query:{
               codeid:id
            }
-           
-         
        })
     }
   }
