@@ -207,7 +207,7 @@
 
                   <div class="choice shiti_select_div"  :shiti_id="tian.id" :shiti_type="tian.type">
                     <ul class="blanks">
-                      <li v-for="knum in tian.kong_num">
+                      <li v-for="knum in tian.kong_num" >
                             <input type="text" :shiti_tiankong="['tiankong_'+tian.id]">
                       </li>
                     </ul>
