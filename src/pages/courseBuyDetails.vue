@@ -1,4 +1,14 @@
 <template>
+<div class="my">
+  <div class="title">
+      <div class="top w clearfix">
+        <p class="fl">周口市专业技术人员继续教育协会</p>
+        <p class="fr xiaoshou">
+          <span class="spn1" @click="personal" >个人中心</span>
+          <span @click="goback">退出</span>
+        </p>
+      </div>
+    </div>
   <div class="courseBuyDetails">
         <div class="class-order">
           <div class="class_order_box" style="background:#fff">
@@ -70,13 +80,19 @@
             </div>
         </div>
   </div>
+  <foot></foot>
+</div>
 </template>
 
 <script>
 import qs from 'qs'
 import { Message } from 'element-ui';
+import foot from '@/components/footer';
 export default {
   name: "courseBuyDetails",
+  components:{
+    foot,
+  },
   data() {
     return {
       selectstate: 1,
@@ -110,6 +126,24 @@ export default {
       });
   },
   methods:{
+    //返回个人中心
+    personal(){
+        this.$router.push({path:'/my'});
+    },
+    //返回按钮
+      goback (){
+          var that =this
+          this.$axios.post(this.apiurl+'/user/logout',
+           qs.stringify({
+             uid:this.uid,
+             token:this.token
+           })
+          ).then(res =>{
+            that.$message.success({message:"退出成功",duration:1600});
+            that.clearlocalData();
+            
+          })
+      },
       //状态为relogin时清除local数据
       clearlocalData:function(){
         this.$message.error({message:"请重新登录",duration:1600});
@@ -196,7 +230,36 @@ export default {
 
 <!-- Add "scoped" attribute to limit CSS to this component only -->
 <style scoped lang="less">
+.my {
+  width: 100%;
+  height: 100%;
+  background-color: #f4f4f4;
+  cursor: default;
+  .w {
+    width: 1200px;
+    margin: 0 auto;
+  }
+  
+  .title {
+    width: 100%;
+    height: 72px;
+    line-height: 72px;
+    background-color: #0169cc;
+    color: #fff;
+    font-size: 28px;
+    letter-spacing: 2px;
+    .fr {
+      font-size: 16px;
+      .spn1 {
+        margin-right: 45px;
+      }
+      span{cursor: pointer;}
+    }
+  }
+  
+  }
 .courseBuyDetails{width: 1200px;margin: 45px auto 0;}
+.courseBuyDetails .class-order{min-height: 640px;}
 .class_order_tit{margin-bottom:15px;color:#000;font-size:18px;}
 .class_order_box{margin-bottom:20px;padding:19px;border:solid 1px #ededed;}
 .class_order_box .tit{margin-bottom:30px;color:#333;font-size:14px;background: #fafafa;padding: 0 2%;line-height: 40px;}

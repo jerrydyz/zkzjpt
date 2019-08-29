@@ -153,18 +153,14 @@ export default new Router({
             path: '/courseBuyDetails',
             name: 'courseBuyDetails',
             components: {
-                comheader: commonHeader,
                 default: courseBuyDetails,
-                comfooter: commonFooter,
             }
         },
         {
             path: '/packagebuy',
             name: 'packagebuy',
             components: {
-                comheader: commonHeader,
                 default: packagebuy,
-                comfooter: commonFooter,
             }
         },
         {
