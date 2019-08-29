@@ -437,3 +437,37 @@ export default {
     }
 
 </style>
+<style lang="less">
+
+	.el-pagination {
+		text-align: right;
+		margin-top: 15px;
+		margin-right: 80px;
+	}
+	.el-pagination button {
+		background-color: transparent;
+		i {
+			color: #fff;
+		}
+	}
+	.el-pager li {
+		background-color: transparent;
+		color:#fff;
+	}
+	.el-pager li.active {
+		color: #409eff;
+		cursor: default;
+	}
+	.el-pagination button:disabled {
+		background-color: transparent;
+		i {
+			color: #303133;
+		}
+	}
+	.el-pagination .btn-next {
+		background-color: transparent;
+	}
+	.el-pagination .btn-prev {
+		background-color: transparent !important;
+    }
+</style>

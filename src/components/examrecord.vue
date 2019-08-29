@@ -19,7 +19,7 @@
                     <li class="fl l1">{{item.shijuan_title}}</li>
                      <li class="fr l2" @click="todetail(item.id)">查看详情</li>
                      <li class="fr l2 active" v-if="item.is_pass=='0'">{{item.is_pass=='0'?'未通过':'考试通过'}}</li>
-                    <li class="fr l2" v-else>{{item.is_pass=='0'?'未通过':'考试通过'}}</li>
+                    <li class="fr l2 active1" v-else>{{item.is_pass=='0'?'未通过':'考试通过'}}</li>
                     <li class="fr l3">{{item.zong_score}}</li>
                     <li class="fr l4">{{item.score}}</li>
                      <li class="fr l5"> {{item.time}}</li>
@@ -244,6 +244,9 @@ export default {
                        &.active{
                          color:red;
                     }  
+                      &.active1{
+                         color:green;
+                    } 
                      &.l5{
                         width: 260px;
                         text-align: center;

@@ -26,8 +26,8 @@
                         <li class="fl l7">{{item.kecheng_title}}</li>
                      <!-- <li class="fl l5">{{item.is_pass=="0"?'未通过':"考试通过"}}</li> -->
                     <li class="fl l5 active" v-if="item.is_pass=='0'">{{item.is_pass=="0"?'未通过':"考试通过"}}</li>
-                    <li class="fl l5" v-else>{{item.is_pass=="0"?'未通过':"考试通过"}}</li>
-                    <li class="fl l6" @click="gostady(item.id)">{{item.is_pass==1?'--':item.is_pass==0&&item.enable_kaoshi==0?'继续学习':item.is_pass==0&&item.enable_kaoshi==1?'去考试':'' }}</li>
+                    <li class="fl l5 active1" v-else>{{item.is_pass=="0"?'未通过':"考试通过"}}</li>
+                    <li class="fl l6" @click="gostady($event,item.id)">{{item.is_pass==1?'--':item.is_pass==0&&item.enable_kaoshi==0?'继续学习':item.is_pass==0&&item.enable_kaoshi==1?'去考试':'' }}</li>
                 </ul>
             </div>
              <!-- <div class="block" style="text-align:right;margin-top:20px;">
@@ -140,26 +140,20 @@ export default {
                 }
             });
        },
-       gostady (num){
+       gostady (e,num){
            var that=this
-           for(var i=0;i<this.data.length;i++){
-                if(this.data[i].enable_kaoshi==1){
-                    that.$router.push({
+           console.log(e,num)
+           if(e.target.innerHTML=="继续学习"){
+               that.$emit('more','allCourses')
+           }
+           if(e.target.innerHTML=="去考试"){
+               that.$router.push({
                         path:'/kaoshi',
                         query:{
                             shijuan_id:num
                         }
                     })
-                }else{
-                    if(this.data[i].is_pass==1){
-                             that.$emit('more','examination')
-                    }else{
-                             that.$emit('more','allCourses')
-                    }
-                    
-                }
-                }
-          
+           }
        },
        current_change (currentPage){
            this.currentPage=currentPage
@@ -252,6 +246,9 @@ export default {
                      &.active{
                          color:red;
                     }   
+                      &.active1{
+                         color:green;
+                    } 
 
                      &.l6{
                          text-align: right;

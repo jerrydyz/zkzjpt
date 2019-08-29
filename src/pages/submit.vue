@@ -169,17 +169,17 @@
               <div class="choice">
               </div>
               <div class="lu-ms-tim block clearfix">
-                <span class="blank-cls bgco">
-                  您的答案
-                  <ul>
-                    <li class="co">
-                      <span style="font-size:30px;font-weight:bold">
+                <div class="blank-cls fl" style="background:#f7f7f7;">
+                 <span style="margin-top:-10px;background:#f7f7f7;"> 您的答案</span>
+                  <ul style="background:#f7f7f7;" >
+                    <li class="co chaokuan " style="">
+                      <span style="font-size:30px;font-weight:bold;display:inline-block;background:#f7f7f7;">
                        {{tian.user_answer['answer'].join("、")==" "?"未做答":tian.user_answer['answer'].join("、")}}
                       </span>
                     </li>
                   </ul>
-                </span>
-                <span class="blank-cls">
+                </div>
+                <div class="blank-cls fl">
                   正确答案
                   <ul>
                     <li>
@@ -188,7 +188,7 @@
                       </span>
                     </li>
                   </ul>
-                </span>
+                </div>
               </div>
               <div class="fz block">
                 <b>解析：</b>
@@ -612,7 +612,7 @@ export default {
         }
       }
       .score-content {
-        width: 890px;
+        width: 905px;
         margin-left: 15px;
         background-color: #fff;
         .test-paper-box {
@@ -675,6 +675,25 @@ export default {
             .lu-ms-tim {
               color: #51cb96;
               // display: none;
+              // border: 1px solid red;
+              div{
+                 display: inline-block;
+                // float: left;
+                padding: 5px 50px;
+                font-size: 14px;
+                background: #f0fefa;
+                text-align: center;
+                line-height: 36px;
+                box-sizing: border-box;
+                margin-right:10px;
+                // border: 1px solid red;
+                height: 93px;
+                strong {
+                  display: block;
+                  font-size: 30px;
+                    // border: 1px solid red;
+                }
+              }
               span {
                 display: inline-block;
                 // float: left;
@@ -712,6 +731,15 @@ export default {
             }
             .kd {
               margin: 20px;
+            }
+            .chaokuan{
+                overflow: hidden;
+                text-overflow:ellipsis;
+                white-space: nowrap;
+                // border:1px solid red;
+               padding:0 10px;
+               width: 300px;
+              
             }
           }
         }
