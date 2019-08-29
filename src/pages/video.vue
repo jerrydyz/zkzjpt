@@ -203,7 +203,7 @@ export default {
 		  clearInterval(this.T);
 		  let val = this.$route.query.courseId;
 		  this.$router.push({
-          name:'courseDetails',
+          name:'personcourseDetails',
           params:{
             courseId:val
           }
