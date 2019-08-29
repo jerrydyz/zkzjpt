@@ -8,7 +8,8 @@
             <li class="fl" v-for="item in datalist" :key="item.id" @click="todetail(item.id)">
                 <p><img :src="item.img_url" alt=""></p>
                 <p class="txt">{{item.title}}(<span>{{item.xueshi_num}}</span>课时)</p>
-                <p class="tit">{{item.title}}</p>  
+                <!-- <p class="tit">{{item.title}}</p>   -->
+                <p style="padding:10px 0;box-sizing:border-box; "><el-progress :percentage="used"></el-progress></p>
                 <p style="color:red;"><span>主讲:&nbsp;</span>{{item.jiangshi.name}}</p>         
             </li>
            
@@ -58,6 +59,7 @@ export default {
         var date=new Date;
         this.year=date.getFullYear()
         this.checkkecheng()
+        
     },
     methods: {
       //分页
@@ -102,6 +104,7 @@ export default {
                   console.log(i)
                 //  获取课程id
                   that.idd =that.datalist[i].id;
+                  this.getprogress()
               }
             }else if((res.data.status=="error")){
               this.$message.error({message:res.data.errormsg,duration:1600});
@@ -132,6 +135,8 @@ export default {
               token:that.token
             })
         ).then(res =>{
+          console.log("哈哈哈哈")
+          console.log(res)
           if(res.data.status=="ok"){
             that.used=res.data.progress
           }else if((res.data.status=="error")){
