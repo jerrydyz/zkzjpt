@@ -203,7 +203,7 @@ export default {
 		  clearInterval(this.T);
 		  let val = this.$route.query.courseId;
 		  this.$router.push({
-          name:'courseDetails',
+          name:'personcourseDetails',
           params:{
             courseId:val
           }
@@ -221,6 +221,9 @@ export default {
 	onPlayerEnded:function($event){
 		console.log("播放结束");
 		this.wslink();
+		setTimeout(() => {
+			this.wslink();
+		}, 5000);
 	},
 	init:function(){
 		//获取播放课程信息

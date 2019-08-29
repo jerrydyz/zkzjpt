@@ -1,8 +1,8 @@
 <template>
   <div class="login">
     <div class="login-title">
-      <p>周口市专业技术人员继续教育协会</p>
-      <p>Association for Continuing Education of Professional and Technical Personnel of Zhoukou </p>
+      <p class="chinese-title">周口市专业技术人员继续教育协会</p>
+      <p class="en-title">Association for Continuing Education of Professional and Technical Personnel of Zhoukou </p>
     </div>
     <div class="login-bg1">
       <img src="/static/images/personal/runperson.png" class="run-person"/>
@@ -134,7 +134,9 @@ export default {
 <!-- Add "scoped" attribute to limit CSS to this component only -->
 <style scoped lang="less">
 .login{width: 100%;height: 965px;background-image: url(/static/images/personal/login-bg.png);overflow:hidden; }
-.login .login-title{width: 903px;height: 77px;margin: 116px auto 30px;display: block;}
+.login .login-title{width: 903px;height: 100px;margin: 100px auto 50px;display: block;}
+.login .login-title .chinese-title{font-size: 50px;font-weight: bold;color: #c60404;text-align: center;letter-spacing: 5px;}
+.login .login-title .en-title{font-size: 19px;color: #c60404;text-align: center;}
 .login .login-bg1{width: 1154px;height: 467px;margin: 0 auto;box-shadow: 0 0 10px #aaa;position: relative;}
 .login .login-bg1 .info-box{width: 252px;position: absolute;right: 55px;top:75px;}
 .login .login-bg1 .run-person{position: absolute;left: 0;top:0;}
@@ -145,7 +147,8 @@ export default {
 .login .login-bg1 .info-box .btns-box .btn-regin{color: #c60404;font-size: 12px;}
 .login .login-bg1 .info-box button{width: 100%;height: 48px;background-color: #c60404;border-radius: 5px;text-align: center;line-height: 48px;color: #fff;font-size: 16px;letter-spacing: 1px;margin-top: 23px;}
 .login .white-line{width: 1363px;height: 1px;background-color: #fff;margin: 20px auto 0;}
-.login .copy-right{text-align: center;font-size: 14px;color:#575656;margin-top: 155px;}
+.login .copy-right{text-align: center;font-size: 14px;color:#575656;margin-top: 125px;}
+.login .copy-right a{color:#575656;}
 .register_content_input{width:252px; height: 48px;box-sizing: border-box;padding-left: 15px;border: 1px solid #c1c1c1;border-radius: 5px;margin: 0 auto;font-size: 14px;}
 .input-pw{margin-top: 12px;}
 .yanzhengma_input{width: 127px;height: 40px;font-size: 14px;box-sizing: border-box;padding-left: 15px;border-radius: 5px;border: 1px solid #c1c1c1;display: inline-block;vertical-align: middle;margin-top: 12px;}
