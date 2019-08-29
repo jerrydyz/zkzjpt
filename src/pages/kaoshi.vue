@@ -12,7 +12,8 @@
     <div class="topbox bg3f">
       <div class="screen-outer">
         <div class="screen-outer">
-          <div class="exercises-left"  style="position: static; margin-top: 0px; top: 20px;">
+          <div class="exercises-left1"  style="position: static; margin-top: 0px; top: 20px;"></div>
+          <div class="exercises-left"  style="position: fixed; margin-top: 0px; top: 100px;">
             <div class="study-record">
               <ul class="study-record-box">
                 <li class="bgclr">
@@ -29,14 +30,14 @@
               <!--答题卡-->
               <dl class="answer-sheet">
                 <dt>答题卡</dt>
-                <dd class="datika " :class="{active:bgcolor}" v-for="(item1,index) in datalist1" :name="['danxuan_'+item1.id]"   @click="leftBtn($event)">{{index+1}}</dd>
-                <dd class="datika"  v-for="(item2,index) in datalist2"  @click="leftBtn($event)">{{index+datalist1.length+1}}</dd>
-                 <dd class="datika"  v-for="(item3,index) in datalist3"  @click="leftBtn($event)">{{index+datalist1.length+datalist2.length+1}}</dd>
-                  <dd class="datika"  v-for="(item4,index) in datalist3"  @click="leftBtn($event)">{{index+datalist1.length+datalist2.length+datalist3.length+1}}</dd>
+                <dd class="datika " :class="{active:bgcolor}" v-for="(item1,index) in datalist1"  :xshiti_id="item1.id"  @click="leftBtn($event)"><a :href="'#'+item1.id">{{index+1}}</a></dd>
+                <dd class="datika"  v-for="(item2,index) in datalist2" :xshiti_id="item2.id" @click="leftBtn($event)"><a :href="'#'+item2.id">{{index+datalist1.length+1}}</a></dd>
+                 <dd class="datika"  v-for="(item3,index) in datalist3" :xshiti_id="item3.id" @click="leftBtn($event)"><a :href="'#'+item3.id">{{index+datalist1.length+datalist2.length+1}}</a></dd>
+                  <dd class="datika"  v-for="(item4,index) in datalist4" :xshiti_id="item4.id" @click="leftBtn($event)"><a :href="'#'+item4.id">{{index+datalist1.length+datalist2.length+datalist3.length+1}}</a></dd>
               </dl>
             </div>
           </div>
-            <div class="exercises-content">
+            <div class="exercises-content" >
               <ul class="test-paper-box">
                 <h3>{{tit}}</h3>
                 <!--单选题-->
@@ -44,6 +45,7 @@
                   class="test-paper"
                   v-for="(item,index) in datalist1"
                   :key="item.id"
+                  :id="item.id"
                 >
                   <h5>
                     <small>{{index+1}}</small>
@@ -61,9 +63,9 @@
                   </ul>
                   <div class="choice shiti_select_div" :shiti_id="item.id" :shiti_type="item.type" >
                     <ul>
-                      <li v-for="(key,val) in xuanze">
-                        <label >
-                          <input class="anserItem" type="radio" :name="['danxuan_'+item.id]" :value="val"  @click="radio($event,item.id,index)" />
+                      <li v-for="(key,val) in xuanze" >
+                        <label @click="radio(item.id)" >
+                          <input class="anserItem" type="radio" :name="['danxuan_'+item.id]" :value="val"   />
                           {{val}}
                           </label>
                         
@@ -92,6 +94,7 @@
                   data-question-num="6"
                   v-for="(check,index) in datalist2"
                   :key="check.id"
+                   :id="check.id"
                 >
                   <h5>
                     <small>{{index+datalist1.length+1}}</small> (
@@ -115,7 +118,7 @@
                   <div class="choice shiti_select_div"  :shiti_id="check.id" :shiti_type="check.type">
                     <ul>
                       <li v-for="(key,val) in xuanze2" >
-                        <label  @click="checkbox($event,check.id,index+Math.random())">
+                        <label  @click="checkbox(check.id)">
                           <input class="anserItem" type="checkbox"  :name="['duoxuan_'+check.id+'[]']" :value='val'/>
                         {{key}}
                         </label>
@@ -145,6 +148,7 @@
                   data-question-num="7"
                   v-for="(dan,index) in datalist3"
                   :key="dan.id"
+                  :id="dan.id"
                 >
                   <h5>
                     <small>{{index+datalist1.length+datalist2.length+1}}</small>（
@@ -166,8 +170,8 @@
                   <div class="choice shiti_select_div"  :shiti_id="dan.id" :shiti_type="dan.type">
                     <ul>
                       <li v-for="(key,val) in xuanze3">
-                        <label>
-                          <input class="anserItem" type="radio" :name="['panduan_'+dan.id]" :value="val"  @click="panduan($event,dan.id,index+Math.random()*10)"/>
+                        <label @click="panduan(dan.id)">
+                          <input class="anserItem" type="radio" :name="['panduan_'+dan.id]" :value="val"  />
                           {{key}}
                         </label>
                       </li>
@@ -193,6 +197,7 @@
                   class="test-paper"
                   v-for="(tian,index) in datalist4"
                   :key="tian.id"
+                  :id="tian.id"
                 >
                   <h5>
                     <small>{{index+datalist1.length+datalist2.length+datalist3.length+1}}</small>(
@@ -208,7 +213,7 @@
                   <div class="choice shiti_select_div"  :shiti_id="tian.id" :shiti_type="tian.type">
                     <ul class="blanks">
                       <li v-for="knum in tian.kong_num" >
-                            <input type="text" :shiti_tiankong="['tiankong_'+tian.id]">
+                            <input type="text" :shiti_tiankong="['tiankong_'+tian.id]" @focus="tiankong($event,tian.id)">
                       </li>
                     </ul>
                     <div class="collection" style="display:none">
@@ -349,25 +354,20 @@ export default {
      this.time=this.tMsg;
     },
     //获取单选按钮的值
-    radio(e,id,num) {
-      // console.log(this.datika.length)
-      console.log(e.target.checked)
-       var datika=document.getElementsByClassName('datika')
-       console.log(datika)
-     
-      
+    radio(id) {
+      $("dd[xshiti_id='"+id+"']").addClass("active");
     },
     //获取多选按钮的值
-    checkbox(e,id,num) {
-      // console.log(e.target.value,id,num)
-      // console.log(this.checkeboxs)
-      // Vue.set(this.answers,num,{'shiti_id':id,'answer':this.checkeboxs})
+    checkbox(id) {
+      $("dd[xshiti_id='"+id+"']").addClass("active");
     },
     //获取判断的值
-    panduan(e,id,num) {
-      // console.log(e.target.value,id,num)
-      // Vue.set(this.answers,num,{'shiti_id':id,'answer':e.target.value})
-      // console.log(this.answers)
+    panduan(id) {
+      $("dd[xshiti_id='"+id+"']").addClass("active");
+    },
+    //获取填空的值
+    tiankong(id) {
+      $("dd[xshiti_id='"+id+"']").addClass("active");
     },
    // 查看解析
     lookjiexi(dat) {
@@ -686,6 +686,12 @@ export default {
   margin: 0 auto;
   display: table;
 }
+.exercises-left1 {
+  width: 220px;
+  background: #fff;
+  float: left;
+  height: 10px;
+}
 .exercises-left {
   width: 220px;
   background: #fff;
@@ -760,7 +766,8 @@ export default {
   cursor: pointer;
   margin: 20px 6px 10px 10px;
   &.active{
-  color:red
+  background-color: #ea6c6c;
+  color:#fff;
 }
 }
 .answer-sheet dd a {

@@ -9,8 +9,9 @@
                     <li class="fl l1">年度</li>
                     <li class="fl l2">试卷名称</li>
                     <li class="fl l3">总分数</li>
-                    <li class="fl l4">公需课学时</li>
-                     <li class="fl l4">专业课学时</li>
+                    <!-- <li class="fl l4">公需课学时</li>
+                     <li class="fl l4">专业课学时</li> -->
+                      <li class="fl l4">学时</li> 
                       <li class="fl l4">课程题目</li>
                      <li class="fl l5">状态</li>
                      <li class="fl l6">操作</li>
@@ -21,8 +22,9 @@
                     <li class="fl l1">{{item.year}}</li>
                     <li class="fl l2">{{item.shijuan_info.title}}</li>
                      <li class="fl l3">{{item.shijuan_info.score}}</li>
-                      <li class="fl l4">{{item.gongxuke_xueshi_num}}</li>
-                       <li class="fl l4">{{item.zhuanyeke_xueshi_num}}</li>
+                      <!-- <li class="fl l4">{{item.gongxuke_xueshi_num}}</li>
+                       <li class="fl l4">{{item.zhuanyeke_xueshi_num}}</li> -->
+                        <li class="fl l4">{{(Number(item.gongxuke_xueshi_num)+Number(item.zhuanyeke_xueshi_num)).toFixed(1)}}</li>
                         <li class="fl l7">{{item.kecheng_title}}</li>
                      <!-- <li class="fl l5">{{item.is_pass=="0"?'未通过':"考试通过"}}</li> -->
                     <li class="fl l5 active" v-if="item.is_pass=='0'">{{item.is_pass=="0"?'未通过':"考试通过"}}</li>
@@ -199,7 +201,7 @@ export default {
                     font-size:14px;
                     color:#fff;
                     text-align: center;
-                    width: 12.5%;
+                    width: 14.2%;
                      cursor: default;
                      &.l1{
                         text-align: left;
@@ -232,7 +234,7 @@ export default {
                     font-size:14px;
                     color:#868686;
                     text-align: center;
-                    width: 12.5%;
+                    width: 14.2%;
                      cursor: default;
                      &.l1{
                         text-align: left;

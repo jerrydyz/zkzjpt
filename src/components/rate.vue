@@ -448,35 +448,39 @@ export default {
 </style>
 <style lang="less">
 
-	.el-pagination {
+	.rate{
+        .el-pagination {
 		text-align: right;
 		margin-top: 15px;
 		margin-right: 80px;
 	}
 	.el-pagination button {
-		background-color: transparent;
+		background-color: #f4f4f4 !important;;
 		i {
-			color: #fff;
+			color:  #303133 !important;;
 		}
 	}
 	.el-pager li {
-		background-color: transparent;
-		color:#fff;
+		background-color: transparent !important;;
+		color:#f4f4f4 !important;;
 	}
 	.el-pager li.active {
-		color: #409eff;
+		color: #409eff !important;;
 		cursor: default;
 	}
 	.el-pagination button:disabled {
-		background-color: transparent;
+		background-color: #f4f4f4 !important;;
 		i {
-			color: #303133;
+			color: #303133 !important;;
 		}
 	}
 	.el-pagination .btn-next {
-		background-color: transparent;
+		background-color: #f4f4f4;
 	}
 	.el-pagination .btn-prev {
-		background-color: transparent !important;
+		background-color: #f4f4f4 !important;
     }
+    }
+    
+
 </style>
