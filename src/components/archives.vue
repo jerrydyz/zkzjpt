@@ -16,8 +16,8 @@
              <div class="topcon" v-show="!nodata">
                <ul v-for="item in list" :key="item.id">
                     <li class="l1">{{item.year}}</li>
-                    <li>{{name}}</li>
-                    <li>{{id_card}}</li>
+                    <li>{{item.name}}</li>
+                    <li>{{item.id_card}}</li>
                     <li>{{parseInt(item.get_gongxuke_xueshi_num)+parseInt(item.get_zhuanyeke_xueshi_num)}}</li>
                     <li class="l6"  @click="downloadCertificate(item.id)">下载证书</li>
                 </ul>
