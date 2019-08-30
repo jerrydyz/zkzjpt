@@ -81,6 +81,30 @@
         </div>
   </div>
   <foot></foot>
+  <template>
+  <!-- <el-button type="text" @click="outerVisible = true">点击打开外层 Dialog</el-button> -->
+  
+  <el-dialog title="充值" :visible.sync="outerVisible">
+    <!-- <el-dialog
+      width="30%"
+      title="充值"
+      :visible.sync="innerVisible"
+      >
+    </el-dialog> -->
+    <div class="clearfix">
+      <p class="fl"> <i class="iconfont icon-info" style="font-size:40px;margin-right:15px;color:orange"></i></p>
+      <div class="fl">
+         <h3 style="font-weight:bold;color:#333;">请在新打开的页面进行充值</h3>
+         <span>充值完成后，根据您的情况点击下面按钮</span>
+      </div>
+    </div>
+    <div slot="footer" class="dialog-footer">
+
+      <el-button @click="outerVisible = false">充值失败</el-button>
+      <el-button type="primary" @click="outerVisible = false">充值成功</el-button>
+    </div>
+  </el-dialog>
+</template>
 </div>
 </template>
 
@@ -104,6 +128,8 @@ export default {
       teacher:'',
       rulestate:true,
       apiurl:'http://jixujiaoyu_api.songlongfei.club:1012',
+      outerVisible: false,
+        innerVisible: false
     };
   },
   
@@ -192,6 +218,7 @@ export default {
               //alipay
             var urllink='http://jixujiaoyu_api.songlongfei.club:1012/pay/alipay?uid='+localStorage.getItem("uid")+'&token='+localStorage.getItem("token")+'&type='+2+'&type_id='+this.buycourseId+''
             window.open(urllink);
+             this.outerVisible=true
           }else if(this.selectstate==2){
               //wxpay
                 let buycourse={uid:localStorage.getItem("uid"),token:localStorage.getItem("token"),type:'2',type_id:this.buycourseId}
@@ -209,6 +236,7 @@ export default {
                     
                 });
           }
+          
         }else{
           this.$message.error({message: '请同意阅读条款',duration:1600});
         }

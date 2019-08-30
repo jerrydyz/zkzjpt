@@ -212,8 +212,8 @@
 
                   <div class="choice shiti_select_div"  :shiti_id="tian.id" :shiti_type="tian.type">
                     <ul class="blanks">
-                      <li v-for="knum in tian.kong_num" >
-                            <input type="text" :shiti_tiankong="['tiankong_'+tian.id]" @focus="tiankong($event,tian.id)">
+                      <li v-for="(knum,index) in tian.kong_num">
+                            {{index+1}}、<input type="text" :shiti_tiankong="['tiankong_'+tian.id]" @focus="tiankong($event,tian.id)" @blur="tiankongFous($event,tian.id)">
                       </li>
                     </ul>
                     <div class="collection" style="display:none">
@@ -366,9 +366,20 @@ export default {
       $("dd[xshiti_id='"+id+"']").addClass("active");
     },
     //获取填空的值
-    tiankong(id) {
-      $("dd[xshiti_id='"+id+"']").addClass("active");
+    tiankong(e,id) {
+      if(e.target.value==""){
+           $("dd[xshiti_id='"+id+"']").removeClass("active");
+      }else{
+         $("dd[xshiti_id='"+id+"']").addClass("active");
+      }
     },
+     tiankongFous (e,id){
+         if(e.target.value==""){
+           $("dd[xshiti_id='"+id+"']").removeClass("active");
+      }else{
+         $("dd[xshiti_id='"+id+"']").addClass("active");
+      }
+      },
    // 查看解析
     lookjiexi(dat) {
       console.log(dat);
@@ -735,6 +746,7 @@ export default {
   line-height: 48px;
   font-size: 16px;
   text-align: center;
+  cursor: pointer;
 }
 .study-record-box li a {
   color: #888;
@@ -753,6 +765,7 @@ export default {
   text-align: center;
   line-height: 50px;
   background: #eee;
+  cursor: default;
 }
 .answer-sheet dd {
   background: #fff;
@@ -768,6 +781,9 @@ export default {
   &.active{
   background-color: #ea6c6c;
   color:#fff;
+  a{
+    color:#fff;
+  }
 }
 }
 .answer-sheet dd a {
@@ -929,7 +945,8 @@ export default {
 
 .test-paper .choice ul {
   float: left;
-  margin-left: 40px;
+  margin-left: 5px;
+  width: 100%;
 }
 
 .test-paper .choice li {

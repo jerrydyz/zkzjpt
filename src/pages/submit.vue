@@ -172,7 +172,7 @@
                   <ul style="background:#f7f7f7;" >
                     <li class="co chaokuan " style="">
                       <span style="font-size:30px;font-weight:bold;display:inline-block;background:#f7f7f7;color:#6565">
-                       {{tian.user_answer['answer'].join("、")==" "?"未做答":tian.user_answer['answer'].join("、")}}
+                      <abbr :title="tian.user_answer['answer'].join('、')==''?'未做答':tian.user_answer['answer'].join('、')"> {{tian.user_answer['answer'].join("、")=="'' "?"未做答":tian.user_answer['answer'].join("、")}}</abbr>
                       </span>
                     </li>
                   </ul>
@@ -569,7 +569,7 @@ export default {
     .screen-outer {
        .score-left1 {
         width: 280px;
-        background: #fff;
+        background: #f4f4f4;
         float: left;
         height: 10px;
        }

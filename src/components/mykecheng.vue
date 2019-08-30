@@ -9,7 +9,7 @@
                 <p><img :src="item.img_url" alt=""></p>
                 <p class="txt">{{item.title}}(<span>{{item.xueshi_num}}</span>课时)</p>
                 <!-- <p class="tit">{{item.title}}</p>   -->
-                <p style="padding:10px 0;box-sizing:border-box; "><el-progress :percentage="used"></el-progress></p>
+                <p style="padding:10px 0;box-sizing:border-box; "><el-progress :percentage="used" :id="item.id"></el-progress></p>
                 <p style="color:red;"><span>主讲:&nbsp;</span>{{item.jiangshi.name}}</p>         
             </li>
            
@@ -34,6 +34,7 @@
 
 <script>
 import qs from 'qs'
+import Vue from 'vue'
 export default {
   name:'mykecheng',
    data() {
@@ -41,7 +42,7 @@ export default {
         used: 0,
         uid:'',
         token:'',
-        year:'',
+        year:[],
         datalist:[],
         idd:'',
         apiurl:'http://jixujiaoyu_api.songlongfei.club:1012',
@@ -50,7 +51,7 @@ export default {
         page:1,
         num:6,
         pageNo:1,
-        
+       
       }
     },
     created (){
@@ -101,10 +102,8 @@ export default {
               that.count=Number(res.data.data.count)
               console.log( that.datalist)
               for(var i=0;i<that.datalist.length;i++){
-                  console.log(i)
                 //  获取课程id
-                  that.idd =that.datalist[i].id;
-                  this.getprogress()
+                  this.getprogress(that.datalist[i].id)
               }
             }else if((res.data.status=="error")){
               this.$message.error({message:res.data.errormsg,duration:1600});
@@ -126,23 +125,44 @@ export default {
       
     },
     //获取课程进度
-    getprogress (){
+    getprogress (id){
         var that=this
+        console.log(id)
         that.$axios.post(this.apiurl+'/kecheng/get_kecheng_jindu',
             qs.stringify({
-              kecheng_id:that.idd,
+              kecheng_id:id,
               uid:that.uid,
               token:that.token
             })
         ).then(res =>{
-          console.log("哈哈哈哈")
           console.log(res)
+          console.log(res.data.data)
           if(res.data.status=="ok"){
-            that.used=res.data.progress
+            
+           
+            console.log(obj)
+            console.log(that.datalist)
+            for(var i=0;i<that.datalist.length;i++){
+               var obj=res.data.data['kecheng_id']
+                var arr=[]
+                var obj1=res.data.data['progress']
+                arr.push(obj1)
+                console.log("李四")
+                console.log(arr)
+                for(var n=0;n<arr.length;n++){
+                   Vue.set(that.datalist[i],"progress",obj1)
+               }
+              
+            }
+            console.log("zhangsan")
+            console.log(that.datalist)
+            
+           
+            
           }else if((res.data.status=="error")){
             that.used=0;
           }else if((res.data.status=="relogin")){
-            that.removeInfo();
+             that.removeInfo();
           }
         })
     },
