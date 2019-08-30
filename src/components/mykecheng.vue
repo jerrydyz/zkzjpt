@@ -9,7 +9,7 @@
                 <p><img :src="item.img_url" alt=""></p>
                 <p class="txt">{{item.title}}(<span>{{item.xueshi_num}}</span>课时)</p>
                 <!-- <p class="tit">{{item.title}}</p>   -->
-                <p style="padding:10px 0;box-sizing:border-box; "><el-progress :percentage="used" :id="item.id"></el-progress></p>
+                <p style="padding:10px 0;box-sizing:border-box; "><el-progress :percentage="Number(item.progress)" :id="item.id"></el-progress></p>
                 <p style="color:red;"><span>主讲:&nbsp;</span>{{item.jiangshi.name}}</p>         
             </li>
            
@@ -102,6 +102,7 @@ export default {
               that.count=Number(res.data.data.count)
               console.log( that.datalist)
               for(var i=0;i<that.datalist.length;i++){
+                Vue.set(that.datalist[i],"progress","0")
                 //  获取课程id
                   this.getprogress(that.datalist[i].id)
               }
@@ -138,23 +139,13 @@ export default {
           console.log(res)
           console.log(res.data.data)
           if(res.data.status=="ok"){
-            
-           
-            console.log(obj)
-            console.log(that.datalist)
+            // console.log(obj)
             for(var i=0;i<that.datalist.length;i++){
-               var obj=res.data.data['kecheng_id']
-                var arr=[]
-                var obj1=res.data.data['progress']
-                arr.push(obj1)
-                console.log("李四")
-                console.log(arr)
-                for(var n=0;n<arr.length;n++){
-                   Vue.set(that.datalist[i],"progress",obj1)
-               }
-              
+               if(res.data.data['kecheng_id']==id){
+                  Vue.set(that.datalist[i],"progress",res.data.data.progress)
+              }
             }
-            console.log("zhangsan")
+            console.log("杜崇")
             console.log(that.datalist)
             
            
