@@ -9,7 +9,7 @@
                 <p><img :src="item.img_url" alt=""></p>
                 <p class="txt">{{item.title}}(<span>{{item.xueshi_num}}</span>课时)</p>
                 <!-- <p class="tit">{{item.title}}</p>   -->
-                <p style="padding:10px 0;box-sizing:border-box; "><el-progress :percentage="Number(item.progress)" :id="item.id"></el-progress></p>
+                <p style="padding:10px 0;box-sizing:border-box; "><el-progress :percentage='parseFloat(item.progress)' :id="item.id"></el-progress></p>
                 <p style="color:red;"><span>主讲:&nbsp;</span>{{item.jiangshi.name}}</p>         
             </li>
            
@@ -136,24 +136,16 @@ export default {
               token:that.token
             })
         ).then(res =>{
-          // console.log(res)
-          // console.log(res.data.data)
-          var arr=[]
-          arr.push(Object.assign({},res.data.data))
-          console.log(arr)
+          console.log(res)
+          console.log(res.data.data)
           if(res.data.status=="ok"){
             // console.log(obj)
             for(var i=0;i<that.datalist.length;i++){
-               if(res.data.data['kecheng_id']==id){
+               if(res.data.data['kecheng_id']==that.datalist[i].id){
                   Vue.set(that.datalist[i],"progress",res.data.data.progress)
-                  break
               }
             }
-            console.log("杜崇")
-            console.log(that.datalist)
-            
-           
-            
+       
           }else if((res.data.status=="error")){
             that.used=0;
           }else if((res.data.status=="relogin")){
