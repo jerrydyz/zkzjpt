@@ -111,6 +111,7 @@ export default {
                 that.$router.push({ path: '/my' });
               }, 1600);
             }else if(response.data.status=='error'){
+              this.createCode();//刷新验证码
               this.$message.error({message:response.data.errormsg,duration:1600});
             }else if(response.data.status=='relogin'){
               localStorage.removeItem("login1");

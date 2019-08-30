@@ -14,12 +14,12 @@
                 </ul>
             </div>
              <div class="topcon" v-show="!nodata">
-               <ul v-for="(item,index) in list" :key="index">
+               <ul v-for="item in list" :key="item.id">
                     <li class="l1">{{item.year}}</li>
                     <li>{{name}}</li>
                     <li>{{id_card}}</li>
                     <li>{{parseInt(item.get_gongxuke_xueshi_num)+parseInt(item.get_zhuanyeke_xueshi_num)}}</li>
-                    <li class="l6"  @click="downloadCertificate(index)">下载证书</li>
+                    <li class="l6"  @click="downloadCertificate(item.id)">下载证书</li>
                 </ul>
             </div>
             <div class="nodata" v-show="nodata">
@@ -39,6 +39,7 @@
                     <div class="xueshi">该学员参加年度专业技术人员继续教育专业科目的网络学习，通过考核。<br>累计完成<span class="alltime">{{xueshinum}}</span>学时。</div>
                     <div class="tczm">特此证明。</div>
                     <div class="date" v-html="riqi"></div>
+                    <div class="blackline"></div>
                 </div>
                 <img src="/static/images/personal/seal.png" class="seal">
                 </div>
@@ -60,7 +61,7 @@ export default {
             list:'',//返回来的数据
             name:'',
             id_card:'',
-             riqi:'',
+            riqi:'',
             apiurl:'http://jixujiaoyu_api.songlongfei.club:1012',
             sex:'',
             xueshinum:''
@@ -68,20 +69,10 @@ export default {
         }
     },
     created (){
-        var date=new Date;
-        this.year=date.getFullYear()
         this.uid=localStorage.getItem('uid')
         this.token=localStorage.getItem('token')
-        this.name= localStorage.getItem('name')
-        this.id_card=localStorage.getItem('id_card')
         this.sex=localStorage.getItem('sex')
         this.dangan()
-        var month = date.getMonth() + 1;
-        var strDate = date.getDate();
-        if (month >= 1 && month <= 9) {month = "0" + month;}
-        if (strDate >= 0 && strDate <= 9) {strDate = "0" + strDate;}
-        var currentdate = this.year + '<span style="margin: 0 7px;">年</span>' + month + '<span style="margin: 0 7px">月</span>' + strDate + '<span style="margin-left:7px;">日</span>';
-        this.riqi=currentdate;
     },
     methods:{
         removeInfo(){
@@ -128,26 +119,59 @@ export default {
                 }
             });
         },
-       downloadCertificate:function(num){
-           var that=this
-           for(var i=0;i< that.list.length;i++){
-                that.xueshinum=parseFloat(that.list[i]['get_gongxuke_xueshi_num'])+parseFloat(that.list[i]['get_zhuanyeke_xueshi_num']);
-                //that.xueshinum=parseFloat(Number(res.data.data[0].get_gongxuke_xueshi_num).toFixed(1))+parseFloat(Number(res.data.data[0].get_zhuanyeke_xueshi_num).toFixed(1));
-                console.log( that.xueshinum);
-           }
-           console.log(num)
-        //    this.xueshinum=num
-        setTimeout(() => {
-            html2canvas(this.$refs.certificate).then(function(canvas) {
-                var base64 = canvas.toDataURL("image/jpeg", 1);
-                var a = document.createElement("a");
-                a.href = base64;
-                a.download = "证书下载";
-                a.click();
-            });
-        }, 500);
+        downloadCertificate:function(num){
+            let that=this;
+            for(var i=0;i< that.list.length;i++){
+               if(that.list[i]['id']==num){
+                    that.name=that.list[i]['name'];
+                    that.year=that.list[i]['year'];
+                    that.id_card=that.list[i]['id_card'];
+
+                    var date=new Date;
+                    this.year=date.getFullYear()
+                    var month = date.getMonth() + 1;
+                    var strDate = date.getDate();
+                    if (month >= 1 && month <= 9) {month = "0" + month;}
+                    if (strDate >= 0 && strDate <= 9) {strDate = "0" + strDate;}
+                    var currentdate = that.year + '<span style="margin: 0 7px;">年</span>' + month + '<span style="margin: 0 7px">月</span>' + strDate + '<span style="margin-left:7px;">日</span>';
+                    this.riqi=currentdate;
+
+                    that.xueshinum=parseFloat(that.list[i]['get_gongxuke_xueshi_num'])+parseFloat(that.list[i]['get_zhuanyeke_xueshi_num']);
+                    console.log( that.xueshinum);
+                    if(that.list[i]['enabled_download']==1){
+                        setTimeout(() => {
+                            html2canvas(this.$refs.certificate).then(function(canvas) {
+                                var base64 = canvas.toDataURL("image/jpeg", 1);
+                                var a = document.createElement("a");
+                                a.href = base64;
+                                a.download = "证书下载";
+                                a.click();
+                            });
+                        }, 500);
+                        let isdown={id:num,uid:this.uid,token:this.token}
+                        this.$axios({
+                        method: 'post',
+                        url: this.apiurl+'/dangan/download_notify',
+                        data: qs.stringify(isdown) 
+                        }).then(function (response) {
+                            if(response.data.status=="ok"){
+                            console.log("down")
+                            console.log(response.data)
+                            }else if((response.data.status=="error")){
+                                that.$message.error({message:response.data.errormsg,duration:1600});
+                            }else if((response.data.status=="relogin")){
+                                that.removeInfo();
+                            }
+                        });
+
+                    }else{
+                        this.$message.error({message:"您的学时还未达到下载证书的标准，继续努力哦",duration:3000});
+                    }
+               }
+                
+           }    
             
-    },
+        },
     }
 
 }
@@ -257,7 +281,8 @@ export default {
                 .certificate-box .name-box{width: 220px;}
                 .certificate-box .sex-box{width: 220px;}
                 .certificate-box .xueshi{width: 648px;margin: 20px auto 0;text-indent: 68px;font-size: 18px;line-height: 30px;}
-                .certificate-box .alltime{width: 60px;height: 30px;line-height: 30px;font-size: 18px;display: inline-block;border-bottom: 1px solid #000;text-indent: 0;text-align: center;}
+                .certificate-box .alltime{width: 60px;height: 30px;line-height: 30px;font-size: 18px;display: inline-block;text-indent: 0;text-align: center;}
+                .certificate-box .blackline{width: 60px;height: 1px;background-color: #000;position: absolute;left: 160px;top:394px;}
                 .certificate-box .tczm{width: 648px;margin: 20px auto 0;text-indent: 72px;font-size: 18px;}
                 .certificate-box .date{position: absolute;right:108px;bottom:75px;font-size: 18px;font-family: 'Microsoft YaHei';}
                 .certificate-box .date span{font-size: 18px;font-family: 'KaiTi';}

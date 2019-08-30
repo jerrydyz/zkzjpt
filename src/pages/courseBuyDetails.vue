@@ -259,7 +259,7 @@ export default {
   
   }
 .courseBuyDetails{width: 1200px;margin: 45px auto 0;}
-.courseBuyDetails .class-order{min-height: 640px;}
+.courseBuyDetails .class-order{min-height: 672px;}
 .class_order_tit{margin-bottom:15px;color:#000;font-size:18px;}
 .class_order_box{margin-bottom:20px;padding:19px;border:solid 1px #ededed;}
 .class_order_box .tit{margin-bottom:30px;color:#333;font-size:14px;background: #fafafa;padding: 0 2%;line-height: 40px;}
