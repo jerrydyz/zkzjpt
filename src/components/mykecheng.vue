@@ -146,6 +146,7 @@ export default {
               }
             }
             console.log("杜崇")
+            console.log(arr)
             console.log(that.datalist)
             
            
