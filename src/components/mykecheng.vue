@@ -136,17 +136,20 @@ export default {
               token:that.token
             })
         ).then(res =>{
-          console.log(res)
-          console.log(res.data.data)
+          // console.log(res)
+          // console.log(res.data.data)
+          var arr=[]
+          arr.push(Object.assign({},res.data.data))
+          console.log(arr)
           if(res.data.status=="ok"){
             // console.log(obj)
             for(var i=0;i<that.datalist.length;i++){
                if(res.data.data['kecheng_id']==id){
                   Vue.set(that.datalist[i],"progress",res.data.data.progress)
+                  break
               }
             }
             console.log("杜崇")
-            console.log(arr)
             console.log(that.datalist)
             
            
