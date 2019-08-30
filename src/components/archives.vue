@@ -36,7 +36,7 @@
                         <div class="sex-box">性别：<span class="sex">{{sex=='1'?"男":'女'}}</span></div>
                         <div class="year-box">培训年度：<span class="year">{{year}}年</span></div>
                     </div>
-                    <div class="xueshi">该学员参加年度专业技术人员继续教育专业科目的网络学习，通过考核。<br>累计完成<span class="alltime">{{xueshinum}}</span>学时。</div>
+                    <div class="xueshi">该学员参加年度专业技术人员继续教育专业科目的网络学习，通过考核。<br>累计完成<span class="alltime"  v-html="xueshinum"></span>学时。</div>
                     <div class="tczm">特此证明。</div>
                     <div class="date" v-html="riqi"></div>
                     <div class="blackline"></div>
@@ -64,7 +64,8 @@ export default {
             riqi:'',
             apiurl:'http://jixujiaoyu_api.songlongfei.club:1012',
             sex:'',
-            xueshinum:''
+            xueshinum:'',
+           
 
         }
     },
@@ -270,23 +271,24 @@ export default {
             }
            
         }
-         .my-certificate{width: 822px;height: 590px;position: absolute;left: -850px;top:-600px;}
-                .certificate-box{width: 100%;height: 100%;position: absolute;left: 0;top:0;z-index: 1;}
-                .certificate-box .certificate-title{width: 560px;line-height: 42px; margin: 100px auto 0; font-size: 32px;text-align: center;color:#48538d;}
-                .certificate-box .info{width: 512px;display: flex;}
-                .certificate-box .info1{margin: 60px auto 0;}
-                .certificate-box .info2{margin: 25px auto 0;}
-                .certificate-box div{font-size: 18px;font-family: 'KaiTi';}
-                .certificate-box div span{font-size: 18px;font-family: 'Microsoft YaHei';}
-                .certificate-box .name-box{width: 220px;}
-                .certificate-box .sex-box{width: 220px;}
-                .certificate-box .xueshi{width: 648px;margin: 20px auto 0;text-indent: 68px;font-size: 18px;line-height: 30px;}
-                .certificate-box .alltime{width: 60px;height: 30px;line-height: 30px;font-size: 18px;display: inline-block;text-indent: 0;text-align: center;}
-                .certificate-box .blackline{width: 60px;height: 1px;background-color: #000;position: absolute;left: 160px;top:394px;}
-                .certificate-box .tczm{width: 648px;margin: 20px auto 0;text-indent: 72px;font-size: 18px;}
-                .certificate-box .date{position: absolute;right:108px;bottom:75px;font-size: 18px;font-family: 'Microsoft YaHei';}
-                .certificate-box .date span{font-size: 18px;font-family: 'KaiTi';}
-                .my-certificate .certificateimg{width: 100%;height: 100%;position: absolute;left: 0;top:0;}
-                .my-certificate .seal{position: absolute;right: 100px;bottom: 90px;width: 146px;}
+        .my-certificate{width: 822px;height: 590px;position: absolute;left: -850px;top:-600px;}
+        .certificate-box{width: 100%;height: 100%;position: absolute;left: 0;top:0;z-index: 1;}
+        .certificate-box .certificate-title{width: 560px;line-height: 42px; margin: 100px auto 0; font-size: 32px;text-align: center;color:#48538d;}
+        .certificate-box .info{width: 512px;display: flex;}
+        .certificate-box .info1{margin: 60px auto 0;}
+        .certificate-box .info2{margin: 25px auto 0;}
+        .certificate-box div{font-size: 18px;font-family: 'KaiTi';}
+        .certificate-box div span{font-size: 18px;font-family: 'Microsoft YaHei';}
+        .certificate-box .name-box{width: 220px;}
+        .certificate-box .sex-box{width: 220px;}
+        .certificate-box .xueshi{width: 648px;margin: 20px auto 0;text-indent: 68px;font-size: 18px;line-height: 30px;}
+        .certificate-box .alltime{width: 60px;height: 30px;line-height: 30px;font-size: 18px;display: inline-block;text-indent: 0;text-align: center;}
+        .certificate-box .blackline{width: 60px;height: 1px;background-color: #000;position: absolute;left: 160px;top:394px;}
+
+        .certificate-box .tczm{width: 648px;margin: 20px auto 0;text-indent: 72px;font-size: 18px;}
+        .certificate-box .date{position: absolute;right:108px;bottom:75px;font-size: 18px;font-family: 'Microsoft YaHei';}
+        .certificate-box .date span{font-size: 18px;font-family: 'KaiTi';}
+        .my-certificate .certificateimg{width: 100%;height: 100%;position: absolute;left: 0;top:0;}
+        .my-certificate .seal{position: absolute;right: 100px;bottom: 90px;width: 146px;}
     }
 </style>

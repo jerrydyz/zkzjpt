@@ -21,13 +21,13 @@
                   <h3>{{courseInfo.title}}</h3>
                 </a>
                 <div class="item">
-                  <span>课时：{{parseInt(courseInfo.xueshi_num)}} 课时</span>
+                  <span>课时：{{parseInt(courseInfo.gongxuke_xueshi_num)+parseInt(courseInfo.zhuanyeke_xueshi_num)}} 课时</span>
                 </div>
               </div>
               <div class="info" style="width:25%;">
                 <div class="tit">讲师</div>
                 <div class="item">
-                  <span>{{teacher.name}}</span>
+                  <span>{{jiangshi.name}}</span>
                 </div>
               </div>
               <div class="info ddiel-us" style="width:25%;">
@@ -55,7 +55,7 @@
             <div class="class_order_bot">
               <div class="custom-box">
                 <label class="check">
-                  <input type="checkbox" class="check_xy" checked @click="agreerule"/>我已阅读并同意
+                  <input type="checkbox" class="check_xy" checked  @click="agreerule"/>我已阅读并同意
                   <a target="_blank" href="http://ceshi2.jxjyedu.club/single/buy.html" style="color: #188eee;">《河南省继续教育在线公共服务平台购买条款》</a>
                 </label>
                   <div class="btn">
@@ -81,6 +81,30 @@
         </div>
   </div>
   <foot></foot>
+  <template>
+  <!-- <el-button type="text" @click="outerVisible = true">点击打开外层 Dialog</el-button> -->
+  
+  <el-dialog title="充值" :visible.sync="outerVisible">
+    <!-- <el-dialog
+      width="30%"
+      title="充值"
+      :visible.sync="innerVisible"
+      >
+    </el-dialog> -->
+    <div class="clearfix">
+      <p class="fl"> <i class="iconfont icon-info" style="font-size:40px;margin-right:15px;color:orange"></i></p>
+      <div class="fl">
+         <h3 style="font-weight:bold;color:#333;">请在新打开的页面进行充值</h3>
+         <span>充值完成后，根据您的情况点击下面按钮</span>
+      </div>
+    </div>
+    <div slot="footer" class="dialog-footer">
+
+      <el-button @click="outerVisible = false">充值失败</el-button>
+      <el-button type="primary" @click="outerVisible = false">充值成功</el-button>
+    </div>
+  </el-dialog>
+</template>
 </div>
 </template>
 
@@ -89,7 +113,7 @@ import qs from 'qs'
 import { Message } from 'element-ui';
 import foot from '@/components/footer';
 export default {
-  name: "packagebuy",
+  name: "courseBuyDetails",
   components:{
     foot,
   },
@@ -101,36 +125,37 @@ export default {
       wxpaybox:0,
       wxPayQRcode:'',
       courseInfo:'',
-      teacher:'',
+      teacher:[],
       rulestate:true,
       apiurl:'http://jixujiaoyu_api.songlongfei.club:1012',
+      outerVisible: false,
+        innerVisible: false,
+        jianghsi:{}
     };
   },
   
   mounted () {
     let that =this;
-    this.buycourseId=this.$route.query.packid;
-    let courseId={year:''}
-    this.$axios.post(this.apiurl+'/kecheng/get_kechengbao_list',qs.stringify(courseId))
+    this.buycourseId=this.$route.query.packid
+    let courseId={kechengbao_id:this.buycourseId}
+    this.$axios.post(this.apiurl+'/kecheng/get_kecheng_list_for_kechengbao_id',qs.stringify(courseId))
       .then(response => {
+        console.log(response)
         if(response.data.status=="ok"){
           console.log(response.data.data);
-          let alldata = response.data.data;
-          for(let i=0;i<alldata.length;i++){
-              if(alldata[i].id==this.buycourseId){
-                  that.courseInfo=alldata[i];
-                  console.log(that.courseInfo);
-              }
+          that.courseInfo=response.data.data;
+          that.teacher=response.data.data.kecheng
+          for(var i=0;i<that.teacher.length;i++){
+              that.jiangshi=that.teacher[i].jiangshi
           }
+          console.log("讲师")
+          console.log(that.teacher)
         }else if(response.data.status=="error"){
           this.$message.error({message: response.data.msg,duration:1600});
         }else if(response.data.status=="relogin"){
           that.clearlocalData();
         }
         
-      })
-      .catch(response => {
-        console.log(response);
       });
   },
   methods:{
@@ -174,12 +199,12 @@ export default {
       },
       useCardPay:function(){
         if(this.rulestate==true){
-          let buycourse={uid:localStorage.getItem("uid"),token:localStorage.getItem("token"),type:'1',type_id:this.buycourseId,code:this.xueshika}
+            let buycourse={uid:localStorage.getItem("uid"),token:localStorage.getItem("token"),type:'2',type_id:this.buycourseId,code:this.xueshika}
             this.$axios.post(this.apiurl+'/pay/xueshika',qs.stringify(buycourse))
             .then(response => {
                 if(response.data.status=="ok"){
                     this.$message.success({message: "您已购买成功",duration:1600});
-                    localStorage.setItem('types','packages');
+                    localStorage.setItem('types','mykecheng');
                     this.$router.push({ path: '/my' });
                 }else if(response.data.status=="error"){
                   this.$message.error({message: response.data.errormsg,duration:1600});
@@ -195,27 +220,30 @@ export default {
       },
       nowPay:function(){
         if(this.rulestate==true){
-          let that = this;
+            let that = this;
           if(this.selectstate==1){
               //alipay
-            var urllink=this.apiurl+'/pay/alipay?uid='+localStorage.getItem("uid")+'&token='+localStorage.getItem("token")+'&type='+1+'&type_id='+this.buycourseId+''
+            var urllink='http://jixujiaoyu_api.songlongfei.club:1012/pay/alipay?uid='+localStorage.getItem("uid")+'&token='+localStorage.getItem("token")+'&type='+2+'&type_id='+this.buycourseId+''
             window.open(urllink);
+             this.outerVisible=true
           }else if(this.selectstate==2){
-            //wxpay
-              let buycourse={uid:localStorage.getItem("uid"),token:localStorage.getItem("token"),type:'1',type_id:this.buycourseId}
-              this.$axios.post(this.apiurl+'/pay/wxpay',qs.stringify(buycourse))
-              .then(response => {
-                  if(response.data.status=="ok"){
-                      that.wxpaybox=1;
-                      that.wxPayQRcode=response.data.data.url;
-                      console.log(response.data.data.url);
-                  }else if(response.data.status=="error"){
-                    this.$message.error({message: response.data.errormsg,duration:1600});
-                  }else if(response.data.status=="relogin"){
-                    this.clearlocalData();
-                  }
-              });
+              //wxpay
+                let buycourse={uid:localStorage.getItem("uid"),token:localStorage.getItem("token"),type:'2',type_id:this.buycourseId}
+                this.$axios.post(this.apiurl+'/pay/wxpay',qs.stringify(buycourse))
+                .then(response => {
+                    if(response.data.status=="ok"){
+                        that.wxpaybox=1;
+                        that.wxPayQRcode=response.data.data.url;
+                        console.log(response.data.data.url);
+                    }else if(response.data.status=="error"){
+                        this.$message.error({message: response.data.errormsg,duration:1600});
+                    }else if(response.data.status=="relogin"){
+                      this.clearlocalData();
+                    }
+                    
+                });
           }
+          
         }else{
           this.$message.error({message: '请同意阅读条款',duration:1600});
         }
@@ -246,6 +274,7 @@ export default {
     width: 1200px;
     margin: 0 auto;
   }
+  
   .title {
     width: 100%;
     height: 72px;
@@ -268,7 +297,7 @@ export default {
 .courseBuyDetails .class-order{min-height: 640px;}
 .class_order_tit{margin-bottom:15px;color:#000;font-size:18px;}
 .class_order_box{margin-bottom:20px;padding:19px;border:solid 1px #ededed;}
-.class_order_box .tit{margin-bottom:30px;color:#333;font-size:14px;background: #fafafa;padding: 0 2%;line-height: 40px;height: 40px;}
+.class_order_box .tit{margin-bottom:30px;color:#333;font-size:14px;background: #fafafa;padding: 0 2%;line-height: 40px;}
 .class_order_box .tit span{line-height: 80px;font-size:14px}
 .ddiel-us span{font-size:18px;color:#fc6238}
 .class_order_box  .info-assd-lirxd{display:inline-block;width:100%;height: 180px;}

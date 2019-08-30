@@ -28,7 +28,6 @@ Vue.use(ElementUI);
 import VueVideoPlayer from 'vue-video-player'
 // import store from './store/index'
 Vue.use(VueVideoPlayer)
-
 Vue.config.productionTip = false
 import store from '../src/store/index'
 /* eslint-disable no-new */
