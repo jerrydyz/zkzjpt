@@ -136,24 +136,18 @@ export default {
               token:that.token
             })
         ).then(res =>{
-          // console.log(res)
-          // console.log(res.data.data)
-          var arr=[]
-          arr.push(Object.assign({},res.data.data))
-          console.log(arr)
           if(res.data.status=="ok"){
             // console.log(obj)
             for(var i=0;i<that.datalist.length;i++){
-               if(res.data.data['kecheng_id']==id){
-                  Vue.set(that.datalist[i],"progress",res.data.data.progress)
-                  break
-              }
+                console.log("李四")
+                   if(res.data.data['kecheng_id']==that.datalist[i].id){
+                      Vue.set(that.datalist[i],"progress",res.data.data.progress)
+                      break
+                   }
+              
             }
-            console.log("杜崇")
+            console.log("张三")
             console.log(that.datalist)
-            
-           
-            
           }else if((res.data.status=="error")){
             that.used=0;
           }else if((res.data.status=="relogin")){
