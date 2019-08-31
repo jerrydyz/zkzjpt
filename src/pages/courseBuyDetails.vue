@@ -235,13 +235,13 @@ export default {
         if(this.rulestate==true){
             let that = this;
           if(this.selectstate==1){
-            let courseId={uid:localStorage.getItem("uid"),token:localStorage.getItem("token"),type_id:this.buycourseId}
+            let courseId={uid:localStorage.getItem("uid"),token:localStorage.getItem("token"),kecheng_id:this.buycourseId}
             this.$axios.post(this.apiurl+'/kecheng/check_kecheng_is_buy',qs.stringify(courseId))
               .then(res => {
                 if(res.data.status=="ok"){
                   if(res.data.data.check_res=="0"){
                      //alipay
-                      var urllink='http://jixujiaoyu_api.songlongfei.club:1012/pay/alipay?uid='+localStorage.getItem("uid")+'&token='+localStorage.getItem("token")+'&type='+2+'&type_id='+this.buycourseId+''
+                      var urllink='http://jixujiaoyu_api.songlongfei.club:1012/pay/alipay?uid='+localStorage.getItem("uid")+'&token='+localStorage.getItem("token")+'&type='+2+'&type_id='+this.buycourseId
                       window.open(urllink);
                       this.outerVisible=true;
                   }else if(res.data.data.check_res=="1"){
