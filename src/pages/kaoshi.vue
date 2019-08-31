@@ -120,7 +120,7 @@
                       <li v-for="(key,val) in xuanze2" >
                         <label  @click="checkbox(check.id)">
                           <input class="anserItem" type="checkbox"  :name="['duoxuan_'+check.id+'[]']" :value='val'/>
-                        {{key}}
+                        {{val}}
                         </label>
                       </li>
                     </ul>
@@ -161,11 +161,11 @@
 
                   <p></p>
 
-                  <ul class="answer">
+                  <!-- <ul class="answer">
                     <li v-for="(key,val) in xuanze3">
-                      <b>{{key}}</b>
+                      <b>{{val}}</b>
                     </li>
-                  </ul>
+                  </ul> -->
 
                   <div class="choice shiti_select_div"  :shiti_id="dan.id" :shiti_type="dan.type">
                     <ul>
@@ -964,15 +964,20 @@ export default {
   float: left;
   margin-left: 5px;
   width: 100%;
+   
 }
 
 .test-paper .choice li {
   float: left;
   margin-right: 50px;
+  cursor: pointer;
 }
-
+.test-paper .choice li label{
+  cursor: pointer;
+}
 .test-paper .choice li input {
   margin: -3px 8px 0 0;
+   cursor: pointer;
 }
 
 .test-paper .choice .collection {
