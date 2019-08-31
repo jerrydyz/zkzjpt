@@ -100,15 +100,32 @@ export default {
         imgs:'',
         title:'',
         idd:'',
+        token:localStorage.getItem("token"),
         apiurl:'http://jixujiaoyu_api.songlongfei.club:1012',
     };
   },
   
   created() {
+    if(localStorage.getItem("token")){
       this.codeid=this.$route.query.codeid
       console.log(this.codeid)
       this.getkechengbao()
+    }else{
+       that.removeInfo();
+    }
+      
   },
+  watch: {
+		token: {
+			handler: function(val) {
+            if (val) {
+                
+            }else{
+              this.removeInfo()
+            }
+			}
+		},deep:true
+	},
   methods: {
       getkechengbao (){
           var that=this

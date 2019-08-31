@@ -130,10 +130,28 @@ export default {
       apiurl:'http://jixujiaoyu_api.songlongfei.club:1012',
       outerVisible: false,
       innerVisible: false,
-      jiangshi:{}
+      jiangshi:{},
+      token:localStorage.getItem("token"),
     };
   },
-  
+  created(){
+      if(localStorage.getItem("token")){
+
+      }else{
+        this.clearlocalData();
+      }
+  },
+  watch: {
+		token: {
+			handler: function(val) {
+            if (val) {
+                
+            }else{
+              this.clearlocalData();
+            }
+			}
+		},deep:true
+	},
   mounted () {
     let that =this;
     this.buycourseId=this.$route.query.packid

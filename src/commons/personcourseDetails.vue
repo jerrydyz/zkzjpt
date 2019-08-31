@@ -369,6 +369,7 @@ export default {
       if(localStorage.getItem("token")){
         this.$router.push({path:'/my'});
       }else{
+        that.$message.error({message:"请重新登录",duration:1600});
          this.$router.push({path:'/login'});
       }
         

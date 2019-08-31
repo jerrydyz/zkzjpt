@@ -129,10 +129,28 @@ export default {
       rulestate:true,
       apiurl:'http://jixujiaoyu_api.songlongfei.club:1012',
       outerVisible: false,
-        innerVisible: false
+      innerVisible: false,
+      token:localStorage.getItem("token"),
     };
   },
-  
+  created(){
+      if(localStorage.getItem("token")){
+
+      }else{
+        this.removeInfo()
+      }
+  },
+  watch: {
+		token: {
+			handler: function(val) {
+            if (val) {
+                
+            }else{
+              this.removeInfo()
+            }
+			}
+		},deep:true
+	},
   mounted () {
     let that =this;
     this.buycourseId=this.$route.query.id

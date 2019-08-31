@@ -248,6 +248,7 @@ import Vue from 'vue'
 export default {
   data() {
     return {
+      token:localStorage.getItem('token'),
       time:'',
       uid: "",
       token: "",
@@ -322,19 +323,34 @@ export default {
     };
   },
   created() {
-    var that=this
-    this.uid= localStorage.getItem('uid') 
+    if(localStorage.getItem('token')){
+      var that=this
+      this.uid= localStorage.getItem('uid') 
       this.token=localStorage.getItem('token')
-    // this.token =this.$route.query.token
-    this.shijuanid=this.$route.query.shijuan_id
-    this.getshijuan();
-    // this.getAnswer();
-    this.times=setInterval(function(){
-      that.usetime ()
-    },1000)
+      // this.token =this.$route.query.token
+      this.shijuanid=this.$route.query.shijuan_id
+      this.getshijuan();
+      // this.getAnswer();
+      this.times=setInterval(function(){
+        that.usetime ()
+      },1000)
+    }else{
+      this.removeInfo();
+    }
+    
    
   },
-  watch: {},
+ watch: {
+		token: {
+			handler: function(val) {
+            if (val) {
+                
+            }else{
+              this.removeInfo();
+            }
+			}
+		},deep:true
+	},
   methods: {
     //考试用时
     usetime (){

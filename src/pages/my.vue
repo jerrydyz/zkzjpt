@@ -91,13 +91,15 @@ export default {
          name:'',
          id_card:'',
          uid:'',
-         token:'',
+         token:localStorage.getItem("token"),
          apiurl:'http://jixujiaoyu_api.songlongfei.club:1012',
       }
     },
     created(){
-      if(localStorage.getItem('types')){
+      if(localStorage.getItem('types')&&localStorage.getItem("token")){
         this.more( localStorage.getItem('types'))
+      }else{
+        that.clearlocalData();
       }
         this.name= localStorage.getItem('name')
         this.uid= localStorage.getItem('uid')
@@ -106,6 +108,17 @@ export default {
         var leng=this.id_card.length;
         this.id_card = this.id_card.substr(0, 3) + '****' + this.id_card.substr(leng - 4);
 
+    },
+     watch: {
+      token: {
+        handler: function(val) {
+              if (val) {
+                  
+              }else{
+                this.removeInfo()
+              }
+        }
+      },deep:true
     },
     methods:{
       more(val){

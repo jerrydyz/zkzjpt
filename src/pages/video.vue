@@ -181,11 +181,30 @@ export default {
 		  allbiji:'',
 		  //笔记作者
 		  name:localStorage.getItem("name"),
+		  token:localStorage.getItem("token"),
 		  websock :false,
 		  apiurl:'http://jixujiaoyu_api.songlongfei.club:1012',
 		}
 		
   },
+  created(){
+      if(localStorage.getItem("token")){
+
+      }else{
+        this.removeInfo()
+      }
+  },
+  watch: {
+	token: {
+		handler: function(val) {
+		if (val) {
+			
+		}else{
+			this.removeInfo()
+		}
+		}
+	},deep:true
+},
   mounted () {
 	  //初始化数据
 	this.init();

@@ -265,9 +265,24 @@ export default {
      }
   },
   created() {
-    this.kaoshi_id = this.$route.query.kaoshi_id;
-    this.getpaperdata();
+    if(this.token){
+      this.kaoshi_id = this.$route.query.kaoshi_id;
+      this.getpaperdata();
+    }else{
+       this.removeInfo();
+    }
   },
+   watch: {
+		token: {
+			handler: function(val) {
+            if (val) {
+                
+            }else{
+              this.removeInfo()
+            }
+			}
+		},deep:true
+	},
   methods: {
      //返回按钮
       goback (){

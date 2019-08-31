@@ -67,7 +67,7 @@ export default {
         }
     },
     created (){
-          this.uid= localStorage.getItem('uid')
+        this.uid= localStorage.getItem('uid')
         this.token=localStorage.getItem('token')
         console.log(this.uid,this.token)
         
@@ -78,7 +78,7 @@ export default {
                  this.removeInfo()
             }
     },
-     watch: {
+    watch: {
 		token: {
 			handler: function(val) {
                  if (val) {

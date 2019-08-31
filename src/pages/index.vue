@@ -247,6 +247,7 @@ export default {
       sex:localStorage.getItem("sex"),
       //name
       name:localStorage.getItem("name"),
+      token:localStorage.getItem("token"),
       //新闻和政策法规切换状态
       newslawsState:0,
       //请求接口域名
@@ -255,12 +256,25 @@ export default {
   },
   
   created(){
-    this.createCode();
-    if(localStorage.getItem("login1")){
+    
+    if(localStorage.getItem("token")){
+      this.createCode();
       this.type=false
+    }else{
+      this.removeInfo();
     }
   },
-
+  watch: {
+		token: {
+			handler: function(val) {
+            if (val) {
+                
+            }else{
+              this.removeInfo()
+            }
+			}
+		},deep:true
+	},
   mounted() {
     let that = this
     //轮播图

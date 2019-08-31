@@ -58,9 +58,28 @@ export default {
       idcard:'',
       oldpw:'',
       newpw:'',
+      token:localStorage.getItem("token"),
       apiurl:'http://jixujiaoyu_api.songlongfei.club:1012',
     };
   },
+  created(){
+      if(localStorage.getItem("token")){
+
+      }else{
+        this.removeInfo()
+      }
+  },
+  watch: {
+		token: {
+			handler: function(val) {
+            if (val) {
+                
+            }else{
+              this.removeInfo()
+            }
+			}
+		},deep:true
+	},
   methods:{
       removeInfo(){
           this.$message.error({message:"重新登录",duration:1600});
