@@ -273,6 +273,7 @@ export default {
         this.$router.push({ path:'/video',query:{courseId:this.buyCourseId,vid:Vid} });
       },
       removeInfo(){
+        let that = this;
         localStorage.removeItem("uid");
         localStorage.removeItem("token");
         localStorage.removeItem("sex");
@@ -281,7 +282,7 @@ export default {
         localStorage.removeItem("id_card");
         localStorage.setItem("types",'rate');
         setTimeout(() => {
-          this.$router.push({ path: '/login' });
+          that.$router.push({ path: '/login' });
         }, 1600);
       },
       closeLogin(){

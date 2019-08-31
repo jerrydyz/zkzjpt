@@ -115,7 +115,7 @@ export default {
               if (val) {
                   
               }else{
-                this.removeInfo()
+               this.clearlocalData();
               }
         }
       },deep:true
@@ -140,9 +140,10 @@ export default {
             
           })
       },
-
+    
       //状态为relogin时清除local数据
       clearlocalData:function(){
+        let that =this;
         localStorage.removeItem("login1");
         localStorage.removeItem("uid");
         localStorage.removeItem("token");
@@ -151,7 +152,7 @@ export default {
         localStorage.removeItem("mobile");
         localStorage.removeItem("id_card");
         setTimeout(() => {
-          this.$router.push({ path: 'index' });
+          that.$router.push({ path: 'index' });
         }, 1600);
       },
      

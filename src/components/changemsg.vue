@@ -101,12 +101,12 @@
             <input type="number" :placeholder="baseExt.lianxidianhua == '' ? '请输入联系电话': baseExt.lianxidianhua" maxlength="11" v-model="mobil" />
           </span>
         </li>
-        <li>
+        <!-- <li>
           <span>证&nbsp&nbsp书&nbsp&nbsp编&nbsp&nbsp号 :</span>
           <span> 
             <input type="text" :placeholder="baseExt.zhengshubianhao == '' ? '请输入证书管理号': baseExt.zhengshubianhao" v-model="zhengshuhao" />
           </span>
-        </li>
+        </li> -->
       </ul>
       <div class="btn" @click="xiugaibaseData">保存</div>
     </div>
@@ -157,7 +157,7 @@ export default {
       idcode:'',
       phone:'',
       token:'',
-      zhengshuhao:'',
+      //zhengshuhao:'',
       mobil:'',
       address:'',
       worktime:'',
@@ -391,7 +391,7 @@ export default {
           gongzuo_year:this.worktime,
           tongxundizhi:this.address,
           lianxidianhua:this.mobil,
-          zhengshubianhao:this.zhengshuhao
+          //zhengshubianhao:this.zhengshuhao
        }
        var myreg = /^[1][3,4,5,7,8,9][0-9]{9}$/;
        var reg = new RegExp("^[a-z0-9]+([._\\-]*[a-z0-9])*@([a-z0-9]+[-a-z0-9]*[a-z0-9]+.){1,63}[a-z0-9]+$");
@@ -447,11 +447,11 @@ export default {
                datamsg.lianxidianhua=that.baseExt.lianxidianhua;
                console.log(datamsg.lianxidianhua)
         }
-        if(this.zhengshuhao==''){
-               //this.$message.error({message: '请输入您的证书号',duration:1600});
-               datamsg.zhengshubianhao=that.baseExt.zhengshubianhao;
-               console.log(datamsg.zhengshubianhao)
-        }
+        // if(this.zhengshuhao==''){
+        //        //this.$message.error({message: '请输入您的证书号',duration:1600});
+        //        datamsg.zhengshubianhao=that.baseExt.zhengshubianhao;
+        //        console.log(datamsg.zhengshubianhao)
+        // }
         
         that.$axios.post(this.apiurl+'/user/edit',
         qs.stringify(datamsg)).then(res =>{

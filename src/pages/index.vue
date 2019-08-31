@@ -256,13 +256,8 @@ export default {
   },
   
   created(){
-    
-    if(localStorage.getItem("token")){
-      this.createCode();
-      this.type=false
-    }else{
-      this.removeInfo();
-    }
+    this.createCode();
+    this.type=false;
   },
   watch: {
 		token: {
@@ -515,6 +510,7 @@ export default {
       },
       //清除localstorge存储
       removeInfo(){
+        let that = this;
         this.$message.error({message:"重新登录",duration:1600});
         localStorage.removeItem("uid");
         localStorage.removeItem("token");
@@ -524,7 +520,7 @@ export default {
         localStorage.removeItem("id_card");
         localStorage.setItem("types",'rate');
         setTimeout(() => {
-          this.$router.push({ path: '/login' });
+          that.$router.push({ path: '/login' });
         }, 1600);
       },
       //用户退出 

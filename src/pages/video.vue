@@ -191,7 +191,7 @@ export default {
       if(localStorage.getItem("token")){
 
       }else{
-        this.removeInfo()
+        this.clearlocalData();
       }
   },
   watch: {
@@ -200,7 +200,7 @@ export default {
 		if (val) {
 			
 		}else{
-			this.removeInfo()
+			this.clearlocalData();
 		}
 		}
 	},deep:true

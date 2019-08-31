@@ -317,7 +317,8 @@ export default {
         localStorage.removeItem("id_card");
       },
       removeInfo(){
-        this.$message.error({message:"重新登录",duration:1600});
+        let that =this ;
+        that.$message.error({message:"重新登录",duration:1600});
         localStorage.removeItem("uid");
         localStorage.removeItem("token");
         localStorage.removeItem("sex");
@@ -326,7 +327,7 @@ export default {
         localStorage.removeItem("id_card");
         localStorage.setItem("types",'rate');
         setTimeout(() => {
-          this.$router.push({ path: '/login' });
+          that.$router.push({ path: '/login' });
         }, 1600);
       },
     getpaperdata() {

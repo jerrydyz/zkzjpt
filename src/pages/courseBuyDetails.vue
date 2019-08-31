@@ -137,7 +137,7 @@ export default {
       if(localStorage.getItem("token")){
 
       }else{
-        this.removeInfo()
+        this.clearlocalData();
       }
   },
   watch: {
@@ -146,7 +146,7 @@ export default {
             if (val) {
                 
             }else{
-              this.removeInfo()
+              this.clearlocalData();
             }
 			}
 		},deep:true
@@ -170,6 +170,7 @@ export default {
       });
   },
   methods:{
+    
     //返回个人中心
     personal(){
         this.$router.push({path:'/my'});
@@ -190,7 +191,8 @@ export default {
       },
       //状态为relogin时清除local数据
       clearlocalData:function(){
-        this.$message.error({message:"请重新登录",duration:1600});
+        let that = this;
+        that.$message.error({message:"请重新登录",duration:1600});
         localStorage.removeItem("login1");
         localStorage.removeItem("uid");
         localStorage.removeItem("token");
@@ -199,7 +201,7 @@ export default {
         localStorage.removeItem("mobile");
         localStorage.removeItem("id_card");
         setTimeout(() => {
-          this.$router.push({ path: '/login' });
+          that.$router.push({ path: '/login' });
         }, 1600);
       },
       alipay:function(){
@@ -233,10 +235,25 @@ export default {
         if(this.rulestate==true){
             let that = this;
           if(this.selectstate==1){
-              //alipay
-            var urllink='http://jixujiaoyu_api.songlongfei.club:1012/pay/alipay?uid='+localStorage.getItem("uid")+'&token='+localStorage.getItem("token")+'&type='+2+'&type_id='+this.buycourseId+''
-            window.open(urllink);
-             this.outerVisible=true
+            let courseId={uid:localStorage.getItem("uid"),token:localStorage.getItem("token"),type_id:this.buycourseId}
+            this.$axios.post(this.apiurl+'/kecheng/check_kecheng_is_buy',qs.stringify(courseId))
+              .then(res => {
+                if(res.data.status=="ok"){
+                  if(res.data.data.check_res=="0"){
+                     //alipay
+                      var urllink='http://jixujiaoyu_api.songlongfei.club:1012/pay/alipay?uid='+localStorage.getItem("uid")+'&token='+localStorage.getItem("token")+'&type='+2+'&type_id='+this.buycourseId+''
+                      window.open(urllink);
+                      this.outerVisible=true;
+                  }else if(res.data.data.check_res=="1"){
+                    this.$message.error({message: res.data.msg,duration:1600});
+                  } 
+                }else if(res.data.status=="error"){
+                  this.$message.error({message: res.data.msg,duration:1600});
+                }else if(res.data.status=="relogin"){
+                  that.removeInfo();
+                }
+            });
+            
           }else if(this.selectstate==2){
               //wxpay
                 let buycourse={uid:localStorage.getItem("uid"),token:localStorage.getItem("token"),type:'2',type_id:this.buycourseId}
