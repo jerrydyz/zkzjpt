@@ -365,6 +365,7 @@ export default {
             }
             &.download {
               margin-top: 19px;
+              cursor: pointer;
             }
           }
         }
@@ -379,6 +380,7 @@ export default {
             }
             &.download {
               margin-top: 19px;
+              cursor: pointer;
             }
           }
         }

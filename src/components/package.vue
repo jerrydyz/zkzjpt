@@ -17,7 +17,7 @@
           </div>
           <div class="price-box fr">
             <div class="price"><span class="rmb">￥{{item.price}} 元</span></div>
-            <div type="button" class="btn-now" @click.stop="xuexi(item.id)">{{item.isBuy=="0"?"购买":"已购买"}}</div>
+            <div type="button" class="btn-now" @click.stop="xuexi(item.id)">{{item.isBuy=="0"?"购买":"继续学习"}}</div>
           </div>
         </li>
         
@@ -336,7 +336,7 @@ export default {
             line-height: 40px;
             margin: 35px auto 0;
             background-color: #329df5;
-            color: #ff0000;
+            color: #fff;
             letter-spacing: 5px;
             cursor: pointer;
           }

@@ -312,7 +312,7 @@ export default {
               this.name=response.data.data.name;
               that.loginstate=0;
               localStorage.setItem("mobile", response.data.data.mobile);
-              ocalStorage.setItem("id_card", response.data.data.id_card);
+              localStorage.setItem("id_card", response.data.data.id_card);
               
             }else if(response.data.status=='error'){
               this.$message.error({message:response.data.errormsg,duration:1600});
@@ -696,7 +696,7 @@ export default {
 .class_jg_btn{text-align:center;font-size:14px;}
 .class_jg_btn a{display:inline-block;margin:0 5px;width:98px;height:36px;border:solid 1px #c6c6c6;border-radius:3px;background-color:#f7f7f7;color:#333;font-size:14px;line-height:36px;}
 
-.login-mask{position: absolute;width: 100%;height: 100%;background-color: rgba(0,0,0,.6);left: 0;top:0;}
+.login-mask{position: absolute;width: 100%;height: 175%;background-color: rgba(0,0,0,.6);left: 0;top:0;}
 .login-box{ width: 292px;border: 1px solid #d7d7d7; position: absolute;left: 50%;margin-left: -146px;top:250px;background-color: #fff;
   .login-title-box{width: 100%;height: 55px;
     .login-title{width: 126px;height: 34px;background-image: url(/static/images/index/login-title.png);margin-top: 25px;margin-left: 18px;}

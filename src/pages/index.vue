@@ -144,10 +144,10 @@
       <a href="https://www.hnzjgl.gov.cn/" class="spn-five">河南省专业技术人员公共服务平台</a>
   </div>
   <div class="laozi">
-    <img src="http://ceshi2.jxjyedu.club/addons/theme/stv2/_static/2019/images/new_index/laozi.png" alt="">
+    <img src="/static/images/index/laozi.png" alt="">
   </div>
   <div class="zuzi">
-    <img src="http://ceshi2.jxjyedu.club/addons/theme/stv2/_static/2019/images/new_index/zhuzi.png" alt="">
+    <img src="/static/images/index/zhuzi.png" alt="">
   </div>
 
 </div>
@@ -271,172 +271,173 @@ export default {
 		},deep:true
 	},
   mounted() {
-    let that = this
-    //轮播图
-    this.$axios({
-      method: 'get',
-      url: this.apiurl+'/lunbotu/get_lunbotu_list'
-    }).then(function (response) {
-      if(response.data.status=="ok"){
-        console.log("轮播图")
-        console.log(response.data)
-        that.swiperdata=response.data.data;
-      }else if((response.data.status=="error")){
-        that.$message.error({message:response.data.errormsg,duration:1600});
-      }else if((response.data.status=="relogin")){
-        that.removeInfo();
-      }
-    });
-    //友情链接
-    this.$axios({
-      method: 'get',
-      url: this.apiurl+'/link/get_list'
-    }).then(function (response) {
-      if(response.data.status=="ok"){
-        console.log("友情链接")
-        console.log(response.data)
-        that.linkdata=response.data.data;
-      }else if((response.data.status=="error")){
-        that.$message.error({message:response.data.errormsg,duration:1600});
-      }else if((response.data.status=="relogin")){
-        that.removeInfo();
-      }
-    });
-    //请求新闻news
-    let datanews={type_id:'1',page:'1',num:'8'}
-    this.$axios({
-      method: 'post',
-      url: this.apiurl+'/news/get_news_list',
-      data: qs.stringify(datanews) 
+    
+      let that = this
+      //轮播图
+      this.$axios({
+        method: 'get',
+        url: this.apiurl+'/lunbotu/get_lunbotu_list'
       }).then(function (response) {
         if(response.data.status=="ok"){
-          that.newsjson.state=1;
-          console.log("news")
-          that.newsjson.list=response.data.data.data
-          console.log(response.data.data.data)
+          console.log("轮播图")
+          console.log(response.data)
+          that.swiperdata=response.data.data;
         }else if((response.data.status=="error")){
           that.$message.error({message:response.data.errormsg,duration:1600});
         }else if((response.data.status=="relogin")){
-          that.removeInfo();
+          //that.removeInfo();
         }
       });
-      //请求政策法规laws
-    let datalaws={type_id:'2',page:'1',num:'8'}
-    this.$axios({
-      method: 'post',
-      url: this.apiurl+'/news/get_news_list',
-      data: qs.stringify(datalaws) 
+      //友情链接
+      this.$axios({
+        method: 'get',
+        url: this.apiurl+'/link/get_list'
       }).then(function (response) {
         if(response.data.status=="ok"){
-          that.lawsjson.state=1;
-          console.log("laws")
-          that.lawsjson.list=response.data.data.data
-          console.log(response.data.data.data)
+          console.log("友情链接")
+          console.log(response.data)
+          that.linkdata=response.data.data;
         }else if((response.data.status=="error")){
           that.$message.error({message:response.data.errormsg,duration:1600});
         }else if((response.data.status=="relogin")){
-          that.removeInfo();
+          //that.removeInfo();
         }
       });
-      //请求工作动态works
-    let dataworks={type_id:'3',page:'1',num:'7'}
-    this.$axios({
-      method: 'post',
-      url: this.apiurl+'/news/get_news_list',
-      data: qs.stringify(dataworks) 
-      }).then(function (response) {
-        if(response.data.status=="ok"){
-          that.worksjson.state=1;
-          console.log("works")
-          that.worksjson.list=response.data.data.data
-          console.log(response.data.data.data)
-        }else if((response.data.status=="error")){
-          that.$message.error({message:response.data.errormsg,duration:1600});
-        }else if((response.data.status=="relogin")){
-          that.removeInfo();
-        }
-      });
-      //请求帮助中心helps
-    let datahelps={type_id:'4',page:'1',num:'7'}
-    this.$axios({
-      method: 'post',
-      url: this.apiurl+'/news/get_news_list',
-      data: qs.stringify(datahelps) 
-      }).then(function (response) {
-        if(response.data.status=="ok"){
-          that.helpsjson.state=1;
-          console.log("helps")
-          that.helpsjson.list=response.data.data.data
-          console.log(response.data.data.data)
-        }else if((response.data.status=="error")){
-          that.$message.error({message:response.data.errormsg,duration:1600});
-        }else if((response.data.status=="relogin")){
-          that.removeInfo();
-        }
-      });
-    //获取课程年份 
-    this.$axios({
-      method: 'get',
-      url: this.apiurl+'/kecheng/get_kecheng_year',
-      }).then(function (response) {
-        if(response.data.status=="ok"){
-          console.log("课程年份")
-          console.log(response.data.data)
-          that.kecheng_year=response.data.data;
-        }else if((response.data.status=="error")){
-          that.$message.error({message:response.data.errormsg,duration:1600});
-        }else if((response.data.status=="relogin")){
-          that.removeInfo();
-        }
-      });
-     //获取课程类型 
-    this.$axios({
-      method: 'get',
-      url: this.apiurl+'/kecheng/get_kecheng_type',
-      }).then(function (response) {
-        if(response.data.status=="ok"){
-          console.log("课程类型")
-          console.log(response.data.data)
-          that.kecheng_type=response.data.data;
-        }else if((response.data.status=="error")){
-          that.$message.error({message:response.data.errormsg,duration:1600});
-        }else if((response.data.status=="relogin")){
-          that.removeInfo();
-        }
-      });
-      //获取课程分类 
-    this.$axios({
-      method: 'get',
-      url: this.apiurl+'/kecheng/get_kecheng_category',
-      }).then(function (response) {
-        if(response.data.status=="ok"){
-          console.log("课程分类")
-          console.log(response.data.data)
-          that.kecheng_category=response.data.data;
-        }else if((response.data.status=="error")){
-          that.$message.error({message:response.data.errormsg,duration:1600});
-        }else if((response.data.status=="relogin")){
-          that.removeInfo();
-        }
-      });
-     //获取课程列表 
-    let datacourse={year:'2019', type_id:'',category_id:''}
-    this.$axios({
-      method: 'post',
-      url: this.apiurl+'/kecheng/get_kecheng_list',
-      data: qs.stringify(datacourse) 
-      }).then(function (response) {
-        if(response.data.status=="ok"){
-          console.log("课程列表")
-          console.log(response.data.data.data)
-          that.courseslist=response.data.data.data;
-        }else if((response.data.status=="error")){
-          that.$message.error({message:response.data.errormsg,duration:1600});
-        }else if((response.data.status=="relogin")){
-          that.removeInfo();
-        }
-      });
-      
+      //请求新闻news
+      let datanews={type_id:'1',page:'1',num:'8'}
+      this.$axios({
+        method: 'post',
+        url: this.apiurl+'/news/get_news_list',
+        data: qs.stringify(datanews) 
+        }).then(function (response) {
+          if(response.data.status=="ok"){
+            that.newsjson.state=1;
+            console.log("news")
+            that.newsjson.list=response.data.data.data
+            console.log(response.data.data.data)
+          }else if((response.data.status=="error")){
+            that.$message.error({message:response.data.errormsg,duration:1600});
+          }else if((response.data.status=="relogin")){
+            //that.removeInfo();
+          }
+        });
+        //请求政策法规laws
+      let datalaws={type_id:'2',page:'1',num:'8'}
+      this.$axios({
+        method: 'post',
+        url: this.apiurl+'/news/get_news_list',
+        data: qs.stringify(datalaws) 
+        }).then(function (response) {
+          if(response.data.status=="ok"){
+            that.lawsjson.state=1;
+            console.log("laws")
+            that.lawsjson.list=response.data.data.data
+            console.log(response.data.data.data)
+          }else if((response.data.status=="error")){
+            that.$message.error({message:response.data.errormsg,duration:1600});
+          }else if((response.data.status=="relogin")){
+           // that.removeInfo();
+          }
+        });
+        //请求工作动态works
+      let dataworks={type_id:'3',page:'1',num:'7'}
+      this.$axios({
+        method: 'post',
+        url: this.apiurl+'/news/get_news_list',
+        data: qs.stringify(dataworks) 
+        }).then(function (response) {
+          if(response.data.status=="ok"){
+            that.worksjson.state=1;
+            console.log("works")
+            that.worksjson.list=response.data.data.data
+            console.log(response.data.data.data)
+          }else if((response.data.status=="error")){
+            that.$message.error({message:response.data.errormsg,duration:1600});
+          }else if((response.data.status=="relogin")){
+            //that.removeInfo();
+          }
+        });
+        //请求帮助中心helps
+      let datahelps={type_id:'4',page:'1',num:'7'}
+      this.$axios({
+        method: 'post',
+        url: this.apiurl+'/news/get_news_list',
+        data: qs.stringify(datahelps) 
+        }).then(function (response) {
+          if(response.data.status=="ok"){
+            that.helpsjson.state=1;
+            console.log("helps")
+            that.helpsjson.list=response.data.data.data
+            console.log(response.data.data.data)
+          }else if((response.data.status=="error")){
+            that.$message.error({message:response.data.errormsg,duration:1600});
+          }else if((response.data.status=="relogin")){
+            that.removeInfo();
+          }
+        });
+      //获取课程年份 
+      this.$axios({
+        method: 'get',
+        url: this.apiurl+'/kecheng/get_kecheng_year',
+        }).then(function (response) {
+          if(response.data.status=="ok"){
+            console.log("课程年份")
+            console.log(response.data.data)
+            that.kecheng_year=response.data.data;
+          }else if((response.data.status=="error")){
+            that.$message.error({message:response.data.errormsg,duration:1600});
+          }else if((response.data.status=="relogin")){
+            //that.removeInfo();
+          }
+        });
+      //获取课程类型 
+      this.$axios({
+        method: 'get',
+        url: this.apiurl+'/kecheng/get_kecheng_type',
+        }).then(function (response) {
+          if(response.data.status=="ok"){
+            console.log("课程类型")
+            console.log(response.data.data)
+            that.kecheng_type=response.data.data;
+          }else if((response.data.status=="error")){
+            that.$message.error({message:response.data.errormsg,duration:1600});
+          }else if((response.data.status=="relogin")){
+            //that.removeInfo();
+          }
+        });
+        //获取课程分类 
+      this.$axios({
+        method: 'get',
+        url: this.apiurl+'/kecheng/get_kecheng_category',
+        }).then(function (response) {
+          if(response.data.status=="ok"){
+            console.log("课程分类")
+            console.log(response.data.data)
+            that.kecheng_category=response.data.data;
+          }else if((response.data.status=="error")){
+            that.$message.error({message:response.data.errormsg,duration:1600});
+          }else if((response.data.status=="relogin")){
+            //that.removeInfo();
+          }
+        });
+      //获取课程列表 
+      let datacourse={year:'2019', type_id:'',category_id:''}
+      this.$axios({
+        method: 'post',
+        url: this.apiurl+'/kecheng/get_kecheng_list',
+        data: qs.stringify(datacourse) 
+        }).then(function (response) {
+          if(response.data.status=="ok"){
+            console.log("课程列表")
+            console.log(response.data.data.data)
+            that.courseslist=response.data.data.data;
+          }else if((response.data.status=="error")){
+            that.$message.error({message:response.data.errormsg,duration:1600});
+          }else if((response.data.status=="relogin")){
+            //that.removeInfo();
+          }
+        });
+        
   },
   methods:{
       // 图片验证码

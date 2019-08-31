@@ -361,7 +361,7 @@ export default {
            })
           ).then(res =>{
             that.$message.success({message:"退出成功",duration:1600});
-            that.clearlocalData();
+            that.removeInfo();
             
           })
       },
