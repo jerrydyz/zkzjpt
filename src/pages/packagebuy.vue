@@ -129,8 +129,8 @@ export default {
       rulestate:true,
       apiurl:'http://jixujiaoyu_api.songlongfei.club:1012',
       outerVisible: false,
-        innerVisible: false,
-        jianghsi:{}
+      innerVisible: false,
+      jiangshi:{}
     };
   },
   

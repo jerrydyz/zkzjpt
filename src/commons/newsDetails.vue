@@ -22,6 +22,7 @@ export default {
       apiurl:'http://jixujiaoyu_api.songlongfei.club:1012',
     }
   },
+   
   mounted() {
     let that=this;
     //url里传递过来的新闻唯一id this.$route.params 

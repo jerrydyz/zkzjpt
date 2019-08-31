@@ -146,6 +146,7 @@ export default {
   },
   data() {
     return {
+      token:localStorage.getItem("token"),
       //教师详情展开
       zhankai: 0,
       tabs:["课程目录","课程简介"],
@@ -167,7 +168,7 @@ export default {
   },
   created(){
     this.createCode();
-    if(localStorage.getItem("login1")=="1"){
+    if(localStorage.getItem("token")){
       let that =this;
       let courseId={kecheng_id:this.$route.params.courseId,uid:localStorage.getItem("uid"),token:localStorage.getItem("token")}
       this.$axios.post(this.apiurl+'/kecheng/check_kecheng_is_buy',qs.stringify(courseId))
@@ -192,6 +193,17 @@ export default {
       this.loginstate=1;
     }
     
+  },
+  watch:{
+      token:{
+        handler:function(val){
+        if(val){
+            console.log("token还在");
+        }else{
+          that.removeInfo();
+        }
+      }
+      }
   },
   mounted() {
     let that =this;
@@ -354,7 +366,12 @@ export default {
       },
     //返回个人中心
     personal(){
+      if(localStorage.getItem("token")){
         this.$router.push({path:'/my'});
+      }else{
+         this.$router.push({path:'/login'});
+      }
+        
     },
     teacherDetails:function(){
       if(this.zhankai==0){
