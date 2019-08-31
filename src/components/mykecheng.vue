@@ -9,7 +9,7 @@
                 <p><img :src="item.img_url" alt=""></p>
                 <p class="txt">{{item.title}}(<span>{{item.xueshi_num}}</span>课时)</p>
                 <!-- <p class="tit">{{item.title}}</p>   -->
-                <p style="padding:10px 0;box-sizing:border-box; "><el-progress :percentage="Number(item.progress)" :id="item.id"></el-progress></p>
+                <p style="padding:10px 0;box-sizing:border-box; "><el-progress :percentage='parseFloat(item.progress)' :id="item.id"></el-progress></p>
                 <p style="color:red;"><span>主讲:&nbsp;</span>{{item.jiangshi.name}}</p>         
             </li>
            
