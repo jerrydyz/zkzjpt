@@ -89,6 +89,7 @@ export default {
            this.getallcourse ()
           },
     removeInfo(){
+      var that=this
       localStorage.removeItem("uid");
       localStorage.removeItem("token");
       localStorage.removeItem("sex");
@@ -97,7 +98,7 @@ export default {
       localStorage.removeItem("id_card");
       localStorage.setItem("types",'rate');
       setTimeout(() => {
-        this.$router.push({ path: '/login' });
+        that.$router.push({ path: '/login' });
       }, 500);
     },
     //获取全部课程

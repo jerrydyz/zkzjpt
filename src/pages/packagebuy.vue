@@ -197,6 +197,7 @@ export default {
       },
       //状态为relogin时清除local数据
       clearlocalData:function(){
+        var that=this
         this.$message.error({message:"请重新登录",duration:1600});
         localStorage.removeItem("login1");
         localStorage.removeItem("uid");
@@ -206,7 +207,7 @@ export default {
         localStorage.removeItem("mobile");
         localStorage.removeItem("id_card");
         setTimeout(() => {
-          this.$router.push({ path: '/login' });
+          that.$router.push({ path: '/login' });
         }, 1600);
       },
       alipay:function(){
@@ -217,7 +218,7 @@ export default {
       },
       useCardPay:function(){
         if(this.rulestate==true){
-            let buycourse={uid:localStorage.getItem("uid"),token:localStorage.getItem("token"),type:'2',type_id:this.buycourseId,code:this.xueshika}
+            let buycourse={uid:localStorage.getItem("uid"),token:localStorage.getItem("token"),type:'1',type_id:this.buycourseId,code:this.xueshika}
             this.$axios.post(this.apiurl+'/pay/xueshika',qs.stringify(buycourse))
             .then(response => {
                 if(response.data.status=="ok"){
@@ -241,12 +242,12 @@ export default {
             let that = this;
           if(this.selectstate==1){
               //alipay
-            var urllink='http://jixujiaoyu_api.songlongfei.club:1012/pay/alipay?uid='+localStorage.getItem("uid")+'&token='+localStorage.getItem("token")+'&type='+2+'&type_id='+this.buycourseId+''
+            var urllink='http://jixujiaoyu_api.songlongfei.club:1012/pay/alipay?uid='+localStorage.getItem("uid")+'&token='+localStorage.getItem("token")+'&type='+1+'&type_id='+this.buycourseId
             window.open(urllink);
              this.outerVisible=true
           }else if(this.selectstate==2){
               //wxpay
-                let buycourse={uid:localStorage.getItem("uid"),token:localStorage.getItem("token"),type:'2',type_id:this.buycourseId}
+                let buycourse={uid:localStorage.getItem("uid"),token:localStorage.getItem("token"),type:'1',type_id:this.buycourseId}
                 this.$axios.post(this.apiurl+'/pay/wxpay',qs.stringify(buycourse))
                 .then(response => {
                     if(response.data.status=="ok"){

@@ -17,7 +17,7 @@
           </div>
           <div class="price-box fr">
             <div class="price"><span class="rmb">￥{{item.price}} 元</span></div>
-            <div type="button" class="btn-now" @click.stop="xuexi(item.id)">{{item.checkres=="0"?"购买":"已购买"}}</div>
+            <div type="button" class="btn-now" @click.stop="xuexi(item.id)">{{item.isBuy=="0"?"购买":"已购买"}}</div>
           </div>
         </li>
         
@@ -40,6 +40,7 @@
 
 <script>
 import qs from 'qs'
+import Vue from 'vue'
 export default {
   name: "package",
   data (){
@@ -100,6 +101,7 @@ export default {
            this.kechengbao ()
           },
     removeInfo(){
+      var that=this
       this.$message.error({message:"重新登录",duration:1600});
       localStorage.removeItem("uid");
       localStorage.removeItem("token");
@@ -109,7 +111,7 @@ export default {
       localStorage.removeItem("id_card");
       localStorage.setItem("types",'rate');
       setTimeout(() => {
-        this.$router.push({ path: '/login' });
+        that.$router.push({ path: '/login' });
       }, 1600);
     },
       kechengbao (){
@@ -129,17 +131,21 @@ export default {
                that.list=[]
                that.list=that.list.concat(res.data.data.data);
                  that.count=Number(res.data.data.count)
-               for(var i=0;i<res.data.data.data.length;i++){
-                 that.id.push(res.data.data.data[i].id)
-                //  that.getbaoprogress()
-               }
-               for(var i=0;i<that.id.length;i++){
-                   that.idd=that.id[i]
-                   console.log("单个id")
-                   console.log(that.idd)
-                  // that.getbaoprogress()
-               }
-               that.isBuy();
+              //  for(var i=0;i<res.data.data.data.length;i++){
+              //    that.id.push(res.data.data.data[i].id)
+              //   //  that.getbaoprogress()
+              //  }
+              //  for(var i=0;i<that.id.length;i++){
+              //      that.idd=that.id[i]
+              //      console.log("单个id")
+              //      console.log(that.idd)
+              //     // that.getbaoprogress()
+              //  }
+               for(var i=0;i<that.list.length;i++){
+                Vue.set(that.list[i],"isBuy","0")
+                  this.isBuy(that.list[i].id)
+              }
+              
             }else if((res.data.status=="error")){
               this.$message.error({message:res.data.errormsg,duration:1600});
             }else if((res.data.status=="relogin")){
@@ -147,35 +153,64 @@ export default {
             }
       });
       },
-      //各个课程包是否购买
-      isBuy:function(){
+       //各个课程包是否购买
+      isBuy:function(id){
         let that =this;
-        for(let i=0; i<this.list.length;i++){
-          let courseId={uid:localStorage.getItem("uid"),token:localStorage.getItem("token"),kecheng_bao_id:this.list[i].id}
+          let courseId={uid:localStorage.getItem("uid"),token:localStorage.getItem("token"),kecheng_bao_id:id}
           this.$axios.post(this.apiurl+'/kecheng/check_kecheng_bao_is_buy',qs.stringify(courseId))
             .then(res => {
+              console.log("李四")
+              console.log(res)
               if(res.data.status=="ok"){
-                if(res.data.data.check_res=="0"){
-                  this.$set(this.list[i],"checkres",'0') 
-                  // this.$router.push({path:'packagebuy',query:{packid:packageid}});
-                }else if(res.data.data.check_res=="1"){
-                  this.$set(this.list[i],"checkres",'1') 
-                } 
+                 for(var i=0;i<that.list.length;i++){
+                    if(res.data.data['kecheng_bao_id']==that.list[i].id){
+                      Vue.set(that.list[i],"isBuy",res.data.data.check_res)
+                      break
+                   }
+                }
+                 
               }else if(res.data.status=="error"){
                 this.$message.error({message: res.data.msg,duration:1600});
               }else if(res.data.status=="relogin"){
                 that.removeInfo();
               }
           });
-        }
         console.log("1111111111")
         console.log(that.list)
       },
+      // //各个课程包是否购买
+      // isBuy:function(){
+      //   let that =this;
+      //   for(let i=0; i<this.list.length;i++){
+      //     let courseId={uid:localStorage.getItem("uid"),token:localStorage.getItem("token"),kecheng_bao_id:this.list[i].id}
+      //     this.$axios.post(this.apiurl+'/kecheng/check_kecheng_bao_is_buy',qs.stringify(courseId))
+      //       .then(res => {
+      //         console.log("李四")
+      //         console.log(res)
+      //         if(res.data.status=="ok"){
+      //           if(res.data.data.check_res=="0"){
+      //             this.$set(this.list[i],"checkres",'0') 
+      //             // this.$router.push({path:'packagebuy',query:{packid:packageid}});
+      //           }else if(res.data.data.check_res=="1"){
+      //             this.$set(this.list[i],"checkres",'1') 
+      //           } 
+      //         }else if(res.data.status=="error"){
+      //           this.$message.error({message: res.data.msg,duration:1600});
+      //         }else if(res.data.status=="relogin"){
+      //           that.removeInfo();
+      //         }
+      //     });
+      //   }
+      //   console.log("1111111111")
+      //   console.log(that.list)
+      // },
       xuexi (packageid) {
         let that =this;
         let courseId={uid:localStorage.getItem("uid"),token:localStorage.getItem("token"),kecheng_bao_id:packageid}
         this.$axios.post(this.apiurl+'/kecheng/check_kecheng_bao_is_buy',qs.stringify(courseId))
           .then(res => {
+            console.log("错误信息")
+            console.log(res)
             if(res.data.status=="ok"){
               if(res.data.data.check_res=="0"){
                 this.$router.push({path:'packagebuy',query:{packid:packageid}});
