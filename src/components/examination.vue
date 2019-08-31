@@ -119,6 +119,7 @@ export default {
            this.getdata ()
           },
         removeInfo(){
+            var that=this
             this.$message.error({message:"重新登录",duration:1600});
             localStorage.removeItem("uid");
             localStorage.removeItem("token");
@@ -128,7 +129,7 @@ export default {
             localStorage.removeItem("id_card");
             localStorage.setItem("types",'rate');
             setTimeout(() => {
-                this.$router.push({ path: '/login' });
+                that.$router.push({ path: '/login' });
             }, 1600);
         },
        getdata (){

@@ -134,6 +134,7 @@ export default {
       });
     },
     removeInfo() {
+        var that=this
       that.$message.error({ message: "请重新登录", duration: 1600 });
       localStorage.removeItem("login1");
       localStorage.removeItem("uid");
@@ -143,7 +144,7 @@ export default {
       localStorage.removeItem("mobile");
       localStorage.removeItem("id_card");
       setTimeout(() => {
-        this.$router.push({ path: "/login" });
+        that.$router.push({ path: "/login" });
       }, 1600);
     },
 
