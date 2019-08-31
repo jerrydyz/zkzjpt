@@ -643,6 +643,7 @@ export default {
 .mainwrap{width: 1200px;margin: 0 auto;font-size: 0;display: flex;}
 .classmain{width:880px;}
 .classside{width:302px;margin-left: 14px;}
+.classside .classsideitem{background-color: #fff;}
 .classmain-hd{height:58px;background-color:#fff;border-bottom: 0;}
 .classmain-hd ul{height: 56px;border-bottom: 1px solid #edf2f2;margin: 0 15px;}
 .classmain-hd li{float:left;margin-right:40px;width:120px;text-align:center;list-style-type: none;font-size: 16px;}
