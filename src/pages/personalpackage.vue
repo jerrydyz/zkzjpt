@@ -180,14 +180,26 @@ export default {
              token:this.token
            })
           ).then(res =>{
-            that.$message.success({message:"退出成功",duration:1600});
-            that.clearlocalData();
-            
+            that.tuichusucess();
           })
       },
     //返回个人中心
     personal(){
         this.$router.push({path:'/my'});
+    },
+    tuichusucess(){
+      let that =this ;
+      that.$message.success({message:"退出成功",duration:1600});
+      localStorage.removeItem("uid");
+      localStorage.removeItem("token");
+      localStorage.removeItem("sex");
+      localStorage.removeItem("name");
+      localStorage.removeItem("mobile");
+      localStorage.removeItem("id_card");
+      localStorage.setItem("types",'rate');
+      setTimeout(() => {
+        that.$router.push({ path: '/index' });
+      }, 1600);
     },
     removeInfo(){
       let that =this ;

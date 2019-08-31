@@ -290,6 +290,20 @@ export default {
         }
         this.$router.push({ path:'/video',query:{courseId:this.buyCourseId,vid:Vid} });
       },
+      tuichusucess(){
+        let that =this ;
+        that.$message.success({message:"退出成功",duration:1600});
+        localStorage.removeItem("uid");
+        localStorage.removeItem("token");
+        localStorage.removeItem("sex");
+        localStorage.removeItem("name");
+        localStorage.removeItem("mobile");
+        localStorage.removeItem("id_card");
+        localStorage.setItem("types",'rate');
+        setTimeout(() => {
+          that.$router.push({ path: '/index' });
+        }, 1600);
+      },
       removeInfo(){
         let that = this;
         localStorage.removeItem("uid");
@@ -300,7 +314,7 @@ export default {
         localStorage.removeItem("id_card");
         localStorage.setItem("types",'rate');
         setTimeout(() => {
-          that.$router.push({ path: '/login' });
+          that.$router.push({ path: '/index' });
         }, 1600);
       },
       closeLogin(){
@@ -360,8 +374,7 @@ export default {
              token:this.token
            })
           ).then(res =>{
-            that.$message.success({message:"退出成功",duration:1600});
-            that.removeInfo();
+            that.tuichusucess();
             
           })
       },
@@ -370,7 +383,7 @@ export default {
       if(localStorage.getItem("token")){
         this.$router.push({path:'/my'});
       }else{
-        that.$message.error({message:"请重新登录",duration:1600});
+        this.$message.error({message:"请重新登录",duration:1600});
          this.$router.push({path:'/login'});
       }
         

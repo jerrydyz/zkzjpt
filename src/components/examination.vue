@@ -235,7 +235,8 @@ export default {
                      &.l4{
                     }
                      &.l6{
-                         text-align: right;
+                        text-align: right;
+                        cursor: pointer;
                     }
                 }
             }
