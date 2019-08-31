@@ -82,13 +82,32 @@ export default {
          
         }
     },
+     watch: {
+		token: {
+			handler: function(val) {
+				if (val) {
+            this.getdata ()
+				}else{
+           this.$router.push('/login')
+           this.removeInfo()
+        }
+			}
+		},deep:true
+	},
     created (){
         var that=this
         var date=new Date;
         this.year=date.getFullYear()
         this.uid=localStorage.getItem('uid')
         this.token=localStorage.getItem('token')
-        this.getdata ()
+       
+        
+    if(this.token){
+         this.getdata ()
+    }else{
+        this.$router.push('/login')
+        this.removeInfo()
+    }
 
     },
     methods :{

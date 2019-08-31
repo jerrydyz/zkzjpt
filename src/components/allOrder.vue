@@ -70,8 +70,26 @@ export default {
           this.uid= localStorage.getItem('uid')
         this.token=localStorage.getItem('token')
         console.log(this.uid,this.token)
-        this.getOrder()
+        
+         if(this.token){
+           this.getOrder()
+            }else{
+                this.$router.push('/login')
+                 this.removeInfo()
+            }
     },
+     watch: {
+		token: {
+			handler: function(val) {
+                 if (val) {
+                    this.getOrder()
+                    }else{
+                    this.$router.push('/login')
+                    this.removeInfo()
+                }
+			}
+		},deep:true
+	},
     methods:{
         removeInfo(){
             localStorage.removeItem("uid");

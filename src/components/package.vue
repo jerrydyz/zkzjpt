@@ -62,16 +62,36 @@ export default {
   },
   created (){
     
-    this.uid = sessionStorage.getItem("uid");
-    this.token = sessionStorage.getItem("token");
+    this.uid = localStorage.getItem("uid");
+    this.token = localStorage.getItem("token");
     var date = new Date();
     this.year = date.getFullYear();
-   
+    if(this.token){
+        this.kechengbao();
+    }else{
+         this.removeInfo()
+    }
    
   },
   mounted(){
-     this.kechengbao();
+      if(this.token){
+        this.kechengbao();
+    }else{
+         this.removeInfo()
+    }
   },
+  watch: {
+		token: {
+			handler: function(val) {
+				if (val) {
+          this.kechengbao();
+				}else{
+           this.$router.push('/login')
+           this.removeInfo()
+        }
+			}
+		},deep:true
+	},
   methods:{
      //分页
           handleCurrentChange(val) {

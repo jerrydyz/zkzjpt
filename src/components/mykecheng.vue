@@ -59,9 +59,25 @@ export default {
         this.token=localStorage.getItem('token')
         var date=new Date;
         this.year=date.getFullYear()
+        
+        if(this.token){
         this.checkkecheng()
+    }else{
+        this.removeInfo()
+    }
         
     },
+     watch: {
+		token: {
+			handler: function(val) {
+				if (val) {
+           this.checkkecheng()
+				}else{
+           this.removeInfo()
+        }
+			}
+		},deep:true
+	},
     methods: {
       //分页
           handleCurrentChange(val) {

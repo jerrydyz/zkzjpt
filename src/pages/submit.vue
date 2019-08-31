@@ -170,11 +170,14 @@
                 <div class="blank-cls fl" style="background:#f7f7f7;">
                  <span style="margin-top:-10px;background:#f7f7f7;color:#6565:font-weight:bold"> 您的答案</span>
                   <ul style="background:#f7f7f7;" >
-                    <li class="co chaokuan " style="">
+                    <abbr :title="tian.user_answer['answer'].join('、')==''?'未做答':tian.user_answer['answer'].join('、')">
+                      <li class="co chaokuan " style="">
                       <span style="font-size:30px;font-weight:bold;display:inline-block;background:#f7f7f7;color:#6565">
                       <abbr :title="tian.user_answer['answer'].join('、')==''?'未做答':tian.user_answer['answer'].join('、')"> {{tian.user_answer['answer'].join("、")=="'' "?"未做答":tian.user_answer['answer'].join("、")}}</abbr>
                       </span>
                     </li>
+                    </abbr>
+                    
                   </ul>
                 </div>
                 <div class="blank-cls fl" >

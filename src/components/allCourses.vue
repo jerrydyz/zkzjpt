@@ -58,12 +58,29 @@ export default {
   },
   created() {
     var that=this
-    this.uid = sessionStorage.getItem("uid");
-    this.token = sessionStorage.getItem("token");
+    this.uid = localStorage.getItem("uid");
+    this.token = localStorage.getItem("token");
     var date = new Date();
     this.year = date.getFullYear();
-    this.getallcourse();
+    console.log(this.token)
+   
+    if(this.token){
+         this.getallcourse();
+    }else{
+        this.removeInfo()
+    }
   },
+ watch: {
+		token: {
+			handler: function(val) {
+				if (val) {
+            this.getallcourse(); 
+				}else{
+           this.removeInfo()
+        }
+			}
+		},deep:true
+	},
   methods: {
     //分页
           handleCurrentChange(val) {
@@ -81,7 +98,7 @@ export default {
       localStorage.setItem("types",'rate');
       setTimeout(() => {
         this.$router.push({ path: '/login' });
-      }, 1600);
+      }, 500);
     },
     //获取全部课程
     getallcourse() {
