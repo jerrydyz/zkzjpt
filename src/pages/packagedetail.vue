@@ -150,7 +150,7 @@ export default {
       });
     },
     removeInfo(){
-      let that =this ;
+      let that = this;
       that.$message.error({message:"重新登录",duration:1600});
       localStorage.removeItem("uid");
       localStorage.removeItem("token");

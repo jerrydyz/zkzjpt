@@ -56,9 +56,9 @@
                         <option value="">单位所在市</option>
                         <option :value="item.value" v-for="item in cityjson.children" :key="item.value" >{{item.label}}</option>
                     </select>
-                    <select name="" id="" class="qu" @blur="identifyWorkAddress">
+                    <select name="" id="" class="qu" @change="identifyWorkAddress($event)" v-model='quvalue' >
                         <option value="">单位所在区</option>
-                        <option value="" v-for="(item,index) in qu" :key="index">{{item.label}}</option>
+                        <option :value="item.label" v-for="item in qu" :key="item.value">{{item.label}}</option>
                     </select>
                 </div>
                 <div class="register-state">
@@ -97,6 +97,7 @@
 
 <script>
 import qs from 'qs'
+import { Message } from 'element-ui';
 export default {
   name: 'register',
   data () {
@@ -120,6 +121,8 @@ export default {
       cityjson:'',
       //区数据
       qu:'',
+      cityvalue:'',
+      quvalue:'',
       apiurl:'http://jixujiaoyu_api.songlongfei.club:1012',
     }
   },
@@ -739,12 +742,14 @@ export default {
       //选择完城市后
       choosequ:function(event){
           this.selected = event.target.value;
-          console.log(this.selected);
           for( let i=0;i<this.cityjson.children.length;i++){
               if(this.cityjson.children[i].value==this.selected){
+                  this.cityvalue= this.cityjson.children[i].label;
                   this.qu=this.cityjson.children[i].children;
               }
           }
+          console.log(this.selected);
+          console.log(this.cityvalue);
       },
       //验证名字
       identifyName:function(){
@@ -784,11 +789,13 @@ export default {
             this.companytips=1;
         }  
       },
-      identifyWorkAddress:function(){
-           if(this.qu==''){
+      identifyWorkAddress:function(event){
+        if(this.qu==''){
             this.workaddrestips=2;
         }else{
             this.workaddrestips=1;
+            this.quvalue = event.target.value;
+            console.log(this.quvalue);
         } 
       },
       identifypw:function(){
@@ -861,7 +868,8 @@ export default {
         }
 
           let that= this;
-          let userinfo={name:this.username,id_card:this.IDcard,mobile:this.phone,gongzuodanwei:this.company, password:this.pw}
+          let address = '河南省'+this.cityvalue+this.quvalue;
+          let userinfo={name:this.username,id_card:this.IDcard,mobile:this.phone,gongzuodanwei:this.company, password:this.pw,tongxundizhi:address}
           this.$axios.post(this.apiurl+'/user/reg',qs.stringify(userinfo)).then(response => {
               if(response.data.status=='ok'){
                 console.log(response);

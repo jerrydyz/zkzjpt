@@ -184,12 +184,17 @@ export default {
 		  token:localStorage.getItem("token"),
 		  websock :false,
 		  apiurl:'http://jixujiaoyu_api.songlongfei.club:1012',
+		  wsurl:'ws://jixujiaoyu_server.songlongfei.club:9501',
+		  ws:'',
 		}
 		
   },
   created(){
       if(localStorage.getItem("token")){
-
+		if(this.websock){console.log("web");return true;}else{this.ws = new WebSocket(this.wsurl);console.log("noweb")};
+		this.ws.onopen = function(){
+			console.log("ws已连接");
+		};
       }else{
         this.clearlocalData();
       }
@@ -379,17 +384,18 @@ export default {
 	//websocket连接
 	wslink:function(){
 			let that = this;
-			let url = 'ws://jixujiaoyu_server.songlongfei.club:9501';
+			
 			if ("WebSocket" in window){
-				if(this.websock){console.log("web");return true;}else{var ws = new WebSocket(url);console.log("noweb")};
-				ws.onopen = function(){
-					this.websock = true;
-					let myjieid=that.$route.query.vid
-					let jsondata={"kecheng_jie_id":myjieid,"uid":localStorage.getItem("uid"),"token":localStorage.getItem("token"),"url":"incr@jindu"};
-					let duixiang = JSON.stringify(jsondata);
-					ws.send(duixiang);
+				this.websock = true;
+				let myjieid=that.$route.query.vid
+				let jsondata={"kecheng_jie_id":myjieid,"uid":localStorage.getItem("uid"),"token":localStorage.getItem("token"),"url":"incr@jindu"};
+				let duixiang = JSON.stringify(jsondata);
+				that.ws.send(duixiang);
+				console.log("dianjile播放,开始计时");
+				this.ws.onopen = function(){
+					console.log("还在open");
 				};
-				ws.onmessage = function (evt) 
+				this.ws.onmessage = function (evt) 
 				{ 
 					let jsonduixiang=JSON.parse(evt.data);
 					//视频已经看的时长
@@ -415,13 +421,14 @@ export default {
 					}
 					
 				};
-				ws.onclose = function()
+				this.ws.onclose = function()
                { 
+				  that.ws = new WebSocket(that.wsurl);console.log("noweb");
                   // 关闭 websocket
-                  console.log("连接已关闭..."); 
+                  console.log("连接已关闭,重新开启中..."); 
                };
 			}else{
-				alert("您的浏览器不支持 WebSocket!");
+				console.log("您的浏览器不支持 WebSocket!");
 			}
 		},
 	
