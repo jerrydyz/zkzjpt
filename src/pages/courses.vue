@@ -77,7 +77,7 @@ export default {
   },
   mounted(){
     let that = this;
-      //获取课程年份 
+    //获取课程年份 
     this.$axios({
       method: 'get',
       url: this.apiurl+'/kecheng/get_kecheng_year',

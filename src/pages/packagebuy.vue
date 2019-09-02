@@ -99,7 +99,6 @@
       </div>
     </div>
     <div slot="footer" class="dialog-footer">
-
       <el-button @click="outerVisible = false">充值失败</el-button>
       <el-button type="primary" @click="outerVisible = false">充值成功</el-button>
     </div>
