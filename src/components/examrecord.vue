@@ -81,7 +81,7 @@ export default {
     token: {
       handler: function(val) {
         if (val) {
-          this.kaoshi();
+          // this.kaoshi();
         } else {
           this.$router.push("/login");
           this.removeInfo();

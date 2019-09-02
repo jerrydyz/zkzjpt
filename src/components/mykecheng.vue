@@ -71,7 +71,7 @@ export default {
 		token: {
 			handler: function(val) {
 				if (val) {
-           this.checkkecheng()
+          //  this.checkkecheng()
 				}else{
            this.removeInfo()
         }
@@ -156,15 +156,12 @@ export default {
           if(res.data.status=="ok"){
             // console.log(obj)
             for(var i=0;i<that.datalist.length;i++){
-                console.log("李四")
                    if(res.data.data['kecheng_id']==that.datalist[i].id){
                       Vue.set(that.datalist[i],"progress",res.data.data.progress)
                       break
                    }
               
             }
-            console.log("张三")
-            console.log(that.datalist)
           }else if((res.data.status=="error")){
             that.used=0;
           }else if((res.data.status=="relogin")){

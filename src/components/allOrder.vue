@@ -82,9 +82,7 @@ export default {
 		token: {
 			handler: function(val) {
                  if (val) {
-                    this.getOrder()
                     }else{
-                    this.$router.push('/login')
                     this.removeInfo()
                 }
 			}

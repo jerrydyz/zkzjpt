@@ -92,7 +92,6 @@ export default {
     if (this.token) {
       this.dangan();
     } else {
-      this.$router.push("/login");
       this.removeInfo();
     }
   },
@@ -100,9 +99,8 @@ export default {
     token: {
       handler: function(val) {
         if (val) {
-          this.dangan();
+          // this.dangan();
         } else {
-          this.$router.push("/login");
           this.removeInfo();
         }
       }
