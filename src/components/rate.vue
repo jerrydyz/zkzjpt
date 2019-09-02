@@ -113,9 +113,9 @@ export default {
     token: {
       handler: function(val) {
         if (val) {
-          this.getyeartime();
-          this.getdata();
-          this.kechengbao();
+          // this.getyeartime();
+          // this.getdata();
+          // this.kechengbao();
         } else {
           this.removeInfo();
         }

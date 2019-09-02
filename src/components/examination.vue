@@ -86,9 +86,8 @@ export default {
 		token: {
 			handler: function(val) {
 				if (val) {
-            this.getdata ()
+            // this.getdata ()
 				}else{
-           this.$router.push('/login')
            this.removeInfo()
         }
 			}
@@ -105,7 +104,6 @@ export default {
     if(this.token){
          this.getdata ()
     }else{
-        this.$router.push('/login')
         this.removeInfo()
     }
 

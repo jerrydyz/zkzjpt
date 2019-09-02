@@ -74,18 +74,18 @@ export default {
     }
    
   },
-  mounted(){
-      if(this.token){
-        this.kechengbao();
-    }else{
-         this.removeInfo()
-    }
-  },
+  // mounted(){
+  //     if(this.token){
+  //       this.kechengbao();
+  //   }else{
+  //        this.removeInfo()
+  //   }
+  // },
   watch: {
 		token: {
 			handler: function(val) {
 				if (val) {
-          this.kechengbao();
+          // this.kechengbao();
 				}else{
            this.$router.push('/login')
            this.removeInfo()

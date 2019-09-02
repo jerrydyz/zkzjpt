@@ -74,7 +74,7 @@ export default {
 		token: {
 			handler: function(val) {
 				if (val) {
-            this.getallcourse(); 
+            // this.getallcourse(); 
 				}else{
            this.removeInfo()
         }
