@@ -95,11 +95,11 @@ export default {
 	},
   methods:{
      //分页
-          handleCurrentChange(val) {
-              this.page=val
-           console.log(`当前页: ${val}`);
-           this.kechengbao ()
-          },
+      handleCurrentChange(val) {
+          this.page=val
+        console.log(`当前页: ${val}`);
+        this.kechengbao ()
+      },
     removeInfo(){
       var that=this
       this.$message.error({message:"重新登录",duration:1600});

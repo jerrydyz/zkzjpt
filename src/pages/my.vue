@@ -16,9 +16,11 @@
           <!-- <div class="one">
             <img src="../assets/my01.png" alt />
           </div> -->
-          <p class="p1">{{name}}</p>
-          <p class="p2">{{id_card}}</p>
-          <p class="p3" @click="more('changemsg')">个人设置</p>
+          <div class="geren">
+            <p class="p1">{{name}}</p>
+            <p class="p2">{{id_card}}</p>
+            <p class="p3" @click="more('changemsg')">个人设置</p>
+          </div>
         </div>
         <div class="leftbot">
           <ul>
@@ -219,21 +221,13 @@ export default {
       margin-right:10px;
       .top{
           width: 100%;
-          background-color: #e1f1ff;
-          text-align: center;
-           padding-top: 20px;
-           padding-bottom: 25px;
-           box-sizing: border-box;
-          .one{
-              width: 115px;
-              height: 113px;
-              margin: 0 auto;
-              margin-bottom: 12px;
-              box-sizing: border-box;
-              img{
-                  width: 100%;
-                  background-color: transparent;
-              }
+          .geren{
+            width: 100%;
+            background-color: #e1f1ff;
+            text-align: center;
+            padding-top: 20px;
+            padding-bottom: 25px;
+            box-sizing: border-box;
           }
           .p1{
               font-family: @family;

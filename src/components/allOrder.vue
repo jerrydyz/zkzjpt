@@ -59,8 +59,8 @@ export default {
             token:'',
             page:1,
             pageNo:1,
-             num:5,
-             count:0,
+            num:5,
+            count:0,
             data:[],
             // currentPage:1
             apiurl:'http://jixujiaoyu_api.songlongfei.club:1012',
@@ -114,12 +114,12 @@ export default {
             qs.stringify(data)
             ).then(res =>{
                 console.log(res)
-                that.count=Number(res.data.data.count)
                 if(res.data.status=="ok"){
+                    that.count=Number(res.data.data.count)
                     that.data=[]
                     that.data=that.data.concat(res.data.data.data)
                     console.log( that.data)
-                }else if((res.data.data.status=="error")){
+                }else if((res.data.status=="error")){
                     this.$message.error({message:res.data.errormsg,duration:1600});
                 }else if((res.data.status=="relogin")){
                     this.$message.error({message:"重新登录",duration:1600});
