@@ -5,37 +5,39 @@
     </div>
     <div class="content">
         <div class="info clearfix">
-           <span class="fl">课程信息</span>
+           <span class="fl" style="text-align:center;">订单编号</span>
+           <span class="fl">商品信息</span>
            <span class="fl">价格</span>
-           <span class="fl">支付方式</span>
-           <span class="fr">订单状态</span>
+           <!-- <span class="fl">支付方式</span> -->
+           <span class="fl">状态</span>
+           <span class="fr">下单时间</span>
         </div>
         <div class="total">
             <ul v-for="(item,index) in data" :key="index">
-                <li class="clearfix dingdan">
+                <!-- <li class="clearfix dingdan">
                     <p class="fl">
                        <span>订单编号 ：</span><span>{{item.order_id}}</span> 
                     </p>
                     <p class="fr">
                     <span>下单时间 :</span><span>{{item.time}}</span>
                     </p>
-                </li>
+                </li> -->
                 <li class="clearfix neirong">
-                    <p class="fl guanword">
-                       <span>{{item.buy_obj}}</span>
-                    </p>
-                    <p class="fl monery">￥{{item.money}}元
-                    </p>
-                    <p class="fl type">{{item.pay_type=='1'?"支付宝":item.pay_type=="2"?"微信":item.pay_type=="3"?"学时卡":"赠送"}}</p>
-                    <p class="fr zhifu">{{item.status=='0'?"未支付":item.status=="1"?"已支付":"支付失败"}}
-                    </p>
+                    <p class="fl"><span>{{item.order_id}}</span></p>
+                    <p class="fl guanword"><span>{{item.buy_obj}}</span></p>
+                    <p class="fl monery">￥{{item.money}}元</p>
+                    <!-- <p class="fl type">{{item.pay_type=='1'?"支付宝":item.pay_type=="2"?"微信":item.pay_type=="3"?"学时卡":"赠送"}}</p> -->
+                    <p :class="item.status=='0'?'zhifu':'yizhifu'">{{item.status=='0'?"未支付":item.status=="1"?"已支付":"支付失败"}}</p>
+                    <p class="fr"><span>{{item.time}}</span></p>
                 </li>
             </ul>
            
-          <div class="block" style="text-align:right;margin-top:20px;">
+          <div class="block">
             <el-pagination
+                background
+                :hide-on-single-page="pagevalue"
                 layout="prev, pager, next,jumper"
-                :page-size="5" 
+                :page-size="6" 
                 :total="count"   
                 @current-change="handleCurrentChange" 
                 :current-page.sync="pageNo" 
@@ -62,6 +64,7 @@ export default {
             num:5,
             count:0,
             data:[],
+            pagevalue:false,
             // currentPage:1
             apiurl:'http://jixujiaoyu_api.songlongfei.club:1012',
         }
@@ -115,7 +118,10 @@ export default {
             ).then(res =>{
                 console.log(res)
                 if(res.data.status=="ok"){
-                    that.count=Number(res.data.data.count)
+                    that.count=Number(res.data.data.count);
+                    if(that.count/6>1){
+                        that.pagevalue=true;
+                    }
                     that.data=[]
                     that.data=that.data.concat(res.data.data.data)
                     console.log( that.data)
@@ -156,7 +162,9 @@ export default {
     }
   }
   .content{
+      position: relative;
       width: 100%;
+      min-height: 600px;
     //   border:1px solid red;
       .info{
           width: 100%;
@@ -173,25 +181,28 @@ export default {
                 overflow: hidden;
                 text-align: center;
                 &:nth-child(1){
-                    width: 45%;
-                    text-align: left;
+                    width: 20.5%;
                 }
                  &:nth-child(2){
-                    width: 18%;
+                    width: 33%;
                 }
                  &:nth-child(3){
-                    width: 18%;
-                   
+                    width: 13%;
                 }
                  &:nth-child(4){
-                    width: 18%;
-                   text-align: right;
+                    width: 12%;
+                }
+                &:nth-child(5){
+                    width: 20%;
                 }
 
             }
       }
       .total{
+          position: relative;
           width: 100%;
+          min-height: 471px;
+          background-color: #fff;
             ul{
                 li{
                     &.dingdan{
@@ -211,40 +222,33 @@ export default {
                             margin-right:10px;
                         }
                         p{
-                             width: 18%;
-                             text-align: center;
+                            font-size: 14px;
+                            &:nth-child(1){ width: 20.5%;}
+                            &:nth-child(2){ width: 33%;}
+                            &:nth-child(3){ width: 13%;}
+                            &:nth-child(4){ width: 12%;}
+                            &:nth-child(5){ width: 20%;}
+                            text-align: center;
                             &.guanword{
-                                width: 45%;
-                                text-align: left;
                                 span{
                                     display: block;
                                     &:nth-child(1){
                                        width: 100%;
-                                        font-size: 18px;
-                                        color: #333333;
                                         overflow: hidden;
                                         text-overflow: ellipsis;
                                         white-space: nowrap;
                                     }
-                                     &:nth-child(2){
-                                       margin-top:49px;
-                                       font-size: 14px;
-                                       color: #fe0000
-                                    }
                                 }
                             }
-                            &.monery{
-                                font-size: 22px;
-                                color: #fe0000;
-                                 
-                            }
                             &.zhifu{
-                               font-size: 14px;
-                                color: #fe0000; 
-                                text-align: right;
+                                float: left;
+                               color: #fe0000; 
+                            }
+                            &.yizhifu{
+                                float: left;
+                               color: #006aca; 
                             }
                              &.type{
-                               font-size: 14px;
                                 color: #333; 
                             }
                         }
@@ -252,6 +256,13 @@ export default {
                     }
                 }
             }
+      }
+      .block{
+          text-align: center;
+          position: absolute;
+          bottom: 0;
+          width: 100%;
+          height: 52px;
       }
   }
 }

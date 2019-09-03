@@ -25,8 +25,10 @@
                 <!-- <p style="color:red;"><span>主讲:&nbsp;</span>{{item.jiangshi.name}}</p>          -->
             </li>
         </ul>
-        <div class="blocks" style="text-align:center;height:50px; padding-top:8px;">
+        <div class="blocks">
           <el-pagination
+                background
+                :hide-on-single-page="pagevalue"
                 @current-change="handleCurrentChange"
                 :current-page.sync="pageNo"
                 :page-size="6"
@@ -64,6 +66,7 @@ export default {
         pageNo:1,
         suoyin:0,
         kemuid:'',
+        pagevalue:false,
         tabs:["我的课程","专业课","公需课"]
        
       }
@@ -223,6 +226,8 @@ export default {
   }
   .content{
       width: 100%;
+      min-height: 600px;
+      position: relative;
       ul{
           li{
               // border:1px solid red;
@@ -300,11 +305,14 @@ export default {
           }
       }
       .nodata{
-                width: 212px;
-                height: 240px;
-                margin: 80px auto;
-                background-image: url('../assets/nodata.png');
-            }
+          width: 212px;
+          height: 240px;
+          margin: 80px auto;
+          background-image: url('../assets/nodata.png');
+      }
+      .blocks{
+        position: absolute;bottom: 0; text-align:center;width: 100%; height:50px; padding-top:8px;
+      }
   }
 
 }

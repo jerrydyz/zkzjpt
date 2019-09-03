@@ -38,6 +38,7 @@
       </ul>
       <div class="block" v-show="fenye">
         <el-pagination
+          background
           @current-change="handleCurrentChange"
           :current-page.sync="pageNo"
           :page-size="6"
@@ -246,7 +247,9 @@ export default {
     }
   }
   .content {
+    position: relative;
     width: 100%;
+    min-height: 526px;
     ul {
       li {
         // border:1px solid red;
@@ -317,7 +320,10 @@ export default {
       }
     }
     .block {
+      position: absolute;
+      bottom: 0;
       text-align: center;
+      width: 100%;
       height: 52px;
       padding-top: 15px;
     }
