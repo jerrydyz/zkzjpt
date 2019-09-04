@@ -90,6 +90,7 @@
         </div>
         <component :is="componentId" class="fl" @more="more"></component>
     </div>
+     <comfoot></comfoot>
   </div>
 </template>
 
@@ -104,6 +105,7 @@ import allCourses from '../components/allCourses'
 import mykecheng from '../components/mykecheng'
 import allOrder from '../components/allOrder'
 import changemsg from '../components/changemsg'
+import comfoot from '../components/footer'
 export default {
   name: "my",
   data() {
@@ -139,8 +141,7 @@ export default {
          this.more( localStorage.getItem('types'))
       }
         this.getxueshinum ()
-      
-    },
+  },
   methods: {
      more(val){
         this.componentId=val
@@ -205,8 +206,8 @@ export default {
      allCourses,
      mykecheng,
      allOrder,
-     changemsg
-
+     changemsg,
+    comfoot
   }
 };
 </script>
