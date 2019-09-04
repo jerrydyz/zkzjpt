@@ -5,43 +5,45 @@
     </div>
     <div class="content">
         <div class="info clearfix">
-           <span class="fl" style="text-align:center;">订单编号</span>
-           <span class="fl">商品信息</span>
-           <span class="fl">价格</span>
-           <!-- <span class="fl">支付方式</span> -->
-           <span class="fl">状态</span>
-           <span class="fr">下单时间</span>
+           <span class="fl spn1">订单编号</span>
+           <span class="fl spn2">商品信息</span>
+           <span class="fl spn3">价格</span>
+           <span class="fl spn4">支付方式</span>
+           <span class="fl spn5">状态</span>
+           <span class="fl spn6">下单时间</span>
         </div>
         <div class="total">
-            <ul v-for="(item,index) in data" :key="index">
-                <!-- <li class="clearfix dingdan">
-                    <p class="fl">
-                       <span>订单编号 ：</span><span>{{item.order_id}}</span> 
-                    </p>
-                    <p class="fr">
-                    <span>下单时间 :</span><span>{{item.time}}</span>
-                    </p>
-                </li> -->
-                <li class="clearfix neirong">
+            <ul >
+                <!-- <li class="clearfix neirong">
                     <p class="fl"><span>{{item.order_id}}</span></p>
                     <p class="fl guanword"><span>{{item.buy_obj}}</span></p>
                     <p class="fl monery">￥{{item.money}}元</p>
-                    <!-- <p class="fl type">{{item.pay_type=='1'?"支付宝":item.pay_type=="2"?"微信":item.pay_type=="3"?"学时卡":"赠送"}}</p> -->
+                    <p class="fl type">{{item.pay_type=='1'?"支付宝":item.pay_type=="2"?"微信":item.pay_type=="3"?"学时卡":"赠送"}}</p>
                     <p :class="item.status=='0'?'zhifu':'yizhifu'">{{item.status=='0'?"未支付":item.status=="1"?"已支付":"支付失败"}}</p>
                     <p class="fr"><span>{{item.time}}</span></p>
+                </li> -->
+                <li class="clearfix" v-for="(item,index) in data" :key="index">
+                    <span class="fl spn1" style="text-align:left;">{{item.order_id}}</span>
+                    <span class="fl spn2">{{item.buy_obj}}</span>
+                    <span class="fl spn3">￥{{item.money}}元</span>
+                    <span class="fl spn4">{{item.pay_type=='1'?"支付宝":item.pay_type=="2"?"微信":item.pay_type=="3"?"学时卡":"赠送"}}</span>
+                    <span class="fl spn5" :class="item.status=='0'?'zhifu':'yizhifu'">{{item.status=='0'?"未支付":item.status=="1"?"已支付":"支付失败"}}</span>
+                    <span class="fl spn6">{{item.time}}</span>
+
                 </li>
             </ul>
            
-          <div class="block">
+          <div class="block" style="text-align:center;margin-top:10px;">
             <el-pagination
                 background
                 :hide-on-single-page="pagevalue"
                 layout="total,prev, pager, next,jumper"
-                :page-size="10" 
+                :page-size="14" 
                 :total="count"   
                 @current-change="handleCurrentChange" 
                 :current-page.sync="pageNo" 
                 :page-count='5'
+                v-show="count>14"
                 >
             </el-pagination>
             </div>
@@ -61,7 +63,7 @@ export default {
             token:'',
             page:1,
             pageNo:1,
-            num:10,
+            num:14,
             count:0,
             data:[],
             pagevalue:false,
@@ -170,28 +172,35 @@ export default {
           height: 35px;
           line-height: 35px;
             background-color: #138bef;
-            padding: 0 20px 0 20px;
+            padding: 0 20px ;
             box-sizing: border-box;
             color:#fff;
             font-size:14px;
              overflow: hidden;
+
             span{
                 display:inline-block;
                 overflow: hidden;
                 text-align: center;
+                text-overflow: ellipsis;
+                white-space: nowrap;
+                cursor: default;
                 &:nth-child(1){
-                    width: 20.5%;
+                    width: 22%;
                 }
                  &:nth-child(2){
-                    width: 33%;
+                    width: 22%;
                 }
                  &:nth-child(3){
-                    width: 13%;
+                    width: 12%;
                 }
                  &:nth-child(4){
                     width: 12%;
                 }
                 &:nth-child(5){
+                    width: 12%;
+                }
+                 &:nth-child(6){
                     width: 20%;
                 }
 
@@ -203,56 +212,61 @@ export default {
           min-height: 600px;
           background-color: #fff;
             ul{
-                li{
-                    &.dingdan{
-                        height: 35px;
-                        line-height: 35px;
-                        padding: 0 20px 0 20px;
-                        background-color: #f1f1f1;
-                        font-size: 12px;
-                        color: #333333;
-                    }
-                    &.neirong{
-                        padding: 15px 20px 15px 20px;
-                        box-sizing: border-box;
-                        background-color: #fff;
-                        img{
-                            width: 150px;
-                            margin-right:10px;
-                        }
-                        p{
-                            font-size: 14px;
-                            &:nth-child(1){ width: 20.5%;}
-                            &:nth-child(2){ width: 33%;}
-                            &:nth-child(3){ width: 13%;}
-                            &:nth-child(4){ width: 12%;}
-                            &:nth-child(5){ width: 20%;}
-                            text-align: center;
-                            &.guanword{
-                                span{
-                                    display: block;
-                                    &:nth-child(1){
-                                       width: 100%;
-                                        overflow: hidden;
-                                        text-overflow: ellipsis;
-                                        white-space: nowrap;
-                                    }
-                                }
-                            }
-                            &.zhifu{
-                                float: left;
-                               color: #fe0000; 
-                            }
-                            &.yizhifu{
-                                float: left;
-                               color: #006aca; 
-                            }
-                             &.type{
-                                color: #333; 
-                            }
-                        }
+                 padding: 0 20px ;
+              box-sizing: border-box;
+              height: 600px;
+               
+            li{
+              
+              height: 40px;
+              line-height: 40px;
+              
+                  &:nth-child(2n){
+                      background-color: #f4f4f4;
+                  }
+              span{
+                display:inline-block;
+                overflow: hidden;
+                text-align: center;
+                text-overflow: ellipsis;
+                white-space: nowrap;
+                cursor: default;
+                &:nth-child(1){
+                    width: 22%;
+                }
+                 &:nth-child(2){
+                    width: 22%;
+                }
+                 &:nth-child(3){
+                    width: 12%;
+                }
+                 &:nth-child(4){
+                    width: 12%;
+                }
+                &:nth-child(5){
+                    width: 12%;
+                }
+                 &:nth-child(6){
+                    width: 20%;
+                }
+                 &.zhifu{
+                    float: left;
+                    color: #fe0000; 
+                }
+                &.yizhifu{
+                    float: left;
+                    color: #006aca; 
+                }
+                    &.type{
+                    color: #333; 
+                }
 
-                    }
+            }
+                   
+                       
+
+               
+
                 }
             }
       }
