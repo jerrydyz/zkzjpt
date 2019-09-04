@@ -200,7 +200,7 @@ export default {
       .total{
           position: relative;
           width: 100%;
-          min-height: 471px;
+          min-height: 600px;
           background-color: #fff;
             ul{
                 li{

@@ -31,7 +31,7 @@
                 @current-change="handleCurrentChange"
                 :current-page.sync="pageNo"
                 :page-size="6"
-                layout="prev, pager, next, jumper"
+                layout="total,prev, pager, next, jumper"
                 :total="count"
                 :pager-count="7"
                 v-show="count>6"
@@ -225,7 +225,7 @@ export default {
   }
   .content{
       width: 100%;
-      min-height: 600px;
+      min-height: 654px;
       position: relative;
       ul{
           li{

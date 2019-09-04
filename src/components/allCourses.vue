@@ -42,9 +42,10 @@
           @current-change="handleCurrentChange"
           :current-page.sync="pageNo"
           :page-size="6"
-          layout="prev, pager, next, jumper"
+          layout="total,prev, pager, next, jumper"
           :total="count"
           :pager-count="7"
+          v-show="count>6"
         ></el-pagination>
       </div>
     </div>
@@ -200,19 +201,18 @@ export default {
         }
       });
     },
-    changePage() {
-      // this.pageNo=page
-      console.log(this.pageNo);
-      this.getallcourse();
-    },
+    
     changeTab: function(index) {
       this.suoyin = index;
       if (index == 0) {
         this.kemuid = "";
+        this.page=1;
       } else if (index == 1) {
         this.kemuid = 1;
+        this.page=1;
       } else if (index == 2) {
         this.kemuid = 2;
+        this.page=1;
       }
       this.getallcourse();
     }
@@ -248,7 +248,7 @@ export default {
   .content {
     position: relative;
     width: 100%;
-    min-height: 526px;
+    min-height: 654px;
     ul {
       li {
         // border:1px solid red;
