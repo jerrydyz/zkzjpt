@@ -66,7 +66,6 @@ export default {
         localStorage.removeItem("name");
         localStorage.removeItem("mobile");
         localStorage.removeItem("id_card");
-        localStorage.setItem("types",'rate');
         setTimeout(() => {
           this.$router.push({ path: '/login' });
         }, 1600);
@@ -103,7 +102,6 @@ export default {
               localStorage.setItem("mobile", response.data.data.mobile);
               localStorage.setItem("id_card", response.data.data.id_card);
               localStorage.setItem("login1", "1");
-              localStorage.setItem('types','rate')
               that.sex=response.data.data.sex;
               this.name=response.data.data.name;
               that.$message.success({message:"登陆成功，即将前往个人中心页",duration:1600});

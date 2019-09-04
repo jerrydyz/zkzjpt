@@ -36,12 +36,12 @@
             <el-pagination
                 background
                 :hide-on-single-page="pagevalue"
-                layout="prev, pager, next,jumper"
-                :page-size="6" 
+                layout="total,prev, pager, next,jumper"
+                :page-size="10" 
                 :total="count"   
                 @current-change="handleCurrentChange" 
                 :current-page.sync="pageNo" 
-                :page-count='3'
+                :page-count='5'
                 >
             </el-pagination>
             </div>
@@ -61,7 +61,7 @@ export default {
             token:'',
             page:1,
             pageNo:1,
-            num:5,
+            num:10,
             count:0,
             data:[],
             pagevalue:false,
@@ -100,7 +100,6 @@ export default {
             localStorage.removeItem("name");
             localStorage.removeItem("mobile");
             localStorage.removeItem("id_card");
-            localStorage.setItem("types",'rate');
             setTimeout(() => {
             that.$router.push({ path: '/login' });
             }, 1600);

@@ -1,105 +1,117 @@
 <template>
-  <div class="examrecord fl">
+  <div class="examination">
     <div class="title">
-      <span>考试记录</span>
+      <h3><span>考试记录</span></h3>
     </div>
     <div class="content">
-      <div class="top">
-        <ul class="clearfix">
-          <li class="fl l1">试卷名称</li>
-          <li class="fr l2">操作</li>
-          <li class="fr l2">状态</li>
-          <li class="fr l3">总分数</li>
-          <li class="fr l4">分数</li>
-          <li class="fr l5">考试时间</li>
-        </ul>
+      <div class="nav">
+        <span class="spn1">试卷名称</span>
+        <span class="spn2">考试时间</span>
+        <span class="spn3">分数</span>
+        <span class="spn4">总分数</span>
+        <span class="spn5">状态</span>
+        <span class="spn6">操作</span>
       </div>
-      <div class="topcon">
-        <ul class="clearfix" v-show="!nodata" v-for="(item,index) in data" :key="index">
-          <li class="fl l1">{{item.shijuan_title}}</li>
-          <li class="fr l2" @click="todetail(item.id)">查看详情</li>
-          <li class="fr l2 active" v-if="item.is_pass=='0'">{{item.is_pass=='0'?'未通过':'考试通过'}}</li>
-          <li class="fr l2 active1" v-else>{{item.is_pass=='0'?'未通过':'考试通过'}}</li>
-          <li class="fr l3">{{item.zong_score}}</li>
-          <li class="fr l4">{{item.score}}</li>
-          <li class="fr l5">{{item.time}}</li>
-        </ul>
-      </div>
-      <div class="nodata" v-show="nodata"></div>
-      <div class="block" v-show="fenye">
-        <el-pagination
-          @current-change="handleCurrentChange"
-          :current-page.sync="pageNo"
-          :page-size="14"
-          layout="prev, pager, next, jumper"
-          :total="count"
-          :pager-count="7"
-        ></el-pagination>
-      </div>
+      <ul>
+        <li v-for="(item,index) in data" :key="index">
+            <span class="spn1">{{item.shijuan_title}}</span>
+            <span class="spn2">{{item.time}}</span>
+            <span class="spn3">{{item.score}}</span>
+            <span class="spn4">{{item.zong_score}}</span>
+            <span class="spn5 active1"  v-if="item.is_pass=='0'">{{item.is_pass=='0'?'未通过':'考试通过'}}</span>
+             <span class="spn5  active" v-else>{{item.is_pass=='0'?'未通过':'考试通过'}}</span>
+            <span class="spn6"  @click="todetail(item.id)">查看详情</span>
+        </li>
+      </ul>
+       <div class="nodata" v-show="nodata">
+        </div>
+        <div class="block" style="text-align:right;margin-top:10px;">
+            <el-pagination
+                 background
+                @current-change="handleCurrentChange"
+                :current-page.sync="pageNo"
+                :page-size="11"
+                layout="total,prev, pager, next, jumper"
+                :total="count"
+                :pager-count="7"
+                :hide-on-single-page="pagevalue"
+                >
+            </el-pagination>
+        </div>
     </div>
   </div>
 </template>
 
 <script>
-import qs from "qs";
+import qs from 'qs'
 export default {
-  data() {
-    return {
-      nodata: true,
-      uid: "",
-      token: "",
-      page: 1,
-      num: 14,
-      data: [],
-      apiurl: "http://jixujiaoyu_api.songlongfei.club:1012",
-      pageNo: 1,
-      currentPage: 1, //当前页数 ，默认为1
-      numlist: 100,
-      currentPageData: [], //当前页显示内容
-      pageSize: 1,
-      fenye: true,
-      count: 0
-    };
-  },
-  created() {
-    var that = this;
-    this.uid = localStorage.getItem("uid");
-    this.token = localStorage.getItem("token");
-
-    if (localStorage.getItem("pagenum")) {
-      this.page = Number(localStorage.getItem("pagenum"));
-      this.kaoshi();
-    }
-    if (this.token) {
-      this.kaoshi();
-    } else {
-      this.$router.push("/login");
-      this.removeInfo();
-    }
-  },
-  watch: {
-    token: {
-      handler: function(val) {
-        if (val) {
-          // this.kaoshi();
-        } else {
-          this.$router.push("/login");
-          this.removeInfo();
-        }
+  name: "examination",
+  data (){
+      return {
+            nodata: true,
+            uid: "",
+            token: "",
+            page: 1,
+            num: 11,
+            data: [],
+            apiurl: "http://jixujiaoyu_api.songlongfei.club:1012",
+            pageNo: 1,
+            currentPage: 1, //当前页数 ，默认为1
+            numlist: 100,
+            currentPageData: [], //当前页显示内容
+            pageSize: 1,
+            fenye: true,
+            count: 0,
+             pagevalue:false,
       }
-    },
-    deep: true
   },
-
-  methods: {
-    //分页
-    handleCurrentChange(val) {
-      this.page = val;
-      console.log(`当前页: ${val}`);
-      localStorage.setItem("pagenum", this.page);
-      this.kaoshi();
-    },
-    kaoshi() {
+   watch: {
+		token: {
+			handler: function(val) {
+				if (val) {
+            // this.getdata ()
+				}else{
+           this.removeInfo()
+        }
+			}
+		},deep:true
+	},
+  created (){
+        var that=this
+        var date=new Date;
+        this.year=date.getFullYear()
+        
+        this.uid=localStorage.getItem('uid')
+        this.token=localStorage.getItem('token')
+        if(this.token){
+          this.kaoshi ()
+    }else{
+        this.removeInfo()
+    }
+  },
+  methods:{
+      //分页
+          handleCurrentChange(val) {
+              this.page=val
+           console.log(`当前页: ${val}`);
+           localStorage.setItem('pagenum',this.page)
+           this.kaoshi ()
+          },
+          removeInfo(){
+            var that=this
+            this.$message.error({message:"重新登录",duration:1600});
+            localStorage.removeItem("uid");
+            localStorage.removeItem("token");
+            localStorage.removeItem("sex");
+            localStorage.removeItem("name");
+            localStorage.removeItem("mobile");
+            localStorage.removeItem("id_card");
+            setTimeout(() => {
+                that.$router.push({ path: '/login' });
+            }, 1600);
+        },
+        //获取考试记录
+       kaoshi() {
       //获取考试记录
       var that = this;
       var data = {
@@ -133,21 +145,7 @@ export default {
         }
       });
     },
-    removeInfo() {
-        var that=this
-      that.$message.error({ message: "请重新登录", duration: 1600 });
-      localStorage.removeItem("login1");
-      localStorage.removeItem("uid");
-      localStorage.removeItem("token");
-      localStorage.removeItem("sex");
-      localStorage.removeItem("name");
-      localStorage.removeItem("mobile");
-      localStorage.removeItem("id_card");
-      setTimeout(() => {
-        that.$router.push({ path: "/login" });
-      }, 1600);
-    },
-
+    //查看详情
     todetail(num) {
       this.$router.push({
         path: "/submit",
@@ -155,132 +153,132 @@ export default {
           kaoshi_id: num
         }
       });
-    }
+    },
+       //去学习
+        gostady (e,num){
+           var that=this
+           console.log(e,num)
+           if(e.target.innerHTML=="继续学习"){
+               that.$emit('more','allCourses')
+           }
+           if(e.target.innerHTML=="去考试"){
+               that.$router.push({
+                        path:'/kaoshi',
+                        query:{
+                            shijuan_id:num
+                        }
+                    })
+           }
+       },
+       //切换分页
+        current_change (currentPage){
+           this.currentPage=currentPage
+           console.log(currentPage)
+       }
+
   }
 };
 </script>
 
 <style lang="less" scoped>
-.examrecord {
-  width: 948px;
-  // border:1px solid red;
-  .title {
-    width: 100%;
-    height: 55px;
-    background-color: #fafafa;
-    margin-bottom: 20px;
-    font-size: 18px;
-    padding-left: 20px;
-    line-height: 55px;
-    color: #0c69f5;
-    box-sizing: border-box;
-    span {
-      border-bottom: 2px solid #0c69f5;
-    }
-  }
-  .content {
-    width: 100%;
-    .top {
-      ul {
-        background-color: #138bef;
+.examination{
+    width: 948px;
+    background-color: #fff;
+    padding:0 20px;
+          box-sizing: border-box;
+    .title{
         width: 100%;
-        padding: 0 20px;
-        box-sizing: border-box;
-        cursor: default;
-        li {
-          // width: 910px;
-          height: 35px;
-          line-height: 35px;
-          font-size: 14px;
-          color: #fff;
-          overflow: hidden;
-          text-overflow: ellipsis;
-          white-space: nowrap;
-          cursor: default;
-          &.l2 {
-            width: 130px;
-            text-align: right;
-          }
-          &.l3 {
-            width: 150px;
-            text-align: center;
-            margin-right: 10px;
-          }
-          &.l4 {
-            width: 150px;
-            text-align: center;
-          }
-          &.l5 {
-            width: 260px;
-            text-align: center;
-          }
+        height: 50px;
+        line-height: 50px;
+        border-bottom: 1px solid #f4f4f4;
+        margin-bottom:20px;
+          box-sizing: border-box;
+        h3{
+            color:#0169cc;
+            span{
+                padding-bottom:13px;
+                border-bottom:2px solid #0169cc;
+                box-sizing: border-box;
+            }
         }
-      }
     }
-    .topcon {
-      ul {
-        //   background-color: #138bef;
+    .content{
         width: 100%;
-        padding: 0 20px;
-        box-sizing: border-box;
-        cursor: default;
-        li {
-          // width: 910px;
-          height: 35px;
-          line-height: 35px;
-          font-size: 14px;
-          color: #868686;
-          overflow: hidden;
-          text-overflow: ellipsis;
-          white-space: nowrap;
-          cursor: default;
-          &.l1 {
-            box-sizing: border-box;
-          }
-          &.l2 {
-            width: 130px;
-            text-align: right;
-          }
-          &.l3 {
-            width: 150px;
-            text-align: center;
-            margin-right: 10px;
-          }
-          &.l4 {
-            width: 150px;
-            text-align: center;
-          }
-          &.active {
-            color: red;
-          }
-          &.active1 {
-            color: green;
-          }
-          &.l5 {
-            width: 260px;
-            text-align: center;
-          }
+        height: 553px;
+        .nav{
+            height: 40px;
+            line-height: 40px;
+            background-color: #e1f1ff;
+            color:#1a1a1c;
+             font-size:0;
+             text-align: center;
+           
+            span{
+                font-size:14px;
+                width: 15%;
+                display: inline-block;
+                 overflow: hidden;
+                    text-overflow:ellipsis;
+                    white-space: nowrap;
+                    cursor: default;
+                &.spn1{
+                    width: 20%;
+                }
+                &.spn2{
+                    width: 20%;
+                }
+                //  &.spn4,&.spn5,&.spn6{
+                //     width: 7%;
+                // }
+            }
         }
-      }
+        ul{
+            li{
+            height: 40px;
+            line-height: 40px;
+            color:#1a1a1c;
+             font-size:0;
+             text-align: center;
+            span{
+                font-size:14px;
+                width: 15%;
+                display: inline-block;
+                 overflow: hidden;
+                    text-overflow:ellipsis;
+                    white-space: nowrap;
+                     cursor: default;
+                &.spn2{
+                    width: 20%;
+                }
+                &.spn1{
+                    width: 20%;
+                }
+                &.spn7{
+                     cursor: pointer;
+                }
+                &.active{
+                    color:#66d668;
+                }
+                &.active1{
+                    color:#ff6767;
+                }
+                &.active2{
+                    color:#006acc;
+                }
+
+            }
+            &:nth-child(2n){
+                 background-color: #f4f4f4;
+            }
+        }
+        }
+        .nodata{
+                width: 212px;
+                height: 240px;
+                margin: 80px auto;
+                background-image: url('../assets/nodata.png');
+            }
+
     }
-    .nodata {
-      width: 212px;
-      height: 240px;
-      margin: 80px auto;
-      background-image: url("../assets/nodata.png");
-    }
-    .block {
-      color: #868686;
-      text-align: right;
-      margin-top: 15px;
-      button {
-        color: #868686;
-        padding: 0 10px;
-        height: 20px;
-        box-sizing: border-box;
-        background: none;
-      }
-    }
-  }
 }
 </style>

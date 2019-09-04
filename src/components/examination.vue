@@ -1,72 +1,58 @@
 <template>
-    <div class="examination fl">
-        <div class="title">
-            <span>参加考试</span>        
+  <div class="examination">
+    <div class="title">
+      <h3><span>参加考试</span></h3>
+    </div>
+    <div class="content">
+      <div class="nav">
+        <span class="spn1">年度</span>
+        <span class="spn2">试卷名称</span>
+        <span class="spn3">所属课程</span>
+        <span class="spn4">总分数</span>
+         <span class="spn5">公需课学时</span>
+        <span class="spn6">专业课学时</span>
+        <span class="spn7">状态</span>
+        <span class="spn8">操作</span>
+      </div>
+      <ul>
+        <li v-for="item in data" :key="item.id">
+            <span class="spn1">{{item.year}}</span>
+            <span class="spn2" :title="item.shijuan_info.title">{{item.shijuan_info.title}}</span>
+            <span class="spn3" :title="item.kecheng_title">{{item.kecheng_title}}</span>
+            <span class="spn4">{{item.shijuan_info.score}}</span>
+            <span class="spn5">{{item.gongxuke_xueshi_num}}</span>
+            <span class="spn5">{{item.zhuanyeke_xueshi_num}}</span>
+            <span class="spn6 active1"  v-if="item.is_pass=='0'">{{item.is_pass=="0"?'未通过':"考试通过"}}</span>
+             <span class="spn6 active"  v-else>{{item.is_pass=="0"?'未通过':"考试通过"}}</span>
+            <span class="spn7" @click="gostady($event,item.id)">{{item.is_pass==1?'--':item.is_pass==0&&item.enable_kaoshi==0?'继续学习':item.is_pass==0&&item.enable_kaoshi==1?'去考试':'' }}</span>
+        </li>
+      </ul>
+       <div class="nodata" v-show="nodata">
         </div>
-        <div class="content">
-            <div class="top">
-                <ul class="clearfix">
-                    <li class="fl l1">年度</li>
-                    <li class="fl l2">试卷名称</li>
-                    <li class="fl l3">总分数</li>
-                    <!-- <li class="fl l4">公需课学时</li>
-                     <li class="fl l4">专业课学时</li> -->
-                      <li class="fl l4">学时</li> 
-                      <li class="fl l4">课程题目</li>
-                     <li class="fl l5">状态</li>
-                     <li class="fl l6">操作</li>
-                </ul>
-            </div>
-             <div class="topcon">
-                <ul class="clearfix" v-for="item in data" :key="item.id">
-                    <li class="fl l1">{{item.year}}</li>
-                    <li class="fl l2">{{item.shijuan_info.title}}</li>
-                     <li class="fl l3">{{item.shijuan_info.score}}</li>
-                      <!-- <li class="fl l4">{{item.gongxuke_xueshi_num}}</li>
-                       <li class="fl l4">{{item.zhuanyeke_xueshi_num}}</li> -->
-                        <li class="fl l4">{{(Number(item.gongxuke_xueshi_num)+Number(item.zhuanyeke_xueshi_num)).toFixed(1)}}</li>
-                        <li class="fl l7">{{item.kecheng_title}}</li>
-                     <!-- <li class="fl l5">{{item.is_pass=="0"?'未通过':"考试通过"}}</li> -->
-                    <li class="fl l5 active" v-if="item.is_pass=='0'">{{item.is_pass=="0"?'未通过':"考试通过"}}</li>
-                    <li class="fl l5 active1" v-else>{{item.is_pass=="0"?'未通过':"考试通过"}}</li>
-                    <li class="fl l6" @click="gostady($event,item.id)">{{item.is_pass==1?'--':item.is_pass==0&&item.enable_kaoshi==0?'继续学习':item.is_pass==0&&item.enable_kaoshi==1?'去考试':'' }}</li>
-                </ul>
-            </div>
-             <!-- <div class="block" style="text-align:right;margin-top:20px;">
-                <el-pagination
-                    layout="prev, pager, next,jumper"
-                    :total="data.length"
-                    :page-size="num"    
-                    @current-change="current_change" 
-                    :current-page.sync="currentPage" 
-                    >
-                </el-pagination>
-                </div> -->
-            <div class="nodata" v-show="nodata">
-
-            </div>
-             <div class="block" v-show="fenye" style="text-align:right;margin-top:20px;">
+        <div class="block" v-show="fenye" style="text-align:right;margin-top:20px;">
                 <el-pagination
                     @current-change="handleCurrentChange"
                     :current-page.sync="pageNo"
-                    :page-size="14"
-                    layout="prev, pager, next, jumper"
+                    :page-size="11"
+                    layout="total,prev, pager, next, jumper"
                     :total="count"
                     :pager-count="7"
+                    v-show="count>11"
+                    background
                     >
                 </el-pagination>
               </div>
-        </div>
-       
     </div>
+  </div>
 </template>
 
 <script>
 import qs from 'qs'
 export default {
-    data(){
-        return{
-            nodata:false,
+  name: "examination",
+  data (){
+      return {
+           nodata:false,
             data:[],
             year:'',
             uid:'',
@@ -76,13 +62,12 @@ export default {
             apiurl:'http://jixujiaoyu_api.songlongfei.club:1012',
             fenye:true,
              page:1,
-            num:14,
+            num:11,
             count:0,
               pageNo:1,
-         
-        }
-    },
-     watch: {
+      }
+  },
+   watch: {
 		token: {
 			handler: function(val) {
 				if (val) {
@@ -93,30 +78,27 @@ export default {
 			}
 		},deep:true
 	},
-    created (){
+  created (){
         var that=this
         var date=new Date;
         this.year=date.getFullYear()
         this.uid=localStorage.getItem('uid')
         this.token=localStorage.getItem('token')
-       
-        
-    if(this.token){
+        if(this.token){
          this.getdata ()
     }else{
         this.removeInfo()
     }
-
-    },
-    methods :{
-        //分页
+  },
+  methods:{
+      //分页
           handleCurrentChange(val) {
               this.page=val
            console.log(`当前页: ${val}`);
            localStorage.setItem('pagenum',this.page)
            this.getdata ()
           },
-        removeInfo(){
+          removeInfo(){
             var that=this
             this.$message.error({message:"重新登录",duration:1600});
             localStorage.removeItem("uid");
@@ -125,12 +107,12 @@ export default {
             localStorage.removeItem("name");
             localStorage.removeItem("mobile");
             localStorage.removeItem("id_card");
-            localStorage.setItem("types",'rate');
             setTimeout(() => {
                 that.$router.push({ path: '/login' });
             }, 1600);
         },
-       getdata (){
+        //获取数据
+        getdata (){
             var that=this
             this.$axios.post(this.apiurl+'/kaoshi/get_shijuan_list',
                 qs.stringify({
@@ -160,7 +142,8 @@ export default {
                 }
             });
        },
-       gostady (e,num){
+       //去学习
+        gostady (e,num){
            var that=this
            console.log(e,num)
            if(e.target.innerHTML=="继续学习"){
@@ -175,121 +158,115 @@ export default {
                     })
            }
        },
-       current_change (currentPage){
+       //切换分页
+        current_change (currentPage){
            this.currentPage=currentPage
            console.log(currentPage)
        }
-    }
 
-}
+  }
+};
 </script>
 
 <style lang="less" scoped>
-    .examination{
-        width: 948px;
-        // border:1px solid red;
-        cursor: default;
-        
-        .title{
-            width: 100%;
-            height: 55px;
-            background-color: #fafafa;
-            margin-bottom: 20px;
-            font-size: 18px;
-            padding-left: 20px;
-            line-height: 55px;
-            color: #0c69f5;
-            box-sizing: border-box;
+.examination{
+    width: 948px;
+    background-color: #fff;
+    padding:0 20px;
+          box-sizing: border-box;
+    .title{
+        width: 100%;
+        height: 50px;
+        line-height: 50px;
+        border-bottom: 1px solid #f4f4f4;
+        margin-bottom:20px;
+          box-sizing: border-box;
+        h3{
+            color:#0169cc;
             span{
-                border-bottom:2px solid #0c69f5;
+                padding-bottom:13px;
+                border-bottom:2px solid #0169cc;
+                box-sizing: border-box;
             }
         }
-        .content{
-            width: 100%;
-            .top{
-                 ul{
-                  background-color: #138bef;
-                  width: 100%;
-                  padding: 0 20px;
-                    box-sizing: border-box;
-                li{
-                    // width: 910px;
-                    height: 35px;
-                    line-height: 35px;
-                    font-size:14px;
-                    color:#fff;
-                    text-align: center;
-                    width: 14.2%;
-                     cursor: default;
-                     &.l1{
-                        text-align: left;
-                        // width: 15%;
-                    }
-                    &.l2{   
-                        // width: 25%;
-                    }
-                     &.l3{
-                         }
-                     &.l4{
-                    }
-                     &.l6{
-                        text-align: right;
-                        cursor: pointer;
-                    }
+    }
+    .content{
+        width: 100%;
+        height: 553px;
+        .nav{
+            height: 40px;
+            line-height: 40px;
+            background-color: #e1f1ff;
+            color:#1a1a1c;
+             font-size:0;
+             text-align: center;
+           
+            span{
+                font-size:14px;
+                width: 10%;
+                display: inline-block;
+                 overflow: hidden;
+                    text-overflow:ellipsis;
+                    white-space: nowrap;
+                    cursor: default;
+                &.spn2{
+                    width: 25%;
                 }
+                &.spn3{
+                    width: 15%;
+                }
+                //  &.spn4,&.spn5,&.spn6{
+                //     width: 7%;
+                // }
             }
-            }
-             .topcon{
-                 ul{
-                //   background-color: #138bef;
-                  width: 100%;
-                  padding: 0 20px;
-                    box-sizing: border-box;
-                      cursor: pointer;
-                li{
-                    // width: 910px;
-                   height: 35px;
-                    line-height: 35px;
-                    font-size:14px;
-                    color:#868686;
-                    text-align: center;
-                    width: 14.2%;
+        }
+        ul{
+            li{
+            height: 40px;
+            line-height: 40px;
+            color:#1a1a1c;
+             font-size:0;
+             text-align: center;
+            span{
+                font-size:14px;
+                width: 10%;
+                display: inline-block;
+                 overflow: hidden;
+                    text-overflow:ellipsis;
+                    white-space: nowrap;
                      cursor: default;
-                     &.l1{
-                        text-align: left;
-                        // width: 15%;
-                    }
-                    &.l2{   
-                        // width: 25%;
-                    }
-                     &.l3{
-                         }
-                     &.active{
-                         color:red;
-                    }   
-                      &.active1{
-                         color:green;
-                    } 
+                &.spn2{
+                    width: 25%;
+                }
+                &.spn3{
+                    width: 15%;
+                }
+                &.spn7{
+                     cursor: pointer;
+                }
+                &.active{
+                    color:#66d668;
+                }
+                &.active1{
+                    color:#ff6767;
+                }
+                &.active2{
+                    color:#006acc;
+                }
 
-                     &.l6{
-                         text-align: right;
-                    }
-                    &.l7{
-                        overflow: hidden;
-                         text-overflow:ellipsis;
-                          white-space: nowrap;
-                    }
-                }
             }
+            &:nth-child(2n){
+                 background-color: #f4f4f4;
             }
-            .nodata{
+        }
+        }
+        .nodata{
                 width: 212px;
                 height: 240px;
                 margin: 80px auto;
                 background-image: url('../assets/nodata.png');
             }
-           
-        }
 
     }
+}
 </style>

@@ -492,7 +492,6 @@ export default {
               that.login1=1;
               that.sex=response.data.data.sex;
               that.name=response.data.data.name;
-              localStorage.setItem("types", "rate");
               that.$router.push({ path: 'my' });
               
             }else if(response.data.status=='error'){
