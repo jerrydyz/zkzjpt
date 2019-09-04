@@ -24,7 +24,7 @@
               <span>专业课学时 :</span>
               <span>{{item.zhuanyeke_xueshi_num}}</span>
             </p>
-            <p v-show="item.jindu>0">学习进度 :<el-progress :percentage="Number(item.jindu)"></el-progress></p>
+            <div v-show="item.jindu>0"><el-progress :text-inside="true" :stroke-width="13" :percentage="Number(item.jindu)"></el-progress></div>
           </div>
           <div class="three fr">
             <p>
@@ -52,7 +52,7 @@
               <span>专业课学时 :</span>
               <span>{{item.zhuanyeke_xueshi_num}}</span>
             </p>
-            <p  v-show="item.jindu>0"><span >学习进度 :</span><el-progress :percentage="Number(item.jindu)" ></el-progress></p>
+            <div  v-show="item.jindu>0"><el-progress :text-inside="true" :stroke-width="13" :percentage="Number(item.jindu)"></el-progress></div>
           </div>
           <div class="three fr">
             <p>
@@ -64,7 +64,7 @@
         </li>
       </ul>
      
-       <div class="blocks" style="text-align:right;margin-right:20px;margin-top:20px;">
+       <div class="blocks" style="text-align:center;margin-right:20px;margin-top:20px;">
         <el-pagination
              background
             @current-change="handleCurrentChange"
@@ -124,6 +124,9 @@ export default {
         var date = new Date();
         this.year = date.getFullYear();
       this.kechengbao()
+      if(sessionStorage.getItem('nums')){
+        this.tab(sessionStorage.getItem('nums'))
+      }
   },
    watch: {
 		token: {
@@ -140,6 +143,7 @@ export default {
   methods: {
     tab(num) {
       this.type = num;
+      sessionStorage.setItem('nums',num)
       if(num==0){
          this.mypackage()
          this.mypack=true
@@ -169,8 +173,8 @@ export default {
           for (var i = 0; i < that.list.length; i++) {
             Vue.set(that.list[i], "isBuy", "0");
               Vue.set(that.list[i], "jindu", "0");
-            this.isBuy(that.list[i].id);
-              this.getprogress1(that.list[i].id); 
+               that.isBuy(that.list[i].id);
+              that.getprogress1(that.list[i].id); 
 
           }
         } else if (res.data.status == "error") {
@@ -257,6 +261,14 @@ export default {
         });
          
       },
+        gopackdetail (id){
+       this.$router.push({
+         path:'/personalpackage',
+         query:{
+              codeid:id
+           }
+       })
+    },
       //我的课程包
       mypackage (){
          var that=this
@@ -271,9 +283,9 @@ export default {
          qs.stringify(data)).then(res =>{
               console.log("获取我的课程包")
               console.log(res)
-              if(res.data.status){
+              if(res.data.status=="ok"){
                  that.mydata = [];
-                 that.mydata=res.data.data.data
+                 that.mydata=that.mydata.concat(res.data.data.data)
                  that.count1 = Number(res.data.data.count);
               for(var i=0;i<that.mydata.length;i++){
                     Vue.set(that.mydata[i], "jindu", "0");
@@ -284,40 +296,40 @@ export default {
               
          })
       },
-      //我的课程包
+      //我的课程包进度
       getprogress(num){
          var that=this
          this.$axios.post("http://jixujiaoyu_api.songlongfei.club:1012/kecheng/get_kecheng_bao_jindu",qs.stringify({
-            kecheng_bao_id:1,
+            kecheng_bao_id:num,
             uid:this.uid,
             token:this.token
          })).then(res =>{
-           console.log("获取我的课程进度")
+           console.log("获取我的课程进度11111111")
            console.log(res)
            if(res.data.status=="ok"){
-              for(var j=0;j<that.mydata.length;j++){
-                  if(that.mydata[j].id==res.data.data['kecheng_bao_id']){
-                      Vue.set(that.mydata[j],"jindu",res.data.data.progress)
-                      break
+              for(var i=0;i<that.mydata.length;i++){
+                  if(that.mydata[i].id==res.data.data['kecheng_bao_id']){
+                      Vue.set(that.mydata[i],"jindu",res.data.data.progress)
+                     break
                   }
               }
            }
          })
       },
-  //全部课程包
+  //全部课程包进度
     getprogress1(num){
          var that=this
          this.$axios.post("http://jixujiaoyu_api.songlongfei.club:1012/kecheng/get_kecheng_bao_jindu",qs.stringify({
-            kecheng_bao_id:1,
+            kecheng_bao_id:num,
             uid:this.uid,
             token:this.token
          })).then(res =>{
            console.log("获取我的课程进度")
            console.log(res)
            if(res.data.status=="ok"){
-              for(var j=0;j<that.mydata.length;j++){
-                  if(that.list[j].id==res.data.data['kecheng_bao_id']){
-                      Vue.set(that.list[j],"jindu",res.data.data.progress)
+              for(var n=0;n<that.list.length;n++){
+                  if(that.list[n].id==res.data.data['kecheng_bao_id']){
+                      Vue.set(that.list[n],"jindu",res.data.data.progress)
                       break
                   }
               }
@@ -375,6 +387,7 @@ export default {
       .two {
         padding: 15px 0;
         box-sizing: border-box;
+        cursor: default;
         h3 {
           font-weight: bold;
           color: #111;
@@ -389,10 +402,12 @@ export default {
             }
           }
         }
+       
       }
       .three {
         padding: 20px 10px;
         box-sizing: border-box;
+         cursor: default;
         p:nth-child(1) {
           color: #111;
           font-size: 16px;

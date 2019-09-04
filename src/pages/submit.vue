@@ -92,7 +92,8 @@
                   <ul class="child shiti_select_div" :shiti_id="item.id" :shiti_type="item.type">
                     <li class="child_type">
                       <label v-for="(key,val) in xuanze" :key="val">
-                        <input type="radio" :name="['danxuan_'+item.id]" :value="val" />
+                        <input type="radio" :name="['danxuan_'+item.id]" :value="val" style="margin-right:5px" />
+                        <span>{{val}}、</span>
                         <span>{{key}}</span>
                       </label>
                     </li>
@@ -119,7 +120,8 @@
                   <ul class="child shiti_select_div" :shiti_id="check.id" :shiti_type="check.type">
                     <li class="child_type">
                       <label v-for="(key,val) in xuanze2" >
-                        <input type="checkbox" :name="['duoxuan_'+check.id+'[]']" :value="val" />
+                        <input type="checkbox" :name="['duoxuan_'+check.id+'[]']" :value="val" style="margin-right:5px" />
+                        <span>{{val}}、</span>
                         <span>{{key}}</span>
                       </label>
                     </li>
@@ -141,7 +143,7 @@
                   <ul class="child shiti_select_div" :shiti_id="dan.id" :shiti_type="dan.type">
                     <li class="child_type">
                       <label v-for="(key,val) in xuanze3">
-                        <input type="radio" :name="['panduan_'+dan.id]" :value="val" />
+                        <input type="radio" :name="['panduan_'+dan.id]" :value="val" style="margin-right:5px" />
                         <span>{{key}}</span>
                       </label>
                     </li>
@@ -166,11 +168,12 @@
                       <input
                         type="text"
                         :shiti_tiankong="['tiankong_'+tian.id]"
+                        v-model="tian.user_answer.answer.join('、')"
                       />
                     </li>
                   </ul> -->
                    <p class="jiexi"><span>正确答案 :</span><span>{{tian.user_answer.rigth_answer.join(" 、")}}</span></p>
-                  <p class="jiexi"><span>您的答案 :</span><span>{{tian.user_answer.answer.join(" 、")==''?"未做答":tian.user_answer.answer.join(" 、")}}</span></p>
+                  <p class="jiexi" :title="tian.user_answer.answer.join('、')==''?'未做答':tian.user_answer.answer.join('、')"><span>您的答案 :</span><span>{{tian.user_answer.answer.join(" 、")==''?"未做答":tian.user_answer.answer.join(" 、")}}</span></p>
                   <p class="jiexi"><span>解析 :</span><span>{{tian.jiexi}}</span></p>
                 </li>
               </ul>
@@ -308,7 +311,6 @@ export default {
              that.datalist=res.data.data.answer
              that.data=res.data.data.shijuan.shijuan_bankuai
              that.title=res.data.data.shijuan.title
-             that.time=res.data.data.time
              that.usetime=res.data.data.use_time
              that.empty_num=res.data.data.empty_num
              that.error_num=res.data.data.error_num
@@ -352,6 +354,9 @@ export default {
                    var E = that.shiti_arr[j].answer_options;
                    var jsonobj3 = JSON.parse(E);
                    that.xuanze3 = jsonobj3;
+                    if(that.bankuai[i]['shiti'][j]["user_answer"]['answer'] != ""){
+                     that.bankuai[i]['shiti'][j]["user_answer"]['answer'] = jsonobj3[that.bankuai[i]['shiti'][j]["user_answer"]['answer']]
+                   }                  
                      that.datalist3 = that.bankuai[i]['shiti'];
                       that.datatitle3=that.bankuai[i]["title"]
                    that.score3=that.bankuai[i]["score"]
@@ -574,7 +579,7 @@ export default {
       box-sizing: border-box;
       height: 1000px;
       position: absolute;
-      top: 0px;
+      top: -5px;
       left: 242px;
       bottom: 10px;
       overflow-y: scroll;

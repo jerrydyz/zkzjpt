@@ -25,16 +25,16 @@
       </ul>
        <div class="nodata" v-show="nodata">
         </div>
-        <div class="block" style="text-align:right;margin-top:10px;">
+        <div class="block" style="text-align:center;margin-top:10px;">
             <el-pagination
                  background
                 @current-change="handleCurrentChange"
                 :current-page.sync="pageNo"
-                :page-size="11"
+                :page-size="13"
                 layout="total,prev, pager, next, jumper"
                 :total="count"
                 :pager-count="7"
-                :hide-on-single-page="pagevalue"
+                v-show="count>13"
                 >
             </el-pagination>
         </div>
@@ -52,12 +52,11 @@ export default {
             uid: "",
             token: "",
             page: 1,
-            num: 11,
+            num: 13,
             data: [],
             apiurl: "http://jixujiaoyu_api.songlongfei.club:1012",
             pageNo: 1,
             currentPage: 1, //当前页数 ，默认为1
-            numlist: 100,
             currentPageData: [], //当前页显示内容
             pageSize: 1,
             fenye: true,
@@ -204,7 +203,7 @@ export default {
     }
     .content{
         width: 100%;
-        height: 553px;
+        height: 640px;
         .nav{
             height: 40px;
             line-height: 40px;
@@ -253,7 +252,7 @@ export default {
                 &.spn1{
                     width: 20%;
                 }
-                &.spn7{
+                &.spn6{
                      cursor: pointer;
                 }
                 &.active{

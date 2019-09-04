@@ -5,8 +5,8 @@
         <p class="clearfix">
           <span class="fl">所属课程:&nbsp;&nbsp;&nbsp;{{kecheng_title}}</span>
           <span class="fr">
-            考试用时:
-            <span id="stime" v-html="time"></span>
+            考试倒计时:
+            <span id="timer" v-html="time"></span>
           </span>
         </p>
         <p class="clearfix">
@@ -88,7 +88,8 @@
                   <ul class="child shiti_select_div" :shiti_id="item.id" :shiti_type="item.type">
                     <li class="child_type">
                       <label v-for="(key,val) in xuanze" :key="val" @click="radio(item.id)">
-                        <input type="radio" :name="['danxuan_'+item.id]" :value="val" />
+                        <input type="radio" :name="['danxuan_'+item.id]" :value="val" style="margin-right:5px" />
+                        <span>{{val}}、</span>
                         <span>{{key}}</span>
                       </label>
                     </li>
@@ -112,7 +113,8 @@
                   <ul class="child shiti_select_div" :shiti_id="check.id" :shiti_type="check.type">
                     <li class="child_type">
                       <label v-for="(key,val) in xuanze2"  @click="checkbox(check.id)">
-                        <input type="checkbox" :name="['duoxuan_'+check.id+'[]']" :value="val" />
+                        <input type="checkbox" :name="['duoxuan_'+check.id+'[]']" :value="val" style="margin-right:5px" />
+                        <span>{{val}}、</span>
                         <span>{{key}}</span>
                       </label>
                     </li>
@@ -131,7 +133,7 @@
                   <ul class="child shiti_select_div" :shiti_id="dan.id" :shiti_type="dan.type">
                     <li class="child_type">
                       <label v-for="(key,val) in xuanze3" @click="panduan(dan.id)">
-                        <input type="radio" :name="['panduan_'+dan.id]" :value="val" />
+                        <input type="radio" :name="['panduan_'+dan.id]" :value="val"  style="margin-right:5px">
                         <span>{{key}}</span>
                       </label>
                     </li>
@@ -213,38 +215,43 @@ export default {
       B: "",
       D: "",
       F: "",
-      H: ""
+      H: "",
+      time_limit_seconds:'',
+      timer:''
     };
   },
   created() {
     var that = this;
     this.shijuanid=this.$route.query.shijuan_id
-    setInterval(function() {
-      that.usetime();
-    }, 1000);
     this.getshijuan();
+    var that=this
   },
-  computed: {},
+  computed: {
+    
+  },
   methods: {
-    //考试用时
-    usetime() {
-      this.ss++; //秒值以1为单位递增
-      if (this.ss >= 60) {
-        //当秒数大于等于60
-        this.mm += 1; //分钟加1
-        this.ss = 0; //秒数退回0
-      }
-      if (this.mm >= 60) {
-        //当分钟大于等于60
-        this.hh += 1; //小时数加1
-        this.mm = 0; //分钟数退回0
-      }
-      this.ss_str = this.ss < 10 ? "0" + this.ss : this.ss; //格式化秒数
-      this.mm_str = this.mm < 10 ? "0" + this.mm : this.mm; //格式化分钟数
-      // this.tMsg="考试用时: " + this.hh + "小时" + this.mm_str + "分" + this.ss_str + "秒"; //输出的字串
-      this.tMsg = this.mm_str + "分" + this.ss_str + "秒";
-      this.time = this.tMsg;
+    
+    CountDown (){
+        
+           var maxtime = this.time_limit_seconds;
+           var minutes,seconds,msg;
+           var that =this;
+            this.timer=setInterval(function(){
+                 if (maxtime >0) {
+                minutes = Math.floor(maxtime / 60);
+                seconds = Math.floor(maxtime % 60);
+                msg = minutes + "分" + seconds + "秒";
+                that.time = msg;
+                 maxtime -= 1;
+             } else {
+              that.$message.error({message:'倒计时结束,自动提交试卷',duration:5000})
+               clearInterval(that.timer);
+                that.submitpapers()
+             }
+            },1000)
+
     },
+    
     //获取试卷信息
     getshijuan() {
       var that = this;
@@ -265,6 +272,7 @@ export default {
             that.tit = res.data.data.title;
             that.kecheng_title=res.data.data.kecheng_title
             that.data = that.data.concat(res.data.data.shijuan_bankuai);
+            that.time_limit_seconds=res.data.data.time_limit_seconds
             for (var i = 0; i < that.data.length; i++) {
               if (that.data[i].type == 1) {
                 that.msg1 = res.data.data.shijuan_bankuai[i].title;
@@ -281,7 +289,7 @@ export default {
                 that.datalist2 = res.data.data.shijuan_bankuai[i].shiti;
                 that.msg2 = res.data.data.shijuan_bankuai[i].title;
                 that.score2 = res.data.data.shijuan_bankuai[i].score;
-                console.log(that.datalist2);
+                // console.log(that.datalist2);
                 for (var k = 0; k < that.datalist2.length; k++) {
                   var C = that.datalist2[k].answer_options;
                   that.D = that.datalist2[k].question;
@@ -293,15 +301,15 @@ export default {
                 that.datalist3 = res.data.data.shijuan_bankuai[i].shiti;
                 that.msg3 = res.data.data.shijuan_bankuai[i].title;
                 that.score3 = res.data.data.shijuan_bankuai[i].score;
-                console.log(that.datalist3);
+                // console.log(that.datalist3);
                 for (var h = 0; h < that.datalist3.length; h++) {
                   console.log("=============================================");
                   var E = that.datalist3[h].answer_options;
                   that.F = that.datalist3[h].question;
                   var jsonobj3 = JSON.parse(E);
                   that.xuanze3 = jsonobj3;
-                  console.log("哈哈哈");
-                  console.log(that.xuanze3);
+                  // console.log("哈哈哈");
+                  // console.log(that.xuanze3);
                   // that.tips = that.datalist3[i].tips;
                 }
               }
@@ -315,11 +323,12 @@ export default {
                   that.H = that.datalist4[f].question;
                   var jsonobj4 = JSON.parse(G);
                   that.xuanze4 = jsonobj4;
-                  console.log(that.xuanze4);
-                  console.log(that.datalist4);
+                  // console.log(that.xuanze4);
+                  // console.log(that.datalist4);
                 }
               }
             }
+           that.CountDown()
           } else if (res.data.status == "error") {
             that.$message.error({ message: res.data.errormsg, duration: 1600 });
           } else if (res.data.status == "relogin") {
@@ -330,6 +339,7 @@ export default {
     //提交试卷
     submitpapers() {
       var that = this;
+      clearInterval(that.timer)
       var data = {
         uid: this.uid,
         token: this.token,
@@ -343,14 +353,10 @@ export default {
           data
         )
         .then(res => {
-          console.log("提交考试试卷");
-          console.log(res);
+          // console.log("提交考试试卷");
+          // console.log(res);
           if (res.data.status == "ok") {
-            clearInterval(that.times);
-            this.time = "考试结束";
             var kaoshi_id = res.data.data.kaoshi_id;
-            console.log("长时间吃饭你说的");
-            console.log(kaoshi_id);
             this.$router.push({
               path:'/submit',
               query:{
@@ -451,6 +457,10 @@ export default {
     goback (){
        this.$router.push('/my')
     }
+  },
+  destroyed (){
+    var that=this
+     clearInterval(that.timer)
   }
 };
 </script>
@@ -572,12 +582,15 @@ export default {
               background-color: #f4f4f4;
               text-align: center;
               line-height: 36px;
-			  margin-bottom: 10px;
+               margin-bottom: 10px;
+               a{
+                 color:#111;
+               }
               &.active {
-				background-color: #0169cc;
-				a{
-					  color: #fff;	
-				}
+			         	background-color: #0169cc;
+              a{
+                  color: #fff;	
+              }
               }
             }
           }
@@ -609,7 +622,7 @@ export default {
       box-sizing: border-box;
       height: 1000px;
       position: absolute;
-      top: 0px;
+      top: -5px;
       left: 242px;
       bottom: 10px;
       overflow-y: scroll;

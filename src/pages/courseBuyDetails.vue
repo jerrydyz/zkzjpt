@@ -35,17 +35,18 @@
                 <h3 style="color:#fc6238">{{courseInfo.price}}</h3>
               </div>
             </div>
+            <h3 id="paytype">支付方式 :</h3>
             <div class="con">
               <div class="relCard">
-                <p>学时卡密码：</p>
-                <div style="height: 66px">
+                <p>学时卡支付：</p>
+                <div style="height: 40px">
                   <input name="card" type="text" class="pay_number" placeholder="请输入学时卡密码" v-model="xueshika" />
                   <span class="pay_use_draw" @click="useCardPay">使用</span>
                 </div>
               </div>
             </div>
             <dl class="class_order_pay">
-              <dt>支付方式</dt>
+              <dt>其他支付</dt>
               <dd>
                 <span :class="{selected:selectstate==1}" @click="alipay">支付宝支付</span>
                 <span :class="{selected:selectstate==2}" @click="wxpay">微信支付</span>
@@ -318,6 +319,10 @@ export default {
       }
       span{cursor: pointer;}
     }
+  }
+  #paytype{
+    font-weight: bold;
+    margin-bottom: 10px;
   }
   
   }

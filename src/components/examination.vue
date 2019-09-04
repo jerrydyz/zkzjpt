@@ -29,7 +29,7 @@
       </ul>
        <div class="nodata" v-show="nodata">
         </div>
-        <div class="block" v-show="fenye" style="text-align:right;margin-top:20px;">
+        <div class="block" v-show="fenye" style="text-align:center;margin-top:20px;">
                 <el-pagination
                     @current-change="handleCurrentChange"
                     :current-page.sync="pageNo"
@@ -52,7 +52,7 @@ export default {
   name: "examination",
   data (){
       return {
-           nodata:false,
+           nodata:true,
             data:[],
             year:'',
             uid:'',
@@ -130,7 +130,7 @@ export default {
                     that.data=that.data.concat(res.data.data.data)
                      that.count=Number(res.data.data.count)
                     console.log(that.data)
-                    if(res.data.data.data){
+                    if(that.count>0){
                         that.nodata=false
                     }else{
                         that.nodata=true
@@ -192,7 +192,7 @@ export default {
     }
     .content{
         width: 100%;
-        height: 553px;
+        height: 642px;
         .nav{
             height: 40px;
             line-height: 40px;

@@ -88,7 +88,7 @@
                 </ul>
             </div>
         </div>
-        <component :is="componentId" class="fl"></component>
+        <component :is="componentId" class="fl" @more="more"></component>
     </div>
   </div>
 </template>
