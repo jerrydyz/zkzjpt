@@ -86,7 +86,7 @@
       <router-link to="/courses" class="xkjf"></router-link>
       <router-link to="/courses" class="zxxx"></router-link>
       <router-link to="" class="zxks"></router-link>
-      <router-link to="" class="zscx"></router-link>
+      <router-link to="/checkzhengshu" class="zscx"></router-link>
     </div>
     <div class="index-news">
         <indexworks :msg="worksjson"></indexworks>

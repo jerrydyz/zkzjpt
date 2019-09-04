@@ -11,6 +11,10 @@
           <span>{{name}}</span>
         </li>
         <li>
+          <span>性&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp别 :</span>
+          <span>{{sex}}</span>
+        </li>
+        <li>
           <span>身&nbsp&nbsp份&nbsp&nbsp证&nbsp&nbsp号 :</span>
           <span>{{idcode}}</span>
         </li>
@@ -24,14 +28,15 @@
             <input type="email" :placeholder="baseExt.email == '' ? '请填写邮箱': baseExt.email" v-model="email"/>
           </span>
         </li>
-        <li>
+        
+        <!-- <li>
           <span>请&nbsp选&nbsp择&nbsp性别 :</span>
           <span>
             <select name id @click="sect" v-model="sexSelected">
               <option v-for="item in selt" :key="item.id">{{item.name}}</option>
             </select>
           </span>
-        </li>
+        </li> -->
         <li>
           <span>技&nbsp&nbsp术&nbsp&nbsp职&nbsp&nbsp称 :</span>
           <span>  
@@ -185,18 +190,19 @@ export default {
     if(localStorage.getItem('lin')){
         this.tab(localStorage.getItem('lin'));
      }
-        this.uid=localStorage.getItem('uid');
-        this.token=localStorage.getItem('token');
-        this.name= localStorage.getItem('name');
-        this.idcode=localStorage.getItem('id_card');
-        this.phone=localStorage.getItem('mobile');
-        var myDate = new Date();       
-        var thisYear = myDate.getFullYear();  // 获取当年年份
-        var Section = thisYear - 1980;  // 声明一个变量 获得当前年份至想获取年份差
-        for(var i = 0;i<=Section;i++){
-            this.arrYear.push(thisYear--)
-        } // 遍历并添加年份到数组
-        console.log(this.arrYear)
+    this.uid=localStorage.getItem('uid');
+    this.token=localStorage.getItem('token');
+    this.name= localStorage.getItem('name');
+    this.sex=localStorage.getItem('sex')==1?'男':'女';
+    this.idcode=localStorage.getItem('id_card');
+    this.phone=localStorage.getItem('mobile');
+    var myDate = new Date();       
+    var thisYear = myDate.getFullYear();  // 获取当年年份
+    var Section = thisYear - 1980;  // 声明一个变量 获得当前年份至想获取年份差
+    for(var i = 0;i<=Section;i++){
+        this.arrYear.push(thisYear--)
+    } // 遍历并添加年份到数组
+    console.log(this.arrYear)
 
         
   },
@@ -249,7 +255,7 @@ export default {
   methods: {
     //获取用户基本资料信息
     getUserInfo:function(){
-      var that=this
+        var that=this
         let usreinfo={uid:localStorage.getItem("uid"),token:localStorage.getItem("token")}
         this.$axios({
           method: 'post',
@@ -380,7 +386,7 @@ export default {
        var datamsg ={
           uid:this.uid,
           token:this.token,
-          sex:this.sex,
+          // sex:this.sex,
           gongzuodanwei:this.job,
           email:this.email,
           jishuzhicheng:this.zhicheng,
@@ -406,7 +412,7 @@ export default {
         if(this.zhicheng==''){
                //this.$message.error({message: '请输入您的技术职称',duration:1600});
                datamsg.jishuzhicheng=that.baseExt.jishuzhicheng;
-               console.log(datamsg.jishuzhicheng)
+               console.log(datamsg.jishuzhicheng);
         }
         if(this.job==''){
                //this.$message.error({message: '请输入您的工作单位',duration:1600});
@@ -447,14 +453,11 @@ export default {
                datamsg.lianxidianhua=that.baseExt.lianxidianhua;
                console.log(datamsg.lianxidianhua)
         }
-        // if(this.zhengshuhao==''){
-        //        //this.$message.error({message: '请输入您的证书号',duration:1600});
-        //        datamsg.zhengshubianhao=that.baseExt.zhengshubianhao;
-        //        console.log(datamsg.zhengshubianhao)
-        // }
         
-        that.$axios.post(this.apiurl+'/user/edit',
-        qs.stringify(datamsg)).then(res =>{
+        console.log("确实是修改保存")
+        that.$axios.post(this.apiurl+'/user/edit',qs.stringify(datamsg)).then(res =>{
+          console.log("确实是修改保存呀")
+          console.log(res)
           if(res.data.status=="ok"){
             this.$message.success({message: '修改成功',duration:1600});
           }else if((res.data.status=="error")){

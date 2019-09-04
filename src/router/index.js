@@ -15,6 +15,7 @@ import courseBuyDetails from '@/pages/courseBuyDetails'
 import packagebuy from '@/pages/packagebuy'
 import video from '@/pages/video'
 import gongxuke from '@/pages/gongxuke'
+import checkzhengshu from '@/pages/checkzhengshu'
 
 import newsDetails from '@/commons/newsDetails'
 import courseDetails from '@/commons/courseDetails'
@@ -146,6 +147,15 @@ export default new Router({
             components: {
                 comheader: commonHeader,
                 default: aboutus,
+                comfooter: commonFooter,
+            }
+        },
+        {
+            path: '/checkzhengshu',
+            name: 'checkzhengshu',
+            components: {
+                comheader: commonHeader,
+                default: checkzhengshu,
                 comfooter: commonFooter,
             }
         },
