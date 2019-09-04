@@ -28,13 +28,13 @@
         <div class="blocks">
           <el-pagination
                 background
-                :hide-on-single-page="pagevalue"
                 @current-change="handleCurrentChange"
                 :current-page.sync="pageNo"
                 :page-size="6"
                 layout="prev, pager, next, jumper"
                 :total="count"
                 :pager-count="7"
+                v-show="count>6"
                 >
             </el-pagination>
         </div>
@@ -112,7 +112,6 @@ export default {
         localStorage.removeItem("name");
         localStorage.removeItem("mobile");
         localStorage.removeItem("id_card");
-        localStorage.setItem("types",'rate');
         setTimeout(() => {
           that.$router.push({ path: '/login' });
         }, 1600);

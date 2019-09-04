@@ -8,8 +8,9 @@
         <ul class="clearfix">
           <li class="l1">年度</li>
           <li>姓名</li>
-          <li>身份证号</li>
-          <li>学时</li>
+          <li class="l2">身份证号</li>
+           <li>公需课学时</li>
+          <li>专业课学时</li>
           <li class="l6">操作</li>
         </ul>
       </div>
@@ -17,14 +18,15 @@
         <ul v-for="item in list" :key="item.id">
           <li class="l1">{{item.year}}</li>
           <li>{{item.name}}</li>
-          <li>{{item.id_card}}</li>
-          <li>{{parseInt(item.get_gongxuke_xueshi_num)+parseInt(item.get_zhuanyeke_xueshi_num)}}</li>
+          <li class="l2">{{item.id_card}}</li>
+           <li>{{item.get_gongxuke_xueshi_num}}</li>
+          <li>{{item.get_zhuanyeke_xueshi_num}}</li>
           <li class="l6" @click="downloadCertificate(item.id)">下载证书</li>
         </ul>
       </div>
       <div class="nodata" v-show="nodata"></div>
       <div class="my-certificate" ref="certificate">
-        <img src="/static/images/personal/certificate.png" class="certificateimg" />
+        <img src="../assets/certificate.png" class="certificateimg" />
         <div class="certificate-box">
           <p class="certificate-title">
             河南省专业技术人员继续教育网络学习
@@ -59,7 +61,7 @@
           <div class="date" v-html="riqi"></div>
           <div class="blackline"></div>
         </div>
-        <img src="/static/images/personal/seal.png" class="seal" />
+        <img src="../assets/seal.png" class="seal" />
       </div>
     </div>
   </div>
@@ -88,7 +90,6 @@ export default {
     this.uid = localStorage.getItem("uid");
     this.token = localStorage.getItem("token");
     this.sex = localStorage.getItem("sex");
-
     if (this.token) {
       this.dangan();
     } else {
@@ -116,7 +117,6 @@ export default {
       localStorage.removeItem("name");
       localStorage.removeItem("mobile");
       localStorage.removeItem("id_card");
-      localStorage.setItem("types", "rate");
       setTimeout(() => {
         that.$router.push({ path: "/login" });
       }, 1600);
@@ -228,25 +228,31 @@ export default {
 .archives {
   width: 948px;
   // border:1px solid red;
+  background-color: #fff;
+  padding:0 20px;
+  box-sizing: border-box;
   .title {
     width: 100%;
     height: 55px;
-    background-color: #fafafa;
     margin-bottom: 20px;
     font-size: 18px;
-    padding-left: 20px;
     line-height: 55px;
     color: #0c69f5;
     box-sizing: border-box;
+     border-bottom: 1px solid #eee;
     span {
       border-bottom: 2px solid #0c69f5;
+      padding-bottom: 15px;
+      box-sizing: border-box;
     }
   }
   .content {
     width: 100%;
+    height: 633px;
+    background-color: #fff;
     .top {
       ul {
-        background-color: #138bef;
+        background-color: #e1f1ff;
         width: 100%;
         padding: 0 20px;
         box-sizing: border-box;
@@ -260,7 +266,7 @@ export default {
           height: 35px;
           line-height: 35px;
           font-size: 14px;
-          color: #fff;
+          color: #111;
           overflow: hidden;
           text-overflow: ellipsis;
           white-space: nowrap;
@@ -268,6 +274,9 @@ export default {
           cursor: pointer;
           &.l1 {
             text-align: left;
+          }
+           &.l2 {
+               width: 30%;
           }
           &.l6 {
             text-align: right;
@@ -298,6 +307,9 @@ export default {
           cursor: pointer;
           &.l1 {
             text-align: left;
+          }
+            &.l2 {
+               width: 30%;
           }
           &.l6 {
             text-align: right;

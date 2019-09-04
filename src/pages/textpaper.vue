@@ -340,7 +340,6 @@ export default {
       localStorage.removeItem("name");
       localStorage.removeItem("mobile");
       localStorage.removeItem("id_card");
-      localStorage.setItem("types",'rate');
       setTimeout(() => {
         this.$router.push({ path: '/login' });
       }, 1600);

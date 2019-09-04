@@ -320,6 +320,10 @@ export default {
       span{cursor: pointer;}
     }
   }
+  #paytype{
+    font-weight: bold;
+    margin-bottom: 10px;
+  }
   
   }
 .courseBuyDetails{width: 1200px;margin: 45px auto 0;}

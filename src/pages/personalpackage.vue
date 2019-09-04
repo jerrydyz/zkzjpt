@@ -196,7 +196,6 @@ export default {
       localStorage.removeItem("name");
       localStorage.removeItem("mobile");
       localStorage.removeItem("id_card");
-      localStorage.setItem("types",'rate');
       setTimeout(() => {
         that.$router.push({ path: '/index' });
       }, 1600);
@@ -210,7 +209,6 @@ export default {
       localStorage.removeItem("name");
       localStorage.removeItem("mobile");
       localStorage.removeItem("id_card");
-      localStorage.setItem("types",'rate');
       setTimeout(() => {
         that.$router.push({ path: '/login' });
       }, 1600);

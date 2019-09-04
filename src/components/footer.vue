@@ -19,11 +19,12 @@ export default {};
 .footer {
      width: 100%;
     height: 140px;
-    background-color: #000;
+    background-color: #fff;
     margin-top: 40px;
     text-align: center;
+
     .con{
-        color: #898989;
+        color: #111;
         font-size: 12px;
         line-height: 35px;
         padding-top: 20px;
