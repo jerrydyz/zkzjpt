@@ -8,7 +8,7 @@
     </div>
     <div class="content">
       <ul v-show="allpack">
-        <li class="clearfix" v-for="(item,index) in list" :key="index">
+        <li class="clearfix" v-for="(item,index) in list" :key="index" @click="gopackdetail(item.id)">
           <div class="one fl">
             <img :src="item.img_url" alt />
           </div>
@@ -24,19 +24,19 @@
               <span>专业课学时 :</span>
               <span>{{item.zhuanyeke_xueshi_num}}</span>
             </p>
-            <div v-show="item.jindu>0"><el-progress :text-inside="true" :stroke-width="13" :percentage="Number(item.jindu)"></el-progress></div>
+            <div><el-progress :percentage="Number(item.jindu)"></el-progress></div>
           </div>
           <div class="three fr">
             <p>
               <span>价格:</span>
-              <span>{{item.price}}元</span>
+              <span>￥{{item.price}}元</span>
             </p>
             <p :class="{active:item.isBuy==1}" @click.stop="xuexi(item.id)">{{item.isBuy=="0"?"购买":"继续学习"}}</p>
           </div>
         </li>
       </ul>
       <ul v-show="mypack">
-        <li class="clearfix" v-for="(item,index) in mydata" :key="index">
+        <li class="clearfix" v-for="(item,index) in mydata" :key="index" @click="gopackdetail(item.id)">
           <div class="one fl">
             <img :src="item.img_url" alt />
           </div>
@@ -52,17 +52,19 @@
               <span>专业课学时 :</span>
               <span>{{item.zhuanyeke_xueshi_num}}</span>
             </p>
-            <div  v-show="item.jindu>0"><el-progress :text-inside="true" :stroke-width="13" :percentage="Number(item.jindu)"></el-progress></div>
+            <div><el-progress :percentage="Number(item.jindu)"></el-progress></div>
           </div>
           <div class="three fr">
             <p>
               <span>价格:</span>
-              <span>{{item.price}}元</span>
+              <span>￥{{item.price}}元</span>
             </p>
             <p :class="{active:true}" @click.stop="xuexi(item.id)">继续学习</p>
           </div>
         </li>
       </ul>
+       <div class="nodata" v-show="nodata">
+        </div>
      
        <div class="blocks" style="text-align:center;margin-right:20px;margin-top:20px;">
         <el-pagination
@@ -115,7 +117,8 @@ export default {
         mydata:[],
         allpack:true,
         mypack:false,
-        count1:0
+        count1:0,
+        nodata:true
     };
   },
   created (){
@@ -142,6 +145,7 @@ export default {
 	},
   methods: {
     tab(num) {
+      var that=this
       this.type = num;
       sessionStorage.setItem('nums',num)
       if(num==0){
@@ -151,6 +155,13 @@ export default {
       }else{
          this.mypack=false
          this.allpack=true
+         console.log(that.count)
+          if( that.count>0){
+             that.nodata=false
+
+          }else{
+             that.nodata=true
+          }
       }
     },
     //获取全部课程包
@@ -176,6 +187,11 @@ export default {
                that.isBuy(that.list[i].id);
               that.getprogress1(that.list[i].id); 
 
+          }
+          if( that.count>0){
+             that.nodata=false
+          }else{
+             that.nodata=true
           }
         } else if (res.data.status == "error") {
           this.$message.error({ message: res.data.errormsg, duration: 1600 });
@@ -287,6 +303,11 @@ export default {
                  that.mydata = [];
                  that.mydata=that.mydata.concat(res.data.data.data)
                  that.count1 = Number(res.data.data.count);
+                  if( that.count1>0){
+                    that.nodata=false
+                  }else{
+                    that.nodata=true
+                  }
               for(var i=0;i<that.mydata.length;i++){
                     Vue.set(that.mydata[i], "jindu", "0");
                      this.getprogress(that.mydata[i].id);     
@@ -435,6 +456,19 @@ export default {
         }
       }
     }
+     .nodata{
+          width: 212px;
+          height: 240px;
+          margin: 80px auto;
+          background-image: url('../assets/nodata.png');
+      }
   }
 }
+</style>
+<style lang="less">
+  .mypackage{
+    .el-progress-bar{
+          width:95%;
+    }
+  }
 </style>

@@ -43,8 +43,12 @@
               <span>(每题{{score1}}分)</span>
             </p>
             <ul class="clearfix">
-              <li :xshiti_id="item1.id" v-for="(item1,index) in datalist1" :key="index" :class="{active:bgcolor==item1.user_answer.result,active1:bgcolor1==item1.user_answer.result}"><a :href="'#'+item1.id">{{index+1}}</a></li>
-           
+              <a  v-for="(item1,index) in datalist1" :key="index" :href="'#'+item1.id" style="color:#fff;">
+                <li :xshiti_id="item1.id" :class="{active:bgcolor==item1.user_answer.result,active1:bgcolor1==item1.user_answer.result}">
+                  {{index+1}}
+                </li>
+                </a>
+           <!-- <router-link  v-for="(item1,index) in datalist1" :key="index" :to="'#'+item1.id"><li :xshiti_id="item1.id" :class="{active:bgcolor==item1.user_answer.result,active1:bgcolor1==item1.user_answer.result}">{{index+1}}</li></router-link> -->
             </ul>
           </div>
           <div class="first">
@@ -98,8 +102,8 @@
                       </label>
                     </li>
                   </ul>
-                  <p class="jiexi"><span>正确答案 :</span><span>{{item.user_answer.rigth_answer}}</span></p>
-                   <p class="jiexi"><span>您的答案 :</span><span>{{item.user_answer.answer==""?"未做答":item.user_answer.answer}}</span></p>
+                  <p class="jiexi sure"><span>正确答案 :</span><span>{{item.user_answer.rigth_answer}}</span></p>
+                   <p class="jiexi men"><span>您的答案 :</span><span :class="{active1:bgcolor==item.user_answer.result,active:bgcolor1==item.user_answer.result}">{{item.user_answer.answer==""?"未做答":item.user_answer.answer}}</span></p>
                   <p class="jiexi"><span>解析 :</span><span>{{item.jiexi}}</span></p>
                 </li>
               </ul>
@@ -126,8 +130,8 @@
                       </label>
                     </li>
                   </ul>
-                   <p class="jiexi"><span>正确答案 :</span><span>{{check.user_answer.rigth_answer.join(" 、")}}</span></p>
-                  <p class="jiexi"><span>您的答案 :</span><span>{{check.user_answer.answer.join(" 、")==""?"未做答":check.user_answer.answer.join(" 、")}}</span></p>
+                   <p class="jiexi sure"><span>正确答案 :</span><span>{{check.user_answer.rigth_answer.join(" 、")}}</span></p>
+                  <p class="jiexi men"><span>您的答案 :</span><span :class="{active1:bgcolor==check.user_answer.result,active:bgcolor1==check.user_answer.result}">{{check.user_answer.answer.join(" 、")==""?"未做答":check.user_answer.answer.join(" 、")}}</span></p>
                   <p class="jiexi"><span>解析 :</span><span>{{check.jiexi}}</span></p>
                 </li>
               </ul>
@@ -148,8 +152,8 @@
                       </label>
                     </li>
                   </ul>
-                   <p class="jiexi"><span>正确答案 :</span><span>{{dan.user_answer.rigth_answer}}</span></p>
-                   <p class="jiexi"><span>您的答案 :</span><span>{{dan.user_answer.answer==""?"未做答":dan.user_answer.answer}}</span></p>
+                   <p class="jiexi sure"><span>正确答案 :</span><span>{{dan.user_answer.rigth_answer}}</span></p>
+                   <p class="jiexi men"><span>您的答案 :</span><span :class="{active1:bgcolor==dan.user_answer.result,active:bgcolor1==dan.user_answer.result}">{{dan.user_answer.answer==""?"未做答":dan.user_answer.answer}}</span></p>
                   <p class="jiexi"><span>解析 :</span><span>{{dan.jiexi}}</span></p>
                 </li>
               </ul>
@@ -172,8 +176,8 @@
                       />
                     </li>
                   </ul> -->
-                   <p class="jiexi"><span>正确答案 :</span><span>{{tian.user_answer.rigth_answer.join(" 、")}}</span></p>
-                  <p class="jiexi" :title="tian.user_answer.answer.join('、')==''?'未做答':tian.user_answer.answer.join('、')"><span>您的答案 :</span><span>{{tian.user_answer.answer.join(" 、")==''?"未做答":tian.user_answer.answer.join(" 、")}}</span></p>
+                   <p class="jiexi sure"><span>正确答案 :</span><span>{{tian.user_answer.rigth_answer.join(" 、")}}</span></p>
+                  <p class="jiexi men" :title="tian.user_answer.answer.join('、')==''?'未做答':tian.user_answer.answer.join('、')"><span >您的答案 :</span><span :class="{active1:bgcolor==tian.user_answer.result,active:bgcolor1==tian.user_answer.result}">{{tian.user_answer.answer.join(" 、")==''?"未做答":tian.user_answer.answer.join(" 、")}}</span></p>
                   <p class="jiexi"><span>解析 :</span><span>{{tian.jiexi}}</span></p>
                 </li>
               </ul>
@@ -249,7 +253,7 @@ export default {
   },
   created() {
     this.kaoshi_id = this.$route.query.kaoshi_id;
-  this.kecheng_title = this.$route.query.kecheng_title;
+  // this.kecheng_title = this.$route.query.kecheng_title;
     if(this.token){
       this.getpaperdata();
     }else{
@@ -319,6 +323,7 @@ export default {
               that.zong_score=res.data.data.shijuan.score
              that.jsondata=JSON.parse(that.datalist)
             that.bankuai = res.data.data.shijuan.shijuan_bankuai;
+            this.kecheng_title=res.data.data.kecheng_title
             that.answer = JSON.parse(res.data.data.answer);
             that.num=that.answer.length
             // console.log(that.answer);
@@ -682,7 +687,22 @@ export default {
         line-height: 20px;
          span:nth-child(1){
            margin-right: 20px;
+           
          }
+         span{
+           &.active{
+              color: #00cb1c;
+           }
+            &.active1{
+               color:#fe0000;
+           }
+         }
+      }
+      p.sure{
+         color: #00cb1c;
+      }
+      p.men{
+          color:#fe0000;
       }
       
       

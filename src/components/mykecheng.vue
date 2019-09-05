@@ -17,7 +17,7 @@
                 <p class="tit">{{item.title}}</p>
                 <div class="num">
                   <div>学时：<span>{{item.xueshi_num}}</span></div>
-                  <div>价格：<span>{{item.price}}</span></div>
+                  <div>价格：<span>￥{{item.price}}元</span></div>
                 </div>  
                 <!-- <p class="txt">{{item.title}}(<span>{{item.xueshi_num}}</span>课时)</p> -->
                 
@@ -306,7 +306,7 @@ export default {
       .nodata{
           width: 212px;
           height: 240px;
-          margin: 80px auto;
+          margin: 80px auto 0;
           background-image: url('../assets/nodata.png');
       }
       .blocks{

@@ -1,7 +1,7 @@
 <template>
   <div class="changemsg fl">
     <div class="topnav">
-      <span class="spn1" :class="{active:line=='a'}" @click='tab("a")'>基本资料</span>
+      <span class="spn1" :class="{active:line=='a'}" @click='tab("a")'>修改个人信息</span>
       <span class="spn2" :class="{active:line=='b' }" @click='tab("b")'>修改密码</span>
     </div>
     <div class="content" v-show="basedata">

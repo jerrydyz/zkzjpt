@@ -54,7 +54,7 @@
         <div class="price classtopitem clearfix">
           <div class="new_price">
             <em>价格：</em>¥
-            <span>{{courseData.price}}</span>
+            <span>{{courseData.price}}元</span>
           </div>
         </div>
         <div class="classtopitem btn clearfix">

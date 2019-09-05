@@ -2,7 +2,7 @@
   <div class="my">
     <div class="title">
       <div class="top w clearfix">
-        <p class="fl">河南省继续教育学会在线学习平台</p>
+        <p class="fl">周口市专业技术人员继续教育协会</p>
         <p class="fr">
           <span class="spn1"  @click="more('personcenter')" >个人中心</span>
           <span @click="goback">退出</span>
@@ -137,8 +137,8 @@ export default {
       this.year = date.getFullYear();
          var leng=this.id_card.length
         this.id_card = this.id_card.substr(0, 3) + '****' + this.id_card.substr(leng - 4);
-      if(localStorage.getItem('types')){
-         this.more( localStorage.getItem('types'))
+      if(sessionStorage.getItem('types')){
+         this.more( sessionStorage.getItem('types')) 
       }
         this.getxueshinum ()
   },
@@ -146,7 +146,7 @@ export default {
      more(val){
         this.componentId=val
         this.bgcolor=val
-        localStorage.setItem('types',this.componentId)
+        sessionStorage.setItem('types',this.componentId)
       },
       //获取学时
       getxueshinum (){

@@ -28,7 +28,7 @@
             <div class="coursetopitem">
               <div class="fl">价格：</div>
               <div class="new_price">
-                <span>¥{{price}}</span>
+                <span>¥{{price}}元</span>
               </div>
               
             </div>

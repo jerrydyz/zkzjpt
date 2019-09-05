@@ -151,7 +151,7 @@
                   <p class="tit_type">{{index+1}}、{{tian.question}}</p>
                   <ul class="child shiti_select_div" :shiti_id="tian.id" :shiti_type="tian.type">
                     <li class="child_type" v-for="(knum,index) in tian.kong_num" :key="index">
-                      {{index+1}}、
+                     <span class="circle"> {{index+1}}</span>
                       <input
                         type="text"
                         :shiti_tiankong="['tiankong_'+tian.id]"
@@ -361,8 +361,7 @@ export default {
               path:'/submit',
               query:{
                  kaoshi_id:kaoshi_id,
-                 kecheng_title:that.kecheng_title,
-
+                //  kecheng_title:that.kecheng_title,
               }
             });
           } else if (res.data.status == "error") {
@@ -714,6 +713,16 @@ export default {
                   text-indent: 10px;
                   width: 80%;
                   height: 100%;
+                }
+                .circle{
+                  display: inline-block;
+                  width: 15px;
+                  height: 15px;
+                  border-radius: 50%;
+                  border:1px solid #000;
+                  line-height: 15px;
+                  text-align: center;
+                  font-size:12px;
                 }
               }
             }

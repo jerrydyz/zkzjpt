@@ -223,7 +223,7 @@ export default {
             .then(response => {
                 if(response.data.status=="ok"){
                     this.$message.success({message: "您已购买成功",duration:1600});
-                    localStorage.setItem('types','mykecheng');
+                    sessionStorage.setItem('types','mykecheng');
                     this.$router.push({ path: '/my' });
                 }else if(response.data.status=="error"){
                   this.$message.error({message: response.data.errormsg,duration:1600});
