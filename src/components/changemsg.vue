@@ -510,13 +510,14 @@ export default {
 <style lang='less' scoped>
 .changemsg {
   width: 948px;
+  min-height: 708px;
   box-sizing: border-box;
   background-color: #fff;
   background-color: #fafafa;
     
   .topnav {
     width: 100%;
-    height: 55px;
+    height: 30px;
     // line-height: 55px;
     background-color: #fafafa;
     margin-top: 20px;
@@ -593,10 +594,11 @@ export default {
       color: #fff;
       font-size: 14px;
       border-radius: 10px;
-      margin-top: 23px;
+      margin-top: 15px;
+       margin-bottom:15px;
       margin-left: 110px;
       text-align: center;
-      margin-bottom:20px;
+     
       cursor: pointer;
     }
   }
