@@ -270,7 +270,7 @@ export default {
         .nodata {
             width: 212px;
             height: 240px;
-            margin: 80px auto;
+            margin: 80px auto 0;
             background-image: url("../assets/nodata.png");
         }
         .picscale{position: absolute;left: 0;top:0;background-color: rgba(0,0,0,.5);width: 100%;height: 146%;
@@ -301,7 +301,7 @@ export default {
     width: 560px;
     line-height: 42px;
     margin: 0 auto;
-    padding-top: 100px;
+    margin-top: 100px;
     font-size: 32px;
     text-align: center;
     color: #48538d;

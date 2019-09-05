@@ -3,9 +3,9 @@
   <div class="news-details">
     <div class="nav-tips">
         <span>您所在的当前位置：</span>
-        <span>首页</span>
-        <span> &gt; 新闻资讯</span>
-        <span> &gt; 新闻详情</span>
+        <span><router-link to="/index" style="color:#000;">首页</router-link></span>
+        <span>&gt;<router-link :to="pathurl" style="color:#000;">{{title}}</router-link></span>
+        <span>&gt; 新闻详情</span>
     </div>
     <div v-html="msg"></div>
   </div>
@@ -17,12 +17,17 @@ export default {
   name: 'newsDetails',
   data () {
     return {
-      msg: '',
+      msg:'',
+      pathurl: '',
+      title:'',
       //请求接口域名
       apiurl:'http://jixujiaoyu_api.songlongfei.club:1012',
     }
   },
-   
+  created(){
+    this.title=sessionStorage.getItem("title");
+    this.pathurl=sessionStorage.getItem("lujing");
+  },
   mounted() {
     let that=this;
     //url里传递过来的新闻唯一id this.$route.params 
