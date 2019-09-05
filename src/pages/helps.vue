@@ -2,7 +2,7 @@
     <div class="newsPage">
       <div class="nav-tips">
           <span>您所在的当前位置：</span>
-          <span>首页</span>
+          <span><router-link to="/index" style="color:#000;">首页</router-link></span>
           <span>&gt; {{helpsdata.title}}</span>
       </div>
       <div class="news-model-cont">
@@ -22,11 +22,12 @@
                   <div class="pagebox">
                       <div class="block">
                         <el-pagination
+                        background
                         @size-change="handleSizeChange"
                         @current-change="handleCurrentChange"
                         :current-page.sync="currentPage"
                         :page-size="10"
-                        layout="prev, pager, next, jumper"
+                        layout="total,prev, pager, next, jumper"
                         :total='allnum'>
                         </el-pagination>
                     </div>
@@ -54,6 +55,8 @@ export default {
     }
   },
   mounted() {
+    sessionStorage.setItem("title","帮助中心");
+    sessionStorage.setItem("lujing","/helps");
     this.ajaxdata();
   },
    methods:{
