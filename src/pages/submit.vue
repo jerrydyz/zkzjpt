@@ -43,11 +43,9 @@
               <span>(每题{{score1}}分)</span>
             </p>
             <ul class="clearfix">
-              <a  v-for="(item1,index) in datalist1" :key="index" :href="'#'+item1.id" style="color:#fff;">
-                <li :xshiti_id="item1.id" :class="{active:bgcolor==item1.user_answer.result,active1:bgcolor1==item1.user_answer.result}">
+                <li  v-for="(item1,index) in datalist1" :key="index" @click="returnTop(item1.id)" :xshiti_id="item1.id" :class="{active:bgcolor==item1.user_answer.result,active1:bgcolor1==item1.user_answer.result}">
                   {{index+1}}
                 </li>
-                </a>
            <!-- <router-link  v-for="(item1,index) in datalist1" :key="index" :to="'#'+item1.id"><li :xshiti_id="item1.id" :class="{active:bgcolor==item1.user_answer.result,active1:bgcolor1==item1.user_answer.result}">{{index+1}}</li></router-link> -->
             </ul>
           </div>
@@ -57,7 +55,7 @@
               <span>(每题{{score2}}分)</span>
             </p>
             <ul class="clearfix">
-			   <li :xshiti_id="item2.id" v-for="(item2,index) in datalist2" :key="index" :class="{active:bgcolor==item2.user_answer.result,active1:bgcolor1==item2.user_answer.result}"><a :href="'#'+item2.id">{{index+1}}</a></li>
+			   <li :xshiti_id="item2.id" v-for="(item2,index) in datalist2" :key="index"  @click="returnTop(item2.id)" :class="{active:bgcolor==item2.user_answer.result,active1:bgcolor1==item2.user_answer.result}">{{index+1}}</li>
             </ul>
           </div>
           <div class="first">
@@ -66,7 +64,7 @@
               <span>(每题{{score3}}分)</span>
             </p>
             <ul class="clearfix">
-			       <li :xshiti_id="item3.id" v-for="(item3,index) in datalist3" :key="index" :class="{active:bgcolor==item3.user_answer.result,active1:bgcolor1==item3.user_answer.result}"><a :href="'#'+item3.id">{{index+1}}</a></li>
+			       <li :xshiti_id="item3.id" v-for="(item3,index) in datalist3" :key="index" @click="returnTop(item3.id)" :class="{active:bgcolor==item3.user_answer.result,active1:bgcolor1==item3.user_answer.result}">{{index+1}}</li>
             </ul>
           </div>
           <div class="first">
@@ -75,7 +73,7 @@
               <span>(每题{{score4}}分)</span>
             </p>
             <ul class="clearfix">
-			     <li :xshiti_id="item4.id" v-for="(item4,index) in datalist4" :key="index" :class="{active:bgcolor==item4.user_answer.result,active1:bgcolor1==item4.user_answer.result}"><a :href="'#'+item4.id">{{index+1}}</a></li>
+			     <li :xshiti_id="item4.id" v-for="(item4,index) in datalist4" :key="index" @click="returnTop(item4.id)" :class="{active:bgcolor==item4.user_answer.result,active1:bgcolor1==item4.user_answer.result}">{{index+1}}</li>
             </ul>
           </div>
         </div>
@@ -387,6 +385,9 @@ export default {
     },
      goback (){
        this.$router.push('/my')
+    },
+    returnTop (num){
+      document.getElementById(num).scrollIntoView(true);
     }
      }
 };
@@ -512,15 +513,12 @@ export default {
 			       margin-bottom: 10px;
               &.active {
 			        background-color:#fe0000;
-              a{
-                  color: #fff;	
-              }
+               color: #fff;	
               }
                 &.active1 {
 			        background-color:#00cb1c;
-              a{
-                  color: #fff;	
-              }
+               color: #fff;	
+             
               }
             }
           }

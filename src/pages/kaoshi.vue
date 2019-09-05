@@ -43,7 +43,7 @@
               <span>(每题{{score1}}分)</span>
             </p>
             <ul class="clearfix">
-              <li :xshiti_id="item1.id" v-for="(item1,index) in datalist1" :key="index"><a :href="'#'+item1.id">{{index+1}}</a></li>
+              <li :xshiti_id="item1.id" v-for="(item1,index) in datalist1" :key="index"  @click="returnTop(item1.id)">{{index+1}}</li>
             </ul>
           </div>
           <div class="first">
@@ -52,7 +52,7 @@
               <span>(每题{{score2}}分)</span>
             </p>
             <ul class="clearfix">
-			   <li :xshiti_id="item2.id" v-for="(item2,index) in datalist2" :key="index"><a :href="'#'+item2.id">{{index+1}}</a></li>
+			   <li :xshiti_id="item2.id" v-for="(item2,index) in datalist2" :key="index" @click="returnTop(item2.id)">{{index+1}}</li>
             </ul>
           </div>
           <div class="first">
@@ -61,7 +61,7 @@
               <span>(每题{{score3}}分)</span>
             </p>
             <ul class="clearfix">
-			  <li :xshiti_id="item3.id" v-for="(item3,index) in datalist3" :key="index"><a :href="'#'+item3.id">{{index+1}}</a></li>
+			  <li :xshiti_id="item3.id" v-for="(item3,index) in datalist3" :key="index" @click="returnTop(item3.id)">{{index+1}}</li>
             </ul>
           </div>
           <div class="first">
@@ -70,7 +70,7 @@
               <span>(每题{{score4}}分)</span>
             </p>
             <ul class="clearfix">
-			  <li :xshiti_id="item4.id" v-for="(item4,index) in datalist4" :key="index"><a :href="'#'+item4.id">{{index+1}}</a></li>
+			  <li :xshiti_id="item4.id" v-for="(item4,index) in datalist4" :key="index" @click="returnTop(item4.id)">{{index+1}}</li>
             </ul>
           </div>
           <div class="submit" @click="submitpapers">交卷</div>
@@ -455,6 +455,9 @@ export default {
     },
     goback (){
        this.$router.push('/my')
+    },
+     returnTop (num){
+      document.getElementById(num).scrollIntoView(true);
     }
   },
   destroyed (){
@@ -587,9 +590,8 @@ export default {
                }
               &.active {
 			         	background-color: #0169cc;
-              a{
-                  color: #fff;	
-              }
+                   color: #fff;	
+           
               }
             }
           }

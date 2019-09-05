@@ -8,11 +8,11 @@
     </div>
     <div class="content">
       <ul v-show="allpack">
-        <li class="clearfix" v-for="(item,index) in list" :key="index" @click="gopackdetail(item.id)">
+        <li class="clearfix" v-for="(item,index) in list" :key="index" @click="gopackdetail(item.id)" style=" cursor: pointer;">
           <div class="one fl">
             <img :src="item.img_url" alt />
           </div>
-          <div class="two fl">
+          <div class="two fl" style=" cursor: pointer;">
             <h3>{{item.title}}</h3>
             <p>
               <span>年度 :</span>

@@ -5,7 +5,7 @@
     </div>
     <div class="content">
         <ul class="clearfix" v-show="datalist.length">
-            <li class="fl" v-for="item in datalist" :key="item.id" @click="todetail(item.id)">
+            <li class="fl" v-for="item in datalist" :key="item.id" @click="todetail(item.id)" style=" cursor: pointer;">
                 <div class="kechengbox">
                   <img :src="item.img_url" alt="">
                   <div class="biaozhi">
