@@ -8,6 +8,7 @@
         <ul class="clearfix">
           <li class="l1">年度</li>
           <li>姓名</li>
+          <li>性别</li>
           <li class="l2">身份证号</li>
            <li>公需课学时</li>
           <li>专业课学时</li>
@@ -18,6 +19,7 @@
         <ul v-for="item in list" :key="item.id">
           <li class="l1">{{item.year}}</li>
           <li>{{item.name}}</li>
+           <li>{{item.sex==1?"男":"女"}}</li>
           <li class="l2">{{item.id_card}}</li>
            <li>{{item.get_gongxuke_xueshi_num}}</li>
           <li>{{item.get_zhuanyeke_xueshi_num}}</li>
