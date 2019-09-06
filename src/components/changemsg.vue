@@ -198,7 +198,7 @@ export default {
     this.phone=localStorage.getItem('mobile');
     var myDate = new Date();       
     var thisYear = myDate.getFullYear();  // 获取当年年份
-    var Section = thisYear - 1980;  // 声明一个变量 获得当前年份至想获取年份差
+    var Section = thisYear - 2000;  // 声明一个变量 获得当前年份至想获取年份差
     for(var i = 0;i<=Section;i++){
         this.arrYear.push(thisYear--)
     } // 遍历并添加年份到数组

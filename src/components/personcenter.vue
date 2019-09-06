@@ -78,7 +78,7 @@
                  float: left;
                  width: 48%;
                  margin-bottom:15px;
-                 cursor: pointer;
+                //  cursor: pointer;
                 &:nth-child(2n+1){
                     margin-right:30px;
                 }  
