@@ -46,7 +46,7 @@
                         <p class="p3">专业课</p>
                     </div>
                     <div class="line fl"></div>
-                    <div class="right fl"  v-for="(item,index) in data" :key="index">
+                    <div class="right fl" v-show="data.length>0"  v-for="(item,index) in data" :key="index">
                         <p class="p2">
                             <span>可用学时:</span><span class="spn">{{item.keyong_zhuanyeke_xueshi_num}}</span>
                         </p>
