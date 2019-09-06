@@ -107,6 +107,7 @@ export default {
               that.$message.success({message:"登陆成功，即将前往个人中心页",duration:1600});
               setTimeout(() => {
                 that.$router.push({ path: '/my' });
+                sessionStorage.setItem('types','personcenter');
               }, 1600);
             }else if(response.data.status=='error'){
               this.createCode();//刷新验证码

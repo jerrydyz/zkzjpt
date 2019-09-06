@@ -227,6 +227,7 @@ export default {
       width: 100%;
       min-height: 654px;
       position: relative;
+      overflow: hidden;
       ul{
           li{
               // border:1px solid red;

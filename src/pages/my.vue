@@ -154,7 +154,7 @@ export default {
          var leng=this.id_card.length
         this.id_card = this.id_card.substr(0, 3) + '****' + this.id_card.substr(leng - 4);
       if(sessionStorage.getItem('types')){
-         this.more( sessionStorage.getItem('types')) 
+         this.more(sessionStorage.getItem('types')); 
       }
         this.getxueshinum ()
         
