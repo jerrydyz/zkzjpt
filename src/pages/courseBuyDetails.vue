@@ -64,7 +64,7 @@
                   </div>
                 <div class="price">
                   <div class="item">
-                    实付金额：<div class="dne-omns-elis" id="pay_money" style="display: inline">￥{{courseInfo.price}}</div>
+                    实付金额：<div class="dne-omns-elis" id="pay_money" style="display: inline">￥{{courseInfo.price}}元</div>
                   </div>
                 </div>
               </div>

@@ -87,7 +87,7 @@
                   <p class="tit_type">{{index+1}}、{{item.question}}</p>
                   <ul class="child shiti_select_div" :shiti_id="item.id" :shiti_type="item.type">
                     <li class="child_type">
-                      <label v-for="(key,val) in xuanze" :key="val" @click="radio(item.id)">
+                      <label v-for="(key,val) in xuanze" :key="val" @click="radio(item.id)"  style="cursor: pointer;">
                         <input type="radio" :name="['danxuan_'+item.id]" :value="val" style="margin-right:5px" />
                         <span>{{val}}、</span>
                         <span>{{key}}</span>
@@ -112,7 +112,7 @@
                   <p class="tit_type">{{index+1}}、{{check.question}}</p>
                   <ul class="child shiti_select_div" :shiti_id="check.id" :shiti_type="check.type">
                     <li class="child_type">
-                      <label v-for="(key,val) in xuanze2"  @click="checkbox(check.id)">
+                      <label v-for="(key,val) in xuanze2"  @click="checkbox(check.id)"  style="cursor: pointer;">
                         <input type="checkbox" :name="['duoxuan_'+check.id+'[]']" :value="val" style="margin-right:5px" />
                         <span>{{val}}、</span>
                         <span>{{key}}</span>
@@ -132,7 +132,7 @@
                   <p class="tit_type">{{index+1}}、{{dan.question}}</p>
                   <ul class="child shiti_select_div" :shiti_id="dan.id" :shiti_type="dan.type">
                     <li class="child_type">
-                      <label v-for="(key,val) in xuanze3" @click="panduan(dan.id)">
+                      <label v-for="(key,val) in xuanze3" @click="panduan(dan.id)"  style="cursor: pointer;">
                         <input type="radio" :name="['panduan_'+dan.id]" :value="val"  style="margin-right:5px">
                         <span>{{key}}</span>
                       </label>
