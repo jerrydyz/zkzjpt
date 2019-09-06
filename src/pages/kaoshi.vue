@@ -43,7 +43,7 @@
               <span>(每题{{score1}}分)</span>
             </p>
             <ul class="clearfix">
-              <li :xshiti_id="item1.id" v-for="(item1,index) in datalist1" :key="index"><a :href="'#'+item1.id">{{index+1}}</a></li>
+              <li :xshiti_id="item1.id" v-for="(item1,index) in datalist1" :key="index"  @click="returnTop(item1.id)">{{index+1}}</li>
             </ul>
           </div>
           <div class="first">
@@ -52,7 +52,7 @@
               <span>(每题{{score2}}分)</span>
             </p>
             <ul class="clearfix">
-			   <li :xshiti_id="item2.id" v-for="(item2,index) in datalist2" :key="index"><a :href="'#'+item2.id">{{index+1}}</a></li>
+			   <li :xshiti_id="item2.id" v-for="(item2,index) in datalist2" :key="index" @click="returnTop(item2.id)">{{index+1}}</li>
             </ul>
           </div>
           <div class="first">
@@ -61,7 +61,7 @@
               <span>(每题{{score3}}分)</span>
             </p>
             <ul class="clearfix">
-			  <li :xshiti_id="item3.id" v-for="(item3,index) in datalist3" :key="index"><a :href="'#'+item3.id">{{index+1}}</a></li>
+			  <li :xshiti_id="item3.id" v-for="(item3,index) in datalist3" :key="index" @click="returnTop(item3.id)">{{index+1}}</li>
             </ul>
           </div>
           <div class="first">
@@ -70,7 +70,7 @@
               <span>(每题{{score4}}分)</span>
             </p>
             <ul class="clearfix">
-			  <li :xshiti_id="item4.id" v-for="(item4,index) in datalist4" :key="index"><a :href="'#'+item4.id">{{index+1}}</a></li>
+			  <li :xshiti_id="item4.id" v-for="(item4,index) in datalist4" :key="index" @click="returnTop(item4.id)">{{index+1}}</li>
             </ul>
           </div>
           <div class="submit" @click="submitpapers">交卷</div>
@@ -87,7 +87,7 @@
                   <p class="tit_type">{{index+1}}、{{item.question}}</p>
                   <ul class="child shiti_select_div" :shiti_id="item.id" :shiti_type="item.type">
                     <li class="child_type">
-                      <label v-for="(key,val) in xuanze" :key="val" @click="radio(item.id)">
+                      <label v-for="(key,val) in xuanze" :key="val" @click="radio(item.id)"  style="cursor: pointer;">
                         <input type="radio" :name="['danxuan_'+item.id]" :value="val" style="margin-right:5px" />
                         <span>{{val}}、</span>
                         <span>{{key}}</span>
@@ -112,7 +112,7 @@
                   <p class="tit_type">{{index+1}}、{{check.question}}</p>
                   <ul class="child shiti_select_div" :shiti_id="check.id" :shiti_type="check.type">
                     <li class="child_type">
-                      <label v-for="(key,val) in xuanze2"  @click="checkbox(check.id)">
+                      <label v-for="(key,val) in xuanze2"  @click="checkbox(check.id)"  style="cursor: pointer;">
                         <input type="checkbox" :name="['duoxuan_'+check.id+'[]']" :value="val" style="margin-right:5px" />
                         <span>{{val}}、</span>
                         <span>{{key}}</span>
@@ -132,7 +132,7 @@
                   <p class="tit_type">{{index+1}}、{{dan.question}}</p>
                   <ul class="child shiti_select_div" :shiti_id="dan.id" :shiti_type="dan.type">
                     <li class="child_type">
-                      <label v-for="(key,val) in xuanze3" @click="panduan(dan.id)">
+                      <label v-for="(key,val) in xuanze3" @click="panduan(dan.id)"  style="cursor: pointer;">
                         <input type="radio" :name="['panduan_'+dan.id]" :value="val"  style="margin-right:5px">
                         <span>{{key}}</span>
                       </label>
@@ -151,7 +151,7 @@
                   <p class="tit_type">{{index+1}}、{{tian.question}}</p>
                   <ul class="child shiti_select_div" :shiti_id="tian.id" :shiti_type="tian.type">
                     <li class="child_type" v-for="(knum,index) in tian.kong_num" :key="index">
-                      {{index+1}}、
+                     <span class="circle"> {{index+1}}</span>
                       <input
                         type="text"
                         :shiti_tiankong="['tiankong_'+tian.id]"
@@ -361,8 +361,7 @@ export default {
               path:'/submit',
               query:{
                  kaoshi_id:kaoshi_id,
-                 kecheng_title:that.kecheng_title,
-
+                //  kecheng_title:that.kecheng_title,
               }
             });
           } else if (res.data.status == "error") {
@@ -456,6 +455,9 @@ export default {
     },
     goback (){
        this.$router.push('/my')
+    },
+     returnTop (num){
+      document.getElementById(num).scrollIntoView(true);
     }
   },
   destroyed (){
@@ -588,9 +590,8 @@ export default {
                }
               &.active {
 			         	background-color: #0169cc;
-              a{
-                  color: #fff;	
-              }
+                   color: #fff;	
+           
               }
             }
           }
@@ -714,6 +715,16 @@ export default {
                   text-indent: 10px;
                   width: 80%;
                   height: 100%;
+                }
+                .circle{
+                  display: inline-block;
+                  width: 15px;
+                  height: 15px;
+                  border-radius: 50%;
+                  border:1px solid #000;
+                  line-height: 15px;
+                  text-align: center;
+                  font-size:12px;
                 }
               }
             }

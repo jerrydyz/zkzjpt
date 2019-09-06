@@ -2,7 +2,7 @@
   <div class="my">
     <div class="title">
       <div class="top w clearfix">
-        <p class="fl">河南省继续教育学会在线学习平台</p>
+        <p class="fl">周口市专业技术人员继续教育协会</p>
         <p class="fr">
           <span class="spn1"  @click="more('personcenter')" >个人中心</span>
           <span @click="goback">退出</span>
@@ -23,12 +23,20 @@
                         <p class="p3">公需课</p>
                     </div>
                     <div class="line fl"></div>
-                    <div class="right fl" v-for="(item,index) in data" :key="index">
+                    <div class="right fl" v-show="data.length>0" v-for="(item,index) in data" :key="index">
                         <p class="p2">
                             <span>可用学时:</span><span class="spn">{{item.keyong_gongxuke_xueshi_num}}</span>
                         </p>
                         <p>
                              <span>已获学时:</span><span class="spn">{{item.get_gongxuke_xueshi_num}}</span>
+                        </p>
+                    </div>
+                    <div class="right fl" v-show="!data.length" >
+                        <p class="p2">
+                            <span>可用学时:</span><span class="spn">--</span>
+                        </p>
+                        <p>
+                             <span>已获学时:</span><span class="spn">--</span>
                         </p>
                     </div>
                 </div>
@@ -38,12 +46,20 @@
                         <p class="p3">专业课</p>
                     </div>
                     <div class="line fl"></div>
-                    <div class="right fl"  v-for="(item,index) in data" :key="index">
+                    <div class="right fl" v-show="data.length>0"  v-for="(item,index) in data" :key="index">
                         <p class="p2">
                             <span>可用学时:</span><span class="spn">{{item.keyong_zhuanyeke_xueshi_num}}</span>
                         </p>
                         <p>
                              <span>已获学时:</span><span class="spn">{{item.get_zhuanyeke_xueshi_num}}</span>
+                        </p>
+                    </div>
+                     <div class="right fl" v-show="!data.length" >
+                        <p class="p2">
+                            <span>可用学时:</span><span class="spn">--</span>
+                        </p>
+                        <p>
+                             <span>已获学时:</span><span class="spn">--</span>
                         </p>
                     </div>
                 </div>
@@ -137,16 +153,24 @@ export default {
       this.year = date.getFullYear();
          var leng=this.id_card.length
         this.id_card = this.id_card.substr(0, 3) + '****' + this.id_card.substr(leng - 4);
-      if(localStorage.getItem('types')){
-         this.more( localStorage.getItem('types'))
+      if(sessionStorage.getItem('types')){
+         this.more(sessionStorage.getItem('types')); 
       }
         this.getxueshinum ()
+        
+  },
+  beforeRouteEnter(to, from, next) {
+    next(vv => {
+      if (from.name == 'login') {
+         this.more("personcenter")
+      }
+    })
   },
   methods: {
      more(val){
         this.componentId=val
         this.bgcolor=val
-        localStorage.setItem('types',this.componentId)
+        sessionStorage.setItem('types',this.componentId)
       },
       //获取学时
       getxueshinum (){

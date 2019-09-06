@@ -1,7 +1,7 @@
 <template>
   <div class="changemsg fl">
     <div class="topnav">
-      <span class="spn1" :class="{active:line=='a'}" @click='tab("a")'>基本资料</span>
+      <span class="spn1" :class="{active:line=='a'}" @click='tab("a")'>修改个人信息</span>
       <span class="spn2" :class="{active:line=='b' }" @click='tab("b")'>修改密码</span>
     </div>
     <div class="content" v-show="basedata">
@@ -198,7 +198,7 @@ export default {
     this.phone=localStorage.getItem('mobile');
     var myDate = new Date();       
     var thisYear = myDate.getFullYear();  // 获取当年年份
-    var Section = thisYear - 1980;  // 声明一个变量 获得当前年份至想获取年份差
+    var Section = thisYear - 2000;  // 声明一个变量 获得当前年份至想获取年份差
     for(var i = 0;i<=Section;i++){
         this.arrYear.push(thisYear--)
     } // 遍历并添加年份到数组
@@ -510,13 +510,14 @@ export default {
 <style lang='less' scoped>
 .changemsg {
   width: 948px;
+  min-height: 708px;
   box-sizing: border-box;
   background-color: #fff;
   background-color: #fafafa;
     
   .topnav {
     width: 100%;
-    height: 55px;
+    height: 30px;
     // line-height: 55px;
     background-color: #fafafa;
     margin-top: 20px;
@@ -593,10 +594,11 @@ export default {
       color: #fff;
       font-size: 14px;
       border-radius: 10px;
-      margin-top: 23px;
+      margin-top: 15px;
+       margin-bottom:15px;
       margin-left: 110px;
       text-align: center;
-      margin-bottom:20px;
+     
       cursor: pointer;
     }
   }

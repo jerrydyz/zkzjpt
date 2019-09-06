@@ -418,6 +418,7 @@ export default {
 						}	
 					}else if(jsonduixiang.status=="error"){
 						that.$message.error({message:jsonduixiang.msg,duration:1600});
+						clearInterval(that.T);
 					}
 					
 				};

@@ -12,7 +12,8 @@
          <span class="spn5">公需课学时</span>
         <span class="spn6">专业课学时</span>
         <span class="spn7">状态</span>
-        <span class="spn8">操作</span>
+         <span class="spn8">考试截止时间</span>
+        <span class="spn9">操作</span>
       </div>
       <ul>
         <li v-for="item in data" :key="item.id">
@@ -24,7 +25,8 @@
             <span class="spn5">{{item.zhuanyeke_xueshi_num}}</span>
             <span class="spn6 active1"  v-if="item.is_pass=='0'">{{item.is_pass=="0"?'未通过':"考试通过"}}</span>
              <span class="spn6 active"  v-else>{{item.is_pass=="0"?'未通过':"考试通过"}}</span>
-            <span class="spn7" @click="gostady($event,item.id)">{{item.is_pass==1?'--':item.is_pass==0&&item.enable_kaoshi==0?'继续学习':item.is_pass==0&&item.enable_kaoshi==1?'去考试':'' }}</span>
+            <span class="spn7">{{item.shijuan_info.end_time.slice(0,10)}}</span>
+            <span class="spn8" @click="gostady($event,item.id)">{{item.is_pass==1?'--':item.is_pass==0&&item.enable_kaoshi==0?'继续学习':item.is_pass==0&&item.enable_kaoshi==1?'去考试':'' }}</span>
         </li>
       </ul>
        <div class="nodata" v-show="nodata">
@@ -156,6 +158,8 @@ export default {
                             shijuan_id:num
                         }
                     })
+
+                   
            }
        },
        //切换分页
@@ -210,7 +214,7 @@ export default {
                     white-space: nowrap;
                     cursor: default;
                 &.spn2{
-                    width: 25%;
+                    width: 15%;
                 }
                 &.spn3{
                     width: 15%;
@@ -236,14 +240,15 @@ export default {
                     white-space: nowrap;
                      cursor: default;
                 &.spn2{
-                    width: 25%;
+                    width: 15%;
                 }
                 &.spn3{
                     width: 15%;
                 }
-                &.spn7{
+                &.spn8{
                      cursor: pointer;
                 }
+                
                 &.active{
                     color:#66d668;
                 }

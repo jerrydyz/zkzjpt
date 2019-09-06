@@ -10,7 +10,7 @@
     </div>
     <div class="content">
       <ul class="clearfix">
-        <li class="fl" v-for="item in allcourse" :key="item.id" @click="todetail(item.id)">
+        <li class="fl" v-for="item in allcourse" :key="item.id" @click="todetail(item.id)" style=" cursor: pointer;">
           <div class="kechengbox">
             <img :src="item.img_url" alt />
             <div class="biaozhi">
@@ -31,7 +31,7 @@
             </div>
             <div>
               价格：
-              <span>{{item.price}}</span>
+              <span>￥{{item.price}}元</span>
             </div>
           </div>
         </li>
@@ -85,8 +85,6 @@ export default {
     this.token = localStorage.getItem("token");
     var date = new Date();
     this.year = date.getFullYear();
-    console.log(this.token);
-
     if (this.token) {
       this.getallcourse();
     } else {
@@ -204,6 +202,7 @@ export default {
     
     changeTab: function(index) {
       this.suoyin = index;
+      sessionStorage.setItem('suoyin',this.suoyin)
       if (index == 0) {
         this.kemuid = "";
         this.page=1;

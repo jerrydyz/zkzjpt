@@ -20,7 +20,7 @@
             <span class="spn4">{{item.zong_score}}</span>
             <span class="spn5 active1"  v-if="item.is_pass=='0'">{{item.is_pass=='0'?'未通过':'考试通过'}}</span>
              <span class="spn5  active" v-else>{{item.is_pass=='0'?'未通过':'考试通过'}}</span>
-            <span class="spn6"  @click="todetail(item.id)">查看详情</span>
+            <span class="spn6"  @click="todetail(item.id,item.shijuan_title)">查看详情</span>
         </li>
       </ul>
        <div class="nodata" v-show="nodata">
@@ -130,6 +130,7 @@ export default {
           that.data = res.data.data.data;
           that.count = Number(res.data.data.count);
           that.pageSize = res.data.data.pageSize;
+          // that.kecheng_title=res.data.data.shijuan_title
           if (res.data.data.data.length == 0) {
             that.nodata = true;
             that.fenye = false;
@@ -145,11 +146,12 @@ export default {
       });
     },
     //查看详情
-    todetail(num) {
+    todetail(num,tit) {
       this.$router.push({
         path: "/submit",
         query: {
-          kaoshi_id: num
+          kaoshi_id: num,
+          // kecheng_title:tit,
         }
       });
     },

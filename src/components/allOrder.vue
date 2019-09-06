@@ -24,7 +24,7 @@
                 </li> -->
                 <li class="clearfix" v-for="(item,index) in data" :key="index">
                     <span class="fl spn1" style="text-align:left;">{{item.order_id}}</span>
-                    <span class="fl spn2">{{item.buy_obj}}</span>
+                    <span class="fl spn2" :title="item.buy_obj">{{item.buy_obj}}({{item.type==1?'课程包':"课程"}})</span>
                     <span class="fl spn3">￥{{item.money}}元</span>
                     <span class="fl spn4">{{item.pay_type=='1'?"支付宝":item.pay_type=="2"?"微信":item.pay_type=="3"?"学时卡":"赠送"}}</span>
                     <span class="fl spn5" :class="item.status=='0'?'zhifu':'yizhifu'">{{item.status=='0'?"未支付":item.status=="1"?"已支付":"支付失败"}}</span>

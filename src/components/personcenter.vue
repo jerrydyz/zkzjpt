@@ -8,7 +8,7 @@
                 <li>
                     <p><img src="../assets/center01.png" alt=""></p>
                     <h4>(1) 用户注册</h4>
-                    <p>新用户请点击首页上的【新学员注册】按钮进行注册。填写时请输入本人真实身份证号，注册完成后即可使用身份证号码登录，初始密码为身份证号码6为，登录后请即使修改</p> 
+                    <p>新用户请点击首页上的【新学员注册】按钮进行注册。填写时请输入本人真实身份证号，注册完成后即可使用身份证号码登录。</p> 
                 </li>
                 <li>
                     <p><img src="../assets/center02.png" alt=""></p>
@@ -50,7 +50,7 @@
 .personcenter{
      width: 948px;
     background-color: #fff;
-    padding:0 20px;
+    padding:0 20px 30px;
           box-sizing: border-box;
     .title{
         width: 100%;
@@ -78,7 +78,7 @@
                  float: left;
                  width: 48%;
                  margin-bottom:15px;
-                 cursor: pointer;
+                 cursor: default;
                 &:nth-child(2n+1){
                     margin-right:30px;
                 }  

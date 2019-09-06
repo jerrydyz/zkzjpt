@@ -5,7 +5,7 @@
     </div>
     <div class="content">
         <ul class="clearfix" v-show="datalist.length">
-            <li class="fl" v-for="item in datalist" :key="item.id" @click="todetail(item.id)">
+            <li class="fl" v-for="item in datalist" :key="item.id" @click="todetail(item.id)" style=" cursor: pointer;">
                 <div class="kechengbox">
                   <img :src="item.img_url" alt="">
                   <div class="biaozhi">
@@ -17,7 +17,7 @@
                 <p class="tit">{{item.title}}</p>
                 <div class="num">
                   <div>学时：<span>{{item.xueshi_num}}</span></div>
-                  <div>价格：<span>{{item.price}}</span></div>
+                  <div>价格：<span>￥{{item.price}}元</span></div>
                 </div>  
                 <!-- <p class="txt">{{item.title}}(<span>{{item.xueshi_num}}</span>课时)</p> -->
                 
@@ -227,6 +227,7 @@ export default {
       width: 100%;
       min-height: 654px;
       position: relative;
+      overflow: hidden;
       ul{
           li{
               // border:1px solid red;
@@ -306,7 +307,7 @@ export default {
       .nodata{
           width: 212px;
           height: 240px;
-          margin: 80px auto;
+          margin: 80px auto 0;
           background-image: url('../assets/nodata.png');
       }
       .blocks{

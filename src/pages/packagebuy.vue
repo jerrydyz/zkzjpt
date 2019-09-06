@@ -32,7 +32,7 @@
               </div>
               <div class="info ddiel-us" style="width:25%;">
                 <div class="tit">价格</div>
-                <h3 style="color:#fc6238">{{courseInfo.price}}</h3>
+                <h3 style="color:#fc6238">￥{{courseInfo.price}}元</h3>
               </div>
             </div>
            <h3 id="paytype">支付方式 :</h3>
@@ -64,7 +64,7 @@
                   </div>
                 <div class="price">
                   <div class="item">
-                    实付金额：<div class="dne-omns-elis" id="pay_money" style="display: inline">￥{{courseInfo.price}}</div>
+                    实付金额：<div class="dne-omns-elis" id="pay_money" style="display: inline">￥{{courseInfo.price}}元</div>
                   </div>
                 </div>
               </div>
@@ -101,7 +101,7 @@
     </div>
     <div slot="footer" class="dialog-footer">
       <el-button @click="outerVisible = false">充值失败</el-button>
-      <el-button type="primary" @click="outerVisible = false">充值成功</el-button>
+      <el-button type="primary" @click="success">充值成功</el-button>
     </div>
   </el-dialog>
 </template>
@@ -181,6 +181,11 @@ export default {
     personal(){
         this.$router.push({path:'/my'});
     },
+     success (){
+      sessionStorage.setItem("types",'mykecheng')
+      this.$router.push('/my');
+      this.outerVisible = false
+    },
     //返回按钮
       goback (){
           var that =this
@@ -223,7 +228,7 @@ export default {
             .then(response => {
                 if(response.data.status=="ok"){
                     this.$message.success({message: "您已购买成功",duration:1600});
-                    localStorage.setItem('types','mykecheng');
+                    sessionStorage.setItem('types','mykecheng');
                     this.$router.push({ path: '/my' });
                 }else if(response.data.status=="error"){
                   this.$message.error({message: response.data.errormsg,duration:1600});
