@@ -161,6 +161,9 @@ export default {
         }else if(this.idcard==''){
             this.$message.error({message:"请输入要查找的身份证号",duration:1600});
         }else{
+            window.pageYOffset = 0;
+            document.documentElement.scrollTop = 0
+            document.body.scrollTop = 0
             let that=this;
             let userinfo={year:that.year,id_card:that.idcard,name:that.name}
             this.$axios.post(this.apiurl+'/dangan/zhengshu_query',qs.stringify(userinfo) ).then(res=>{
@@ -275,15 +278,15 @@ export default {
         }
         .picscale{position: absolute;left: 0;top:0;background-color: rgba(0,0,0,.5);width: 100%;height: 146%;
             img{width: 1000px;position: absolute;left: 50%;margin-left: -500px;top:80px;}
-            span{width: 60px;height: 60px;background-image: url(/static/images/index/scale.png);transform: rotate(45deg);background-size: contain;position: absolute;bottom: 35%;left: 50%;margin-left: -30px;}
+            span{width: 60px;height: 60px;background-image: url(/static/images/index/close.png);transform: rotate(45deg);background-size: contain;position: absolute;bottom: 35%;left: 50%;margin-left: -30px;}
         }
     }
     .my-certificate {
     width: 822px;
     height: 590px;
-    position: absolute;
+    position: fixed;
     left: -850px;
-    top: -600px;
+    top: 300px;
     overflow: hidden;
     // left: 1200px;
     // top: 100px;

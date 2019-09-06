@@ -616,7 +616,7 @@ export default {
 <!-- Add "scoped" attribute to limit CSS to this component only -->
 <style scoped lang="less">
     .zkindex{position: relative;}
-    .index{width: 1200px;margin: 40px auto 0;font-size: 0;
+    .index{width: 1200px;margin: 20px auto 0;font-size: 0;
         .swiper-news-login{width: 1200px;height: 470px;box-sizing: border-box;padding: 30px;display: flex;justify-content: space-between;background-color: #fff;
             .myswiper{width: 656px;height: 408px; margin: 0;
               .slider{width: 100%;height: 100%;
