@@ -23,12 +23,20 @@
                         <p class="p3">公需课</p>
                     </div>
                     <div class="line fl"></div>
-                    <div class="right fl" v-for="(item,index) in data" :key="index">
+                    <div class="right fl" v-show="data.length>0" v-for="(item,index) in data" :key="index">
                         <p class="p2">
                             <span>可用学时:</span><span class="spn">{{item.keyong_gongxuke_xueshi_num}}</span>
                         </p>
                         <p>
                              <span>已获学时:</span><span class="spn">{{item.get_gongxuke_xueshi_num}}</span>
+                        </p>
+                    </div>
+                    <div class="right fl" v-show="!data.length" >
+                        <p class="p2">
+                            <span>可用学时:</span><span class="spn">--</span>
+                        </p>
+                        <p>
+                             <span>已获学时:</span><span class="spn">--</span>
                         </p>
                     </div>
                 </div>
@@ -44,6 +52,14 @@
                         </p>
                         <p>
                              <span>已获学时:</span><span class="spn">{{item.get_zhuanyeke_xueshi_num}}</span>
+                        </p>
+                    </div>
+                     <div class="right fl" v-show="!data.length" >
+                        <p class="p2">
+                            <span>可用学时:</span><span class="spn">--</span>
+                        </p>
+                        <p>
+                             <span>已获学时:</span><span class="spn">--</span>
                         </p>
                     </div>
                 </div>
