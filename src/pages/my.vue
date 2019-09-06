@@ -157,6 +157,14 @@ export default {
          this.more( sessionStorage.getItem('types')) 
       }
         this.getxueshinum ()
+        
+  },
+  beforeRouteEnter(to, from, next) {
+    next(vv => {
+      if (from.name == 'login') {
+         this.more("personcenter")
+      }
+    })
   },
   methods: {
      more(val){
