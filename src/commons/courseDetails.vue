@@ -174,7 +174,7 @@ export default {
         
       })
     }else{
-      this.loginstate=1;
+      // this.loginstate=1;
     }
     
   },

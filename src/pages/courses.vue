@@ -239,7 +239,7 @@ export default {
             }
         }
         .course-box{display: flex;flex-wrap:wrap;justify-content: flex-start;width: 1200px;margin: 0 auto;
-            .course-item{width: 225px;height: 225px;margin-top: 20px;margin-left: 15px;
+            .course-item{width: 225px;height: 225px;margin-top: 20px;margin-right: 15px;
                 .item-img{width: 225px;height: 126px;
                     img{width: 100%;height: 100%;}
                 }
