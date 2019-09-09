@@ -7,7 +7,7 @@
         <ul class="clearfix" v-show="datalist.length">
             <li class="fl" v-for="item in datalist" :key="item.id" @click="todetail(item.id)" style=" cursor: pointer;">
                 <div class="kechengbox">
-                  <img :src="item.img_url" alt="">
+                  <img :src="item.img_url" alt="" class="bigimg">
                   <div class="biaozhi">
                     <img v-if="item.kemu==1" src="/static/images/personal/zyk.png" alt="">
                     <img v-else src="/static/images/personal/gxk.png" alt="">
@@ -76,12 +76,25 @@ export default {
         this.token=localStorage.getItem('token')
         var date=new Date;
         this.year=date.getFullYear()
-        
+       
         if(this.token){
-        this.checkkecheng()
-    }else{
-        this.removeInfo()
-    }
+            if( sessionStorage.getItem("suoyin1")==0){
+               this.suoyin= sessionStorage.getItem("suoyin1");
+              this.page=1
+              this.kemuid='';
+            }else if( sessionStorage.getItem("suoyin1")==1){
+            this.suoyin= sessionStorage.getItem("suoyin1");
+               this.page=1
+              this.kemuid=1;
+            }else if( sessionStorage.getItem("suoyin1")==2){
+               this.suoyin= sessionStorage.getItem("suoyin1");
+               this.page=1
+              this.kemuid=2;
+            }
+           this.checkkecheng()
+        }else{
+            this.removeInfo()
+        }
         
     },
      watch: {
@@ -188,6 +201,7 @@ export default {
     },
     changeTab:function(index){
       this.suoyin=index;
+       sessionStorage.setItem("suoyin1",index)
       if(index==0){
         this.kemuid='';
       }else if(index==1){
@@ -232,7 +246,7 @@ export default {
           li{
               // border:1px solid red;
                width: 260px;
-                height: 255px;
+                // height: 255px;
                 margin-left: 32px;
                 margin-top: 15px;
                 border: 1px solid #dfe4ed;
@@ -243,9 +257,9 @@ export default {
                   .biaozhi{position: absolute;left: 0;top: 10px;
                     img{width: 50px;}
                   }
-                  img{
+                  .bigimg{
                     width: 100%;
-                    // height: 189px;
+                    height: 144px;
                     //border-radius: 5px;
                     overflow: hidden;
                   }

@@ -378,7 +378,7 @@ export default {
     h3 {
       // color:#0169cc;
       span {
-        cursor: default;
+        cursor: pointer;
         &:nth-child(1) {
           margin-right: 30px;
         }

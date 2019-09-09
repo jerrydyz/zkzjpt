@@ -160,6 +160,7 @@ export default {
     box-sizing: border-box;
     span {
       border-bottom: 2px solid #0c69f5;
+      cursor: default;
     }
   }
   .content{

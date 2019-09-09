@@ -246,6 +246,7 @@ export default {
       border-bottom: 2px solid #0c69f5;
       padding-bottom: 15px;
       box-sizing: border-box;
+      cursor: default;
     }
   }
   .content {
