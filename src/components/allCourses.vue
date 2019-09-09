@@ -12,7 +12,7 @@
       <ul class="clearfix">
         <li class="fl" v-for="item in allcourse" :key="item.id" @click="todetail(item.id)" style=" cursor: pointer;">
           <div class="kechengbox">
-            <img :src="item.img_url" alt />
+            <img :src="item.img_url" alt class="bigimg" />
             <div class="biaozhi">
               <img v-if="item.kemu==1" src="/static/images/personal/zyk.png" alt />
               <img v-else src="/static/images/personal/gxk.png" alt />
@@ -86,10 +86,26 @@ export default {
     var date = new Date();
     this.year = date.getFullYear();
     if (this.token) {
+      
+    if(sessionStorage.getItem('suoyin')==0){
+       this.suoyin = sessionStorage.getItem('suoyin');
+        this.kemuid = "";
+        this.page=1
+      }else if(sessionStorage.getItem('suoyin')==1){
+         this.suoyin = sessionStorage.getItem('suoyin');
+         this.kemuid = 1;
+        this.page=1
+      }else if(sessionStorage.getItem('suoyin')==2){
+         this.suoyin = sessionStorage.getItem('suoyin');
+          this.kemuid = 2;
+          this.page=1
+      }
       this.getallcourse();
     } else {
       this.removeInfo();
     }
+    
+    
   },
   watch: {
     token: {
@@ -269,9 +285,9 @@ export default {
               width: 50px;
             }
           }
-          img {
+          .bigimg {
             width: 100%;
-            // height: 189px;
+            height: 144px;
             //border-radius: 5px;
             overflow: hidden;
           }

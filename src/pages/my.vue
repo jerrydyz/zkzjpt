@@ -162,15 +162,15 @@ export default {
   beforeRouteEnter(to, from, next) {
     next(vv => {
       if (from.name == 'login') {
-         this.more("personcenter")
+         vv.more("personcenter")
       }
     })
   },
   methods: {
      more(val){
-        this.componentId=val
-        this.bgcolor=val
-        sessionStorage.setItem('types',this.componentId)
+        this.componentId=val;
+        this.bgcolor=val;
+        sessionStorage.setItem('types',this.componentId);
       },
       //获取学时
       getxueshinum (){

@@ -44,7 +44,7 @@
         <div class="price classtopitem clearfix">
           <div class="new_price">
             <em>价格：</em>¥
-            <span>{{courseData.price}}</span>
+            <span>{{courseData.price}}元</span>
           </div>
         </div>
         <div class="classtopitem btn clearfix">
@@ -696,8 +696,8 @@ export default {
 .class_jg_btn{text-align:center;font-size:14px;}
 .class_jg_btn a{display:inline-block;margin:0 5px;width:98px;height:36px;border:solid 1px #c6c6c6;border-radius:3px;background-color:#f7f7f7;color:#333;font-size:14px;line-height:36px;}
 
-.login-mask{position: absolute;width: 100%;height: 175%;background-color: rgba(0,0,0,.6);left: 0;top:0;}
-.login-box{ width: 292px;border: 1px solid #d7d7d7; position: absolute;left: 50%;margin-left: -146px;top:250px;background-color: #fff;
+.login-mask{position: absolute;width: 100%;height: 3000px;background-color: rgba(0,0,0,.6);left: 0;top:0;}
+.login-box{ width: 292px;border: 1px solid #d7d7d7; position: fixed;left: 50%;margin-left: -146px;top:250px;background-color: #fff; padding-bottom:10px; box-sizing:border-box;border-radius:5px;
   .login-title-box{width: 100%;height: 55px;
     .login-title{width: 126px;height: 34px;background-image: url(/static/images/index/login-title.png);margin-top: 25px;margin-left: 18px;}
     .close-login{width: 20px;height: 20px;text-align: center;line-height: 20px;font-size: 20px;position: absolute;right: 10px;top:10px;

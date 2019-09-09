@@ -200,6 +200,7 @@ export default {
                 padding-bottom:13px;
                 border-bottom:2px solid #0169cc;
                 box-sizing: border-box;
+                cursor: default;
             }
         }
     }
