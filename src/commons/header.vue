@@ -26,7 +26,7 @@ export default {
     return {
       navList: [
         {title: "首页", path: "/index"},
-        {title: "新闻咨询", path: "/news"},
+        {title: "新闻咨讯", path: "/news"},
         {title: "政策法规", path: "/laws"},
         {title: "工作动态", path: "/works"},
         {title: "课程中心", path: "/courses"},

@@ -1,9 +1,9 @@
 <template>
   <div class="checkzhengshu">
     <div class="shuru-box">
-        <input type="text" placeholder="请输入姓名" v-model="name">
-        <input type="text" placeholder="请输入身份证号" v-model="idcard" maxlength="18">
-        <div class="worktimes">
+        姓名:<input type="text" placeholder="请输入姓名" v-model="name">
+        身份证号:<input type="text" placeholder="请输入身份证号" v-model="idcard" maxlength="18">
+        年份:<div class="worktimes">
             <select name id @change="gongzuotime" v-model="year">
               <option value="">请选择证书年份</option>
               <option v-for="(item,index) in arrYear" :key="index">{{item}}</option>
@@ -13,7 +13,7 @@
     </div>
     <div class="zhengshu-box" v-show="!nodata">
         <div class="pic-box" v-for="(item,index) in zhengshuinfo" :key="index">
-            <img class="tupian" :src="item.picurl" alt="">
+            <!-- <img class="tupian" :src="item.picurl" alt=""> -->
             <div class="fangda" @click="picfangda(index)">
                 <img :src="item.picurl" alt="">
                 <div class="graybeijing"><div class="jiahao"></div></div>
@@ -98,6 +98,21 @@
         </div>
         <img src="/static/images/personal/seal.png" class="seal" />
     </div>
+    <div class="page">
+        <div class="pagebox">
+            <div class="block">
+              <el-pagination
+              background
+              @size-change="handleSizeChange"
+              @current-change="handleCurrentChange"
+              :current-page.sync="currentPage"
+              :page-size="10"
+              layout="total,prev, pager, next, jumper"
+              :total='allnum'>
+              </el-pagination>
+          </div> 
+        </div>
+    </div>
   </div>
 </template>
 
@@ -127,6 +142,8 @@ export default {
       changebase64:'',
       picstate:false,
       apiurl:'http://jixujiaoyu_api.songlongfei.club:1012',
+      currentPage:1,
+      allnum:0,
     }
   },
   created(){
@@ -148,6 +165,12 @@ export default {
 
   },
   methods:{
+    handleSizeChange(val) {
+        console.log(`每页 ${val} 条`);
+      },
+    handleCurrentChange(val) {
+      console.log(`当前页: ${val}`);
+    },
     gongzuotime(e){
         this.year = e.target.value;
         console.log(this.year)
@@ -172,6 +195,7 @@ export default {
                         this.nodata=true;
                         this.$message.error({message:"未查到相关证书",duration:1600});
                     }else if(res.data.data.length==1){
+                        this.allnum=1;
                         this.nodata=false;
                         that.zhengshuinfo=res.data.data;
                         that.sex=that.zhengshuinfo[0].sex;
@@ -184,6 +208,7 @@ export default {
                             });
                         }, 500);
                     }else if(res.data.data.length==2){
+                        this.allnum=2;
                         this.nodata=false;
                         that.zhengshuinfo=res.data.data;
                         that.sex=that.zhengshuinfo[0].sex;
@@ -247,20 +272,21 @@ export default {
 <!-- Add "scoped" attribute to limit CSS to this component only -->
 <style scoped lang="less">
     .checkzhengshu{width: 1200px;min-height: 560px;margin: 20px auto;background-color: #fff;overflow: hidden;
-        .shuru-box{width: 990px;height: 42px; margin: 36px auto 45px; display: flex;justify-content: space-between;
-            input{width: 260px;border: 1px solid #eee;padding-left: 10px;color: #aaa;}
+        .shuru-box{width: 990px;height: 42px; margin: 36px auto 45px; display: flex;justify-content: space-between;line-height: 42px;
+            input{width: 200px;border: 1px solid #eee;padding-left: 10px;color: #aaa;}
             ::-webkit-input-placeholder { color: #aaa;}
-            .worktimes{width: 260px;height: 42px;border: 1px solid #eee;box-sizing:border-box;padding-left: 10px;
-                select{width: 100%;height: 100%;color:#aaa;}
+            .worktimes{width: 200px;height: 42px;border: 1px solid #eee;box-sizing:border-box;padding-left: 10px;
+                select{width: 100%;height: 100%;color:#aaa;background-color: transparent;}
 
             }
             .btn-find{background-color: #189470;width: 160px;color: #fff;text-align: center;line-height: 42px;cursor: pointer;}
         }
-        .zhengshu-box{width: 990px;margin:0 auto;
-            .pic-box{width: 100%;height: 332px;display: flex;justify-content: space-between;margin-bottom: 45px;
+        .zhengshu-box{width: 990px;margin:0 auto;display: flex;justify-content: space-between;margin-bottom: 45px;
+            .pic-box{width: 446px;height: 332px;
                 .tupian{width: 446px;height: 100%;display: block;}
                 .fangda{width: 446px;height: 332px;position: relative;
-                    .graybeijing{width: 100%;height: 100%;background-color: rgba(0,0,0,.5);position: absolute;left: 0;top:0;
+                    .graybeijing{width: 100%;height: 100%;background-color: rgba(0,0,0,.5);position: absolute;left: 0;top:0;opacity: 0;
+                        &:hover{opacity: 1;cursor: pointer;}
                         .jiahao{width: 103px;height: 103px;background-image: url(/static/images/index/scale.png);position: absolute;left: 50%;top: 50%;margin-left: -51px;margin-top: -51px;
                             
                         }
@@ -272,12 +298,17 @@ export default {
         .nodata {
             width: 212px;
             height: 240px;
-            margin: 80px auto 0;
+            margin: 80px auto;
             background-image: url("../assets/nodata.png");
         }
         .picscale{position: absolute;left: 0;top:0;background-color: rgba(0,0,0,.5);width: 100%;height: 146%;
             img{width: 1000px;position: absolute;left: 50%;margin-left: -500px;top:80px;}
             span{width: 60px;height: 60px;background-image: url(/static/images/index/close.png);transform: rotate(45deg);background-size: contain;position: absolute;bottom: 35%;left: 50%;margin-left: -30px;}
+        }
+        .page{width: 100%;height: 45px;margin-top: 10px;
+            .pagebox{text-align: center;
+                span{margin-right: 15px;font-size: 15px;line-height: 45px;cursor: pointer;}
+            }
         }
     }
     .my-certificate {

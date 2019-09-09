@@ -2,9 +2,9 @@
   <div class="courses">
     <div class="label-choose-box">
         <div class="chooseed">
-            <div class="chooseed-content">
+            <!-- <div class="chooseed-content">
                 <div class="chooseed-title">精品课程</div>
-            </div>
+            </div> -->
         </div>
         <div class="choosed-symbol">
             <div class="year-choose">
@@ -35,7 +35,7 @@
             <div class="item-img"><img :src="item.img_url"></div>
             <p class="item-name">{{item.title}}</p>
             <div class="item-other">
-                <div class="item-time">{{item.kecheng_jie_num}}学时</div>
+                <div class="item-time">{{item.xueshi_num}}学时</div>
                 <div class="item-teacher">主讲：<span class="teacher-name">{{item.jiangshi.name}}</span></div>
             </div>  
         </router-link>     
@@ -231,7 +231,7 @@ export default {
     .courses{width: 100%;
         .label-choose-box{width: 100%;overflow: hidden;font-size: 16px;color:#808080;
             .choosed-symbol{width:1200px; margin:0 auto}
-            .chooseed{width: 100%;height: 45px;line-height: 45px; background-color: #f1f1f1;
+            .chooseed{width: 100%;height: 15px;
                 .chooseed-content{display: flex;align-items: center;height: 100%;width: 1200px;margin: 0 auto;
                     .chooseed-title{font-size: 16px;padding-bottom: 5px;margin:0 auto;font-weight: bold;}
                     
@@ -253,11 +253,11 @@ export default {
         }
     }
 
-    .label-choose-box .year-choose,.label-choose-box .course-choose,.label-choose-box .kinds-choose{display: flex;align-items: center;height: 80px;border-bottom: 1px solid #f1f1f1;}
-    .label-choose-box .year-choose .year,.label-choose-box .course-choose .course,.label-choose-box .kinds-choose .kinds{display: flex;list-style: none;}
+    .label-choose-box .year-choose,.label-choose-box .course-choose,.label-choose-box .kinds-choose{display: flex;-align-items: center;-height: 80px;border-bottom: 1px solid #f1f1f1;padding: 5px 0;}
+    .label-choose-box .year-choose .year,.label-choose-box .course-choose .course,.label-choose-box .kinds-choose .kinds{display: flex;list-style: none;flex-wrap:wrap;}
     .label-choose-box .year-choose .more,.label-choose-box .course-choose .more,.label-choose-box .kinds-choose .more{font-size: 16px;position: absolute;right: 0;color:#808080;}
-    .label-choose-box .year-choose .year-title,.label-choose-box .course-choose .course-title,.label-choose-box .kinds-choose .kinds-title{font-size: 16px;padding-bottom: 5px;}
-    .label-choose-box .year-choose .year li,.label-choose-box .course-choose .course li,.label-choose-box .kinds-choose .kinds li{font-size: 16px;margin: 0 10px;padding-bottom: 5px;cursor: pointer;}
+    .label-choose-box .year-choose .year-title,.label-choose-box .course-choose .course-title,.label-choose-box .kinds-choose .kinds-title{font-size: 16px;padding-bottom: 5px;width: 80px;height: 26px;}
+    .label-choose-box .year-choose .year li,.label-choose-box .course-choose .course li,.label-choose-box .kinds-choose .kinds li{font-size: 16px;margin: 0 10px 10px;padding-bottom: 5px;cursor: pointer;}
     .label-choose-box  .on{border-bottom: 2px solid #eb2d2d;}
     .label-choose-box  li:hover{border-bottom: 2px solid #eb2d2d;}
 

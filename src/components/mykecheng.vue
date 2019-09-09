@@ -241,11 +241,11 @@ export default {
                 background-color: #fff;
                 .kechengbox{position: relative;
                   .biaozhi{position: absolute;left: 0;top: 10px;
-                    img{width: 50px;}
+                    img{width: 50px;height: 20px;}
                   }
                   img{
                     width: 100%;
-                    // height: 189px;
+                    height: 134px;
                     //border-radius: 5px;
                     overflow: hidden;
                   }

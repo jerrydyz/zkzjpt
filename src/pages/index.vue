@@ -175,7 +175,7 @@ export default {
   data () {
     return {
       newsjson:{
-          title:'新闻咨询',
+          title:'新闻咨讯',
           englishTitle:'NEWS INFORMATION',
           path:'/news',
           state:0,
