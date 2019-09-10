@@ -85,6 +85,12 @@
               <ul>
                 <li class="bankuai" v-for="(item,index) in datalist1" :key="index" :id="item.id">
                   <p class="tit_type">{{index+1}}、{{item.question}}</p>
+                  <p class="bigimg_box"   @click="bigImg(item.id)" v-show="item.img_url!=''"><img :src="item.img_url" alt=""></p>
+                   <div class="bigtip" v-show="firstti==item.id">
+                        <div class="bigimg" @click="closeimg">
+                           <img :src="item.img_url" alt="">
+                        </div>
+                   </div>
                   <ul class="child shiti_select_div" :shiti_id="item.id" :shiti_type="item.type">
                     <li class="child_type">
                       <label v-for="(key,val) in xuanze" :key="val" @click="radio(item.id)"  style="cursor: pointer;">
@@ -110,6 +116,12 @@
                   :id="check.id"
                 >
                   <p class="tit_type">{{index+1}}、{{check.question}}</p>
+                  <p class="bigimg_box"  @click="bigImg(check.id)" v-show="check.img_url!=''"><img :src="check.img_url" alt=""></p>
+                    <div class="bigtip" v-show="firstti==check.id">
+                        <div class="bigimg" @click="closeimg">
+                           <img :src="check.img_url" alt="">
+                        </div>
+                   </div>
                   <ul class="child shiti_select_div" :shiti_id="check.id" :shiti_type="check.type">
                     <li class="child_type">
                       <label v-for="(key,val) in xuanze2"  @click="checkbox(check.id)"  style="cursor: pointer;">
@@ -130,6 +142,12 @@
               <ul>
                 <li class="bankuai" v-for="(dan,index) in datalist3" :key="dan.id" :id="dan.id">
                   <p class="tit_type">{{index+1}}、{{dan.question}}</p>
+                   <p class="bigimg_box"  @click="bigImg(dan.id)" v-show="dan.img_url!=''"><img :src="dan.img_url" alt=""></p>
+                    <div class="bigtip" v-show="firstti==dan.id">
+                        <div class="bigimg" @click="closeimg">
+                           <img :src="dan.img_url" alt="">
+                        </div>
+                   </div>
                   <ul class="child shiti_select_div" :shiti_id="dan.id" :shiti_type="dan.type">
                     <li class="child_type">
                       <label v-for="(key,val) in xuanze3" @click="panduan(dan.id)"  style="cursor: pointer;">
@@ -149,6 +167,12 @@
               <ul>
                 <li class="bankuai" v-for="(tian,index) in datalist4" :key="tian.id" :id="tian.id">
                   <p class="tit_type">{{index+1}}、{{tian.question}}</p>
+                   <p class="bigimg_box"  @click="bigImg(tian.id)" v-show="tian.img_url!=''"><img :src="tian.img_url" alt=""></p>
+                    <div class="bigtip" v-show="firstti==tian.id">
+                        <div class="bigimg" @click="closeimg">
+                           <img :src="tian.img_url" alt="">
+                        </div>
+                   </div>
                   <ul class="child shiti_select_div" :shiti_id="tian.id" :shiti_type="tian.type">
                     <li class="child_type" v-for="(knum,index) in tian.kong_num" :key="index">
                      <span class="circle"> {{index+1}}</span>
@@ -217,7 +241,8 @@ export default {
       F: "",
       H: "",
       time_limit_seconds:'',
-      timer:''
+      timer:'',
+       firstti:0
     };
   },
   created() {
@@ -251,6 +276,12 @@ export default {
             },1000)
 
     },
+     bigImg(val){
+        this.firstti=val
+      },
+      closeimg(){
+        this.firstti=''
+      },
     
     //获取试卷信息
     getshijuan() {
@@ -640,6 +671,33 @@ export default {
           color: #1a1a1a;
           .bankuai {
             margin-bottom: 10px;
+            .bigimg_box{
+              height: 100px;
+               margin-top:10px;
+              img{
+                height: 100%;
+              }
+            }
+             .bigtip{
+                 position: fixed;
+                 top:0;
+                 left:0;
+                 bottom:0;
+                  width: 100%;
+                  height: 100%;
+                  background-color: rgba(255,2550,255,1);
+               .bigimg{
+                   width: 500px;
+                   position: absolute;
+                   top:300px;
+                   left:50%;
+                   margin-left:-250px;
+                   img{
+                      width: 100%;
+                   }
+               }   
+
+              }
             .child {
               width: 100%;
               margin-top: 10px;
@@ -670,6 +728,33 @@ export default {
           color: #1a1a1a;
           .bankuai {
             margin-bottom: 10px;
+             .bigimg_box{
+              height: 100px;
+               margin-top:10px;
+              img{
+                height: 100%;
+              }
+            }
+             .bigtip{
+                 position: fixed;
+                 top:0;
+                 left:0;
+                 bottom:0;
+                  width: 100%;
+                  height: 100%;
+                  background-color: rgba(255,2550,255,1);
+               .bigimg{
+                   width: 500px;
+                   position: absolute;
+                   top:300px;
+                   left:50%;
+                   margin-left:-250px;
+                   img{
+                      width: 100%;
+                   }
+               }   
+
+              }
             .child {
               width: 100%;
               margin-top: 10px;
@@ -700,6 +785,33 @@ export default {
           color: #1a1a1a;
           .bankuai {
             margin-bottom: 10px;
+             .bigimg_box{
+              height: 100px;
+               margin-top:10px;
+              img{
+                height: 100%;
+              }
+            }
+             .bigtip{
+                 position: fixed;
+                 top:0;
+                 left:0;
+                 bottom:0;
+                  width: 100%;
+                  height: 100%;
+                  background-color: rgba(255,2550,255,1);
+               .bigimg{
+                   width: 500px;
+                   position: absolute;
+                   top:300px;
+                   left:50%;
+                   margin-left:-250px;
+                   img{
+                      width: 100%;
+                   }
+               }   
+
+              }
             .child {
               width: 100%;
               margin-top: 10px;
