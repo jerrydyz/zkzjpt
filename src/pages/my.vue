@@ -2,7 +2,7 @@
   <div class="my">
     <div class="title">
       <div class="top w clearfix">
-        <p class="fl">周口市专业技术人员继续教育协会</p>
+        <p class="fl">周口市专业技术人员继续教育平台</p>
         <p class="fr">
           <span class="spn1"  @click="more('personcenter')" >个人中心</span>
           <span @click="goback">退出</span>
